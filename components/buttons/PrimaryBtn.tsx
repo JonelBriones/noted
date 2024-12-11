@@ -2,11 +2,19 @@ import React from "react";
 
 interface PrimaryBtnInterface {
   text: string;
+  textColor?: string;
+  backgroundColor?: string;
 }
 
-const PrimaryBtn = ({ text }: PrimaryBtnInterface) => {
+const PrimaryBtn = ({
+  text,
+  textColor,
+  backgroundColor,
+}: PrimaryBtnInterface) => {
   return (
-    <div className="w-full text-center p-2 bg-blue-700 rounded-lg text-white text-sm font-medium">
+    <div
+      className={`block h text-center p-2 ${textColor} ${backgroundColor} rounded-lg text-white text-sm font-medium cursor-pointer`}
+    >
       {text}
     </div>
   );

@@ -1,11 +1,28 @@
 import Image from "next/image";
 import React from "react";
+import PrimaryBtn from "../buttons/PrimaryBtn";
 
-const NoteCard = () => {
+const NoteCard = ({ note }: any) => {
+  const { _id, title, tags, content, lastEdited, isArchived } = note;
+
+  const formatLastEdited = new Date(lastEdited).toLocaleString("en-us", {
+    timezone: "UTC",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    // hour: "2-digit",
+    // minute: "2-digit",
+  } as any);
+
+  // if want to format note with new lines add "\n" to content string
+  let convert = content
+    .split("\n")
+    ?.map((line: string, index: number) => <div key={index}>{line}</div>);
+
   return (
-    <div className="flex flex-col gap-4 p-4 border-l border-r flex-1 ∂text-sm ">
+    <div className="hidden md:flex flex-col flex-1 gap-4 p-4 border-l border-r text-sm">
       <div className="flex flex-col gap-4">
-        <h1 className="text-2xl font-bold">React Performance Optimization</h1>
+        <h1 className="text-2xl font-bold">{title}</h1>
         <div className="flex flex-col  ">
           <div className="flex place-items-center">
             <span className="flex gap-2 p-2 w-[150px]">
@@ -17,7 +34,14 @@ const NoteCard = () => {
               />
               Tags
             </span>
-            <span>Dev, React</span>
+            <div className="flex gap-1">
+              {tags?.map((tag: any, idx: number) => (
+                <span key={idx}>
+                  {tag}
+                  {idx < tags.length - 1 && ","}
+                </span>
+              ))}
+            </div>
           </div>
           <div className="flex place-items-center">
             <span className="flex gap-2 p-2 w-[150px]">
@@ -29,48 +53,22 @@ const NoteCard = () => {
               />
               Last edited
             </span>
-            <span>29 Oct 2024</span>
+            <span>{formatLastEdited}</span>
           </div>
         </div>
+        <div className="w-full h-[1px] bg-neutral-200" />
       </div>
-      <div className="w-full h-[1px] bg-neutral-200" />
-      <div className="flex flex-col gap-4 text-neutral-800">
-        <h1>Key Performance Optimization Techniques:</h1>
-        <ol className="flex flex-col gap-4">
-          <li>
-            <h2>1. Code Splitting</h2>
-            <ul>
-              <li>
-                - Use <code>React.lazy()</code> for route-based splitting
-              </li>
-              <li>- Implement dynamic imports for heavy components</li>
-            </ul>
-          </li>
-          <li>
-            <h2>2. Memoization</h2>
-            <ul>
-              <li>
-                - <code>useMemo</code> for expensive calculations
-              </li>
-              <li>
-                - <code>useCallback</code> for function props
-              </li>
-              <li>
-                - <code>React.memo</code> for component optimization
-              </li>
-            </ul>
-          </li>
-          <li>
-            <h2>3. Virtual List Implementation</h2>
-            <ul>
-              <li>
-                - Use <code>react-window</code> for long lists
-              </li>
-              <li>- Implement infinite scrolling</li>
-            </ul>
-          </li>
-        </ol>
+      <div className="flex flex-col gap-4 text-neutral-800 flex-1">
+        {convert}
         <h4>TODO: Benchmark current application and identify bottlenecks</h4>
+      </div>
+      <div className="flex gap-4 w-fit">
+        <PrimaryBtn text={"Save Note"} textColor={"bg-blue-500"} />
+        <PrimaryBtn
+          text={"Cancel"}
+          textColor={"text-neutral-600"}
+          backgroundColor={"bg-neutral-100"}
+        />
       </div>
     </div>
   );
