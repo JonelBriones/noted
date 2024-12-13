@@ -20,7 +20,7 @@ const NoteCard = ({ note }: any) => {
     ?.map((line: string, index: number) => <div key={index}>{line}</div>);
 
   return (
-    <div className="hidden md:flex flex-col flex-1 gap-4 p-4 border-l border-r text-sm">
+    <div className="hidden md:flex flex-col flex-4 gap-4 p-4 border-l border-r text-sm">
       <div className="flex flex-col gap-4">
         <h1 className="text-2xl font-bold">{title}</h1>
         <div className="flex flex-col  ">
@@ -28,8 +28,9 @@ const NoteCard = ({ note }: any) => {
             <span className="flex gap-2 p-2 w-[150px]">
               <Image
                 src={"/images/icon-tag.svg"}
-                width={16}
-                height={16}
+                width={0}
+                height={0}
+                className="size-4"
                 alt="icon-tag"
               />
               Tags
@@ -47,8 +48,9 @@ const NoteCard = ({ note }: any) => {
             <span className="flex gap-2 p-2 w-[150px]">
               <Image
                 src={"/images/icon-clock.svg"}
-                width={16}
-                height={16}
+                width={0}
+                height={0}
+                className="size-4"
                 alt="icon-clock"
               />
               Last edited
@@ -60,7 +62,6 @@ const NoteCard = ({ note }: any) => {
       </div>
       <div className="flex flex-col gap-4 text-neutral-800 flex-1">
         {convert}
-        <h4>TODO: Benchmark current application and identify bottlenecks</h4>
       </div>
       <div className="flex gap-4 w-fit">
         <PrimaryBtn text={"Save Note"} textColor={"bg-blue-500"} />

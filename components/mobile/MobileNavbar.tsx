@@ -7,7 +7,7 @@ import React from "react";
 const MobileNavbar = () => {
   const pathname = usePathname();
   return (
-    <div className="md:hidden flex justify-between p-4">
+    <div className="md:hidden flex flex-none justify-between p-4">
       <Link
         href={"/"}
         className={`p-1 px-4 ${pathname == "/" ? "bg-blue-50" : ""}`}

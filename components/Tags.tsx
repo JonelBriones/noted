@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
 import Dashboard from "./Dashboard";
+import { useParams } from "next/navigation";
 
 const Tags = () => {
-  return <Dashboard />;
+  const { tag } = useParams();
+  return <Dashboard tag={tag} />;
 };
 
 export default Tags;

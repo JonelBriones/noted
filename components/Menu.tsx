@@ -7,27 +7,30 @@ const Menu = () => {
       <span className="flex gap-2 p-2">
         <Image
           src={"/images/icon-sun.svg"}
-          width={20}
-          height={20}
-          alt="icon-tag"
+          width={0}
+          height={0}
+          className="size-5"
+          alt="icon-sun"
         />
         Color Theme
       </span>
       <span className="flex gap-2 p-2">
         <Image
           src={"/images/icon-font.svg"}
-          width={20}
-          height={20}
-          alt="icon-tag"
+          width={0}
+          height={0}
+          className="size-5"
+          alt="icon-font"
         />
         Front Theme
       </span>
       <span className="flex gap-2 p-2">
         <Image
           src={"/images/icon-lock.svg"}
-          width={20}
-          height={20}
-          alt="icon-tag"
+          width={0}
+          height={0}
+          className="size-5"
+          alt="icon-lock"
         />
         Change Password
       </span>
@@ -35,9 +38,10 @@ const Menu = () => {
       <span className="flex gap-2 p-2">
         <Image
           src={"/images/icon-logout.svg"}
-          width={20}
-          height={20}
-          alt="icon-tag"
+          width={0}
+          height={0}
+          className="size-5"
+          alt="icon-logout"
         />{" "}
         Logout
       </span>

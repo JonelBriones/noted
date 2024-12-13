@@ -20,12 +20,13 @@ const Topbar = () => {
         {pathname.includes("/tag/") &&
           `Notes Tagged: ${tag.charAt(0).toUpperCase() + tag.slice(1)}`}
       </h1>
-      <div className="hidden md:flex gap-4">
+      <div className="hidden md:flex gap-4 place-items-center">
         <Searchbar />
         <Image
           src={"/images/icon-settings.svg"}
           width={20}
           height={20}
+          className="size-5"
           alt="icon-tag"
         />
       </div>

@@ -14,7 +14,7 @@ const Navigation = () => {
     "React",
     "Recipes",
     "Travel",
-    "TypeScript",
+    "Typescript",
   ]);
 
   const pathname = usePathname();
@@ -24,13 +24,13 @@ const Navigation = () => {
       src={"/images/icon-chevron-right.svg"}
       width={20}
       height={20}
-      alt="icon-tag"
+      alt="icon-chevron-right"
     />
   );
 
   return (
     <div className="hidden w-[266px] md:flex flex-col gap-6 border-r  p-4">
-      <Image src={"/images/logo.svg"} width={95} height={28} alt="icon-tag" />
+      <Image src={"/images/logo.svg"} width={95} height={28} alt="logo" />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col">
           <Link
@@ -42,9 +42,10 @@ const Navigation = () => {
             <div className="flex gap-2 cursor-pointer">
               <Image
                 src={"/images/icon-home.svg"}
-                width={20}
-                height={20}
-                alt="icon-tag"
+                width={0}
+                height={0}
+                className="size-5"
+                alt="icon-home"
               />
               All Notes
             </div>
@@ -59,9 +60,10 @@ const Navigation = () => {
             <div className="flex gap-2 cursor-pointer">
               <Image
                 src={"/images/icon-archive.svg"}
-                width={20}
-                height={20}
-                alt="icon-tag"
+                width={0}
+                height={0}
+                className="size-5"
+                alt="icon-archive"
               />
               Archived Notes
             </div>
@@ -85,8 +87,9 @@ const Navigation = () => {
                 <div className="flex gap-2">
                   <Image
                     src={"/images/icon-tag.svg"}
-                    width={20}
-                    height={20}
+                    width={0}
+                    height={0}
+                    className="size-5"
                     alt="icon-tag"
                   />
                   <span className="text-neutral-700 text-sm">{tag}</span>

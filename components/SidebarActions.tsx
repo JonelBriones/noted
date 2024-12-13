@@ -11,8 +11,9 @@ const SidebarRight = () => {
         <button className="flex gap-2 border rounded-lg p-3">
           <Image
             src={"/images/icon-archive.svg"}
-            width={20}
-            height={20}
+            width={0}
+            height={0}
+            className="size-5"
             alt="icon-tag"
           />
           {pathname == "/" ? "Restore" : "Archive"} Note
@@ -20,9 +21,10 @@ const SidebarRight = () => {
         <button className="flex gap-2 border rounded-lg p-3">
           <Image
             src={"/images/icon-delete.svg"}
-            width={20}
-            height={20}
-            alt="icon-tag"
+            width={0}
+            height={0}
+            className="size-5"
+            alt="icon-delete"
           />
           Delete Note
         </button>
