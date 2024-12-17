@@ -29,7 +29,7 @@ const Navigation = () => {
   );
 
   return (
-    <div className="hidden w-[266px] md:flex flex-col gap-6 border-r  p-4">
+    <div className="hidden w-[266px] md:flex flex-col flex-none gap-6 border-r  p-4">
       <Image src={"/images/logo.svg"} width={95} height={28} alt="logo" />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col">

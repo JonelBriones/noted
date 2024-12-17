@@ -3,6 +3,12 @@ import React from "react";
 import PrimaryBtn from "../buttons/PrimaryBtn";
 
 const NoteCard = ({ note }: any) => {
+  console.log(note);
+  if (!note) {
+    return (
+      <div className="hidden md:flex flex-col flex-1 gap-4 p-4 border-l border-r text-sm"></div>
+    );
+  }
   const { _id, title, tags, content, lastEdited, isArchived } = note;
 
   const formatLastEdited = new Date(lastEdited).toLocaleString("en-us", {
@@ -16,11 +22,12 @@ const NoteCard = ({ note }: any) => {
 
   // if want to format note with new lines add "\n" to content string
   let convert = content
-    .split("\n")
+    ?.split("\n")
     ?.map((line: string, index: number) => <div key={index}>{line}</div>);
+  console.log(note);
 
   return (
-    <div className="hidden md:flex flex-col flex-4 gap-4 p-4 border-l border-r text-sm">
+    <div className="hidden md:flex flex-col flex-1 gap-4 p-4 border-l border-r text-sm">
       <div className="flex flex-col gap-4">
         <h1 className="text-2xl font-bold">{title}</h1>
         <div className="flex flex-col  ">
@@ -64,10 +71,14 @@ const NoteCard = ({ note }: any) => {
         {convert}
       </div>
       <div className="flex gap-4 w-fit">
-        <PrimaryBtn text={"Save Note"} textColor={"bg-blue-500"} />
+        <PrimaryBtn
+          text={"Save Note"}
+          textColor={"text-white"}
+          backgroundColor={"bg-blue-500"}
+        />
         <PrimaryBtn
           text={"Cancel"}
-          textColor={"text-neutral-600"}
+          textColor={"text-neutral-800"}
           backgroundColor={"bg-neutral-100"}
         />
       </div>

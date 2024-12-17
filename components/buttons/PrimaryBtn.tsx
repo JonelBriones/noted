@@ -25,7 +25,7 @@ const PrimaryBtn = ({
         </Link>
       ) : (
         <button
-          className={`block text-center p-2 ${textColor} ${backgroundColor} rounded-lg text-white text-sm font-medium cursor-pointer`}
+          className={`block text-center p-2 ${textColor} ${backgroundColor} rounded-lg text-sm font-medium cursor-pointer`}
         >
           {text}
         </button>

@@ -13,7 +13,7 @@ const Topbar = () => {
   const tag = useParams().tag as string;
 
   return (
-    <div className="flex place-items-center justify-between md:border-b md:h-[10vh]">
+    <div className="flex place-items-center justify-between md:border-b p-6">
       <h1 className="font-bold text-2xl">
         {pathname == "/" && "All Notes"}
         {pathname == "/archived" && "Archived Notes"}
