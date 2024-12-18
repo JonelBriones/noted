@@ -6,16 +6,23 @@ import NoteCard from "./NoteCard";
 import NoteCardSummary from "../NoteCardSidebar";
 import { useParams, usePathname } from "next/navigation";
 import { Note } from "@/app/_types/types";
+import { useAppContext } from "../Providers";
 
 interface Params {
   apiNotes: Note[];
   search: string;
+  viewToggledNote?: Note;
+  setViewToggledNote: (note: Note) => {};
 }
 
-const NoteCardSummaryContainer = ({ apiNotes, search }: Params) => {
+const NoteCardSummaryContainer = ({
+  search,
+  apiNotes,
+  viewToggledNote,
+  setViewToggledNote,
+}: Params) => {
   const pathname = usePathname();
   const { tag } = useParams() as { tag: string };
-  const [viewToggledNote, setViewToggledNote] = useState<Note>(apiNotes[0]);
 
   let formattedSearch = search?.toLowerCase();
 
@@ -30,7 +37,7 @@ const NoteCardSummaryContainer = ({ apiNotes, search }: Params) => {
 
   const renderNoteCardSummary = () => {
     if (search) {
-      return searchNotes?.map((note: any) => (
+      return searchNotes?.map((note: Note) => (
         <div onClick={() => setViewToggledNote(note)} key={note._id}>
           <NoteCardSummary note={note} viewToggledNote={viewToggledNote} />
         </div>
@@ -42,7 +49,6 @@ const NoteCardSummaryContainer = ({ apiNotes, search }: Params) => {
         </div>
       ));
   };
-
   return (
     <div className="flex flex-grow gap-4 pl-6 overflow-hidden">
       <div className="hidden w-[290px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4">
@@ -73,11 +79,15 @@ const NoteCardSummaryContainer = ({ apiNotes, search }: Params) => {
           </p>
         )}
 
-        <div className="">{renderNoteCardSummary()}</div>
+        {renderNoteCardSummary()}
       </div>
 
-      <NoteCard note={viewToggledNote} />
-      <SidebarRight note={viewToggledNote} />
+      {apiNotes.find((note) => note._id == viewToggledNote?._id) && (
+        <>
+          <NoteCard note={viewToggledNote} />
+          <SidebarRight note={viewToggledNote} />
+        </>
+      )}
     </div>
   );
 };

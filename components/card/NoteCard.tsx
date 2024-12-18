@@ -2,8 +2,11 @@
 import Image from "next/image";
 import React from "react";
 import PrimaryBtn from "../buttons/PrimaryBtn";
-
-const NoteCard = ({ note }: any) => {
+import { Note } from "@/app/_types/types";
+interface Params {
+  note?: Note;
+}
+const NoteCard = ({ note }: Params) => {
   if (!note) {
     return (
       <div className="hidden md:flex  flex-col flex-1 gap-4 p-4 border-l border-r text-sm"></div>

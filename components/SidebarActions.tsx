@@ -5,10 +5,11 @@ import React, { useState } from "react";
 import Modal from "./modals/Modal";
 import { Note } from "@/app/_types/types";
 interface Params {
-  note: Note;
+  note?: Note;
 }
 const SidebarRight = ({ note }: Params) => {
   const pathname = usePathname();
+  if (!note) return;
   const { isArchived } = note;
   const [type, setType] = useState("");
   const [toggleModal, setToggleModal] = useState(false);

@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
-import NoteCard from "@/components/card/NoteCard";
-import SidebarRight from "@/components/SidebarActions";
-import Topbar from "@/components/Topbar";
-import Sidebar from "@/components/NoteCardSidebar";
+import ContextWrapper from "@/components/Providers";
 import MobileNavbar from "@/components/mobile/MobileNavbar";
-import Dashboard from "@/components/Dashboard";
 
 export const metadata: Metadata = {
   title: "Noted",
@@ -19,11 +14,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="containe mx-auto flex flex-col justify-between h-screen px-6 relative">
-        {children}
-        <MobileNavbar />
-      </body>
-    </html>
+    <ContextWrapper>
+      <html lang="en">
+        <body className="containe mx-auto flex flex-col justify-between h-screen px-6 relative">
+          {children}
+          <MobileNavbar />
+        </body>
+      </html>
+    </ContextWrapper>
   );
 }
