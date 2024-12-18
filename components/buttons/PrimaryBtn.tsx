@@ -8,6 +8,7 @@ interface PrimaryBtnInterface {
   url?: string;
   padding?: string;
   setToggleModal?: any;
+  deleteNote?: () => {};
 }
 
 const PrimaryBtn = ({
@@ -17,6 +18,7 @@ const PrimaryBtn = ({
   url,
   padding,
   setToggleModal,
+  deleteNote,
 }: PrimaryBtnInterface) => {
   return (
     <>

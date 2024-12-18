@@ -49,6 +49,7 @@ const NoteCardSummaryContainer = ({
         </div>
       ));
   };
+
   return (
     <div className="flex flex-grow gap-4 pl-6 overflow-hidden">
       <div className="hidden w-[290px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4">
@@ -57,7 +58,6 @@ const NoteCardSummaryContainer = ({
           backgroundColor={"bg-blue-500"}
           textColor="text-white"
         />
-
         {pathname == "/archived" && (
           <>
             <p className="text-sm  text-neutral-700">
@@ -73,15 +73,21 @@ const NoteCardSummaryContainer = ({
             )}
           </>
         )}
+        {pathname == "/" && apiNotes.length == 0 && (
+          <>
+            <p className="text-sm  text-neutral-700">
+              You don’t have any notes yet. Start a new note to capture your
+              thoughts and ideas.
+            </p>
+          </>
+        )}
         {pathname.includes("/tag/") && (
           <p className="text-sm  text-neutral-700">
             All notes with the {tag} tag are shown here.
           </p>
         )}
-
         {renderNoteCardSummary()}
       </div>
-
       {apiNotes.find((note) => note._id == viewToggledNote?._id) && (
         <>
           <NoteCard note={viewToggledNote} />

@@ -1,14 +1,15 @@
 "use client";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "./modals/Modal";
 import { Note } from "@/app/_types/types";
+import { useAppContext } from "./Providers";
+
 interface Params {
   note?: Note;
 }
 const SidebarRight = ({ note }: Params) => {
-  const pathname = usePathname();
   if (!note) return;
   const { isArchived } = note;
   const [type, setType] = useState("");
@@ -19,13 +20,20 @@ const SidebarRight = ({ note }: Params) => {
   };
   const { img, backgroundColor } = params;
 
+  useEffect(() => {}, [note]);
+  const { deleteNote, archiveNote } = useAppContext();
   return (
     <div className="hidden md:flex flex-col w-[242px] flex-none gap-4 p-4">
       <div className="flex flex-col gap-3 text-sm">
         <button
           className="flex gap-2 border rounded-lg p-3"
           onClick={() => {
-            setToggleModal(true), setType("Archive");
+            {
+              isArchived
+                ? archiveNote(note._id, isArchived)
+                : setToggleModal(true),
+                setType("Archive");
+            }
           }}
         >
           <Image
@@ -35,7 +43,7 @@ const SidebarRight = ({ note }: Params) => {
             className="size-5"
             alt="icon-tag"
           />
-          {pathname == "/" ? "Restore" : "Archive"} Note
+          {isArchived ? "Restore" : "Archive"} Note
         </button>
         <button
           className="flex gap-2 border rounded-lg p-3"
@@ -55,11 +63,12 @@ const SidebarRight = ({ note }: Params) => {
       </div>
       {toggleModal && (
         <Modal
+          id={note._id}
+          isArchived={isArchived}
           img={img}
           type={type}
           textColor={"text-white"}
           backgroundColor={backgroundColor}
-          padding={"py-2 px-4"}
           setToggleModal={setToggleModal}
         />
       )}

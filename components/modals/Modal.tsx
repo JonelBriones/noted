@@ -1,15 +1,20 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import PrimaryBtn from "../buttons/PrimaryBtn";
+import { useAppContext } from "../Providers";
+import { text } from "stream/consumers";
 
 const Modal = ({
+  id,
+  isArchived,
   img,
   type,
   textColor,
   backgroundColor,
-  padding,
   setToggleModal,
 }: any) => {
+  const { deleteNote, archiveNote } = useAppContext();
   return (
     <>
       <div className="absolute top-0 bottom-0 left-0 right-0 h-screen w-screen bg-neutral-950 opacity-50" />
@@ -18,7 +23,9 @@ const Modal = ({
           <div className="flex place-items-start gap-4 relative">
             <div className="rounded-lg p-2 bg-neutral-100 flex-none">
               <Image
-                src={`/images/icon-${img}.svg`}
+                src={`/images/icon-${
+                  type == "Archive" ? "archive" : "delete"
+                }.svg`}
                 height={0}
                 width={0}
                 alt={`icon-${img}`}
@@ -37,20 +44,21 @@ const Modal = ({
             </div>
           </div>
           <div className="flex gap-4 justify-end">
-            <PrimaryBtn
-              text={"Cancel"}
-              textColor={"text-neutral-600"}
-              backgroundColor={"bg-neutral-100"}
-              padding={padding}
-              setToggleModal={setToggleModal}
-            />
-            <PrimaryBtn
-              text={type + " Note"}
-              textColor={textColor}
-              backgroundColor={backgroundColor}
-              padding={padding}
-              setToggleModal={setToggleModal}
-            />
+            <button
+              onClick={() => setToggleModal(false)}
+              className={`block text-center p-2 text-neutral-600 bg-neutral-100 rounded-lg text-sm font-medium cursor-pointer py-2 px-4`}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                setToggleModal(false);
+                type == "Delete" ? deleteNote(id) : archiveNote(id, isArchived);
+              }}
+              className={`block text-center p-2 ${textColor} ${backgroundColor} rounded-lg text-sm font-medium cursor-pointer py-2 px-4`}
+            >
+              {type} Note
+            </button>
           </div>
         </div>
       </div>
