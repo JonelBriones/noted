@@ -15,7 +15,7 @@ interface Params {
 const NoteCardSummaryContainer = ({ apiNotes, search }: Params) => {
   const pathname = usePathname();
   const { tag } = useParams() as { tag: string };
-  const [viewToggledNote, setViewToggledNote] = useState(apiNotes[0]);
+  const [viewToggledNote, setViewToggledNote] = useState<Note>(apiNotes[0]);
 
   let formattedSearch = search?.toLowerCase();
 
@@ -46,7 +46,6 @@ const NoteCardSummaryContainer = ({ apiNotes, search }: Params) => {
   return (
     <div className="flex flex-grow gap-4 pl-6 overflow-hidden">
       <div className="hidden w-[290px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4">
-        {search}
         <PrimaryBtn
           text={"+ Create new Note"}
           backgroundColor={"bg-blue-500"}
@@ -78,8 +77,7 @@ const NoteCardSummaryContainer = ({ apiNotes, search }: Params) => {
       </div>
 
       <NoteCard note={viewToggledNote} />
-
-      <SidebarRight />
+      <SidebarRight note={viewToggledNote} />
     </div>
   );
 };

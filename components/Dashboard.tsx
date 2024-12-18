@@ -6,6 +6,7 @@ import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
 import notes from "@/data.json";
 import Navigation from "./Navigation";
 import { Note } from "@/app/_types/types";
+import Settings from "./Settings";
 
 const Dashboard = () => {
   const { tag } = useParams() as { tag: string };
@@ -14,9 +15,10 @@ const Dashboard = () => {
   const viewByTag = notes.filter((note: Note) =>
     note.tags.includes(tag?.charAt(0).toUpperCase() + tag?.slice(1))
   );
-  const [search, setSearch] = useState("");
+
   const openedNotes = notes.filter((note: Note) => note.isArchived == false);
   const archivedNotes = notes.filter((note: Note) => note.isArchived == true);
+  const [search, setSearch] = useState("");
 
   return (
     <div className="h-screen overflow-y-hidden">
@@ -24,12 +26,21 @@ const Dashboard = () => {
         <Navigation />
         <div className="flex flex-col flex-grow">
           <Topbar search={search} setSearch={setSearch} />
-          <NoteCardSummaryContainer
-            apiNotes={
-              tag ? viewByTag : pathname == "/" ? openedNotes : archivedNotes
-            }
-            search={search}
-          />
+          {pathname == "/settings" && (
+            <Settings search={search} setSearch={setSearch} />
+          )}
+          {pathname == "/archived" && (
+            <NoteCardSummaryContainer
+              apiNotes={archivedNotes}
+              search={search}
+            />
+          )}
+          {pathname.includes("tag") && (
+            <NoteCardSummaryContainer apiNotes={viewByTag} search={search} />
+          )}
+          {pathname == "/" && (
+            <NoteCardSummaryContainer apiNotes={openedNotes} search={search} />
+          )}
         </div>
       </div>
     </div>

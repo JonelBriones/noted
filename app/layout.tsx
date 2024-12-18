@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="containe mx-auto flex flex-col justify-between h-screen px-6">
+      <body className="containe mx-auto flex flex-col justify-between h-screen px-6 relative">
         {children}
         <MobileNavbar />
       </body>

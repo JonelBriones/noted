@@ -33,7 +33,7 @@ export default {
           100: "#D1FEBE9",
         },
         red: {
-          500: "#FFD5D8",
+          500: "#FB3748",
           100: "#FFD5DF",
         },
       },

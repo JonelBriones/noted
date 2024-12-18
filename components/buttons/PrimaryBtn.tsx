@@ -6,6 +6,8 @@ interface PrimaryBtnInterface {
   textColor?: string;
   backgroundColor?: string;
   url?: string;
+  padding?: string;
+  setToggleModal?: any;
 }
 
 const PrimaryBtn = ({
@@ -13,6 +15,8 @@ const PrimaryBtn = ({
   textColor,
   backgroundColor,
   url,
+  padding,
+  setToggleModal,
 }: PrimaryBtnInterface) => {
   return (
     <>
@@ -25,7 +29,8 @@ const PrimaryBtn = ({
         </Link>
       ) : (
         <button
-          className={`block text-center p-2 ${textColor} ${backgroundColor} rounded-lg text-sm font-medium cursor-pointer`}
+          onClick={() => setToggleModal(false)}
+          className={`block text-center p-2 ${textColor} ${backgroundColor} rounded-lg text-sm font-medium cursor-pointer ${padding}`}
         >
           {text}
         </button>

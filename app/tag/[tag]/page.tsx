@@ -1,8 +1,8 @@
-import Tags from "@/components/Tags";
+import Dashboard from "@/components/Dashboard";
 import React from "react";
 
 const page = () => {
-  return <Tags />;
+  return <Dashboard />;
 };
 
 export default page;
