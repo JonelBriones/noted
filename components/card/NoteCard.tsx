@@ -1,12 +1,12 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import PrimaryBtn from "../buttons/PrimaryBtn";
 
 const NoteCard = ({ note }: any) => {
-  console.log(note);
   if (!note) {
     return (
-      <div className="hidden md:flex flex-col flex-1 gap-4 p-4 border-l border-r text-sm"></div>
+      <div className="hidden md:flex  flex-col flex-1 gap-4 p-4 border-l border-r text-sm"></div>
     );
   }
   const { _id, title, tags, content, lastEdited, isArchived } = note;
@@ -24,11 +24,10 @@ const NoteCard = ({ note }: any) => {
   let convert = content
     ?.split("\n")
     ?.map((line: string, index: number) => <div key={index}>{line}</div>);
-  console.log(note);
 
   return (
-    <div className="hidden md:flex flex-col flex-1 gap-4 p-4 border-l border-r text-sm">
-      <div className="flex flex-col gap-4">
+    <div className="hidden md:flex flex-col flex-1 gap-4 border-l border-r text-sm overflow-auto">
+      <div className="flex flex-col gap-4 p-4">
         <h1 className="text-2xl font-bold">{title}</h1>
         <div className="flex flex-col  ">
           <div className="flex place-items-center">
@@ -51,6 +50,22 @@ const NoteCard = ({ note }: any) => {
               ))}
             </div>
           </div>
+
+          {isArchived && (
+            <div className="flex place-items-center">
+              <span className="flex gap-2 p-2 w-[150px]">
+                <Image
+                  src={"/images/icon-status.svg"}
+                  width={0}
+                  height={0}
+                  className="size-4"
+                  alt="icon-status"
+                />
+                Status
+              </span>
+              <span>Archived</span>
+            </div>
+          )}
           <div className="flex place-items-center">
             <span className="flex gap-2 p-2 w-[150px]">
               <Image
@@ -65,12 +80,13 @@ const NoteCard = ({ note }: any) => {
             <span>{formatLastEdited}</span>
           </div>
         </div>
-        <div className="w-full h-[1px] bg-neutral-200" />
       </div>
-      <div className="flex flex-col gap-4 text-neutral-800 flex-1">
+      <div className="w-full h-[1px] bg-neutral-200" />
+      <div className="flex flex-col gap-4 text-neutral-800 flex-1 p-4">
         {convert}
       </div>
-      <div className="flex gap-4 w-fit">
+      <div className="w-full h-[1px] bg-neutral-200" />
+      <div className="flex gap-4 w-fit p-4">
         <PrimaryBtn
           text={"Save Note"}
           textColor={"text-white"}

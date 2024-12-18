@@ -5,44 +5,43 @@ import SidebarRight from "../SidebarActions";
 import NoteCard from "./NoteCard";
 import NoteCardSummary from "../NoteCardSidebar";
 import { useParams, usePathname } from "next/navigation";
-import { Note, NoteList } from "@/app/types/types";
+import { NoteList } from "@/app/_types/types";
+import path from "path";
 
 const NoteCardSummaryContainer = ({ apiNotes }: NoteList) => {
   const pathname = usePathname();
-  const { tag } = useParams();
+  const { tag } = useParams() as { tag: string };
+  console.log("NOTES", apiNotes);
 
-  // const [archivedNotes, setArchivedNotes] = useState([]);
-  const notes = apiNotes.filter((note: any) => note.isArchived == false);
-  const [viewToggledNote, setViewToggledNote] = useState(notes[0]);
+  // const notes = apiNotes.filter((note: any) => note.isArchived == false);
+  const [viewToggledNote, setViewToggledNote] = useState(apiNotes[0]);
+
   const archivedNotes =
     apiNotes.filter((note: any) => note.isArchived == true) || [];
-  const [viewToggledArchivedNote, setViewToggledArchivedNote] = useState(
-    archivedNotes[0]
-  );
 
   const renderNoteCardSummary = () => {
-    let selectNotes = pathname == "/" ? notes : archivedNotes;
-    return selectNotes?.map((note: any) => (
-      <div
-        onClick={() => {
-          pathname == "/"
-            ? setViewToggledNote(note)
-            : setViewToggledArchivedNote(note);
-        }}
-        key={note._id}
-      >
-        <NoteCardSummary
-          note={note}
-          viewToggledNote={
-            pathname == "/" ? viewToggledNote : viewToggledArchivedNote
-          }
-        />
+    const openedNotes = apiNotes.filter(
+      (note: any) => note.isArchived == false
+    );
+    const archivedNotes = apiNotes.filter(
+      (note: any) => note.isArchived == true
+    );
+    let type =
+      pathname == "/"
+        ? openedNotes
+        : pathname == "/archived"
+        ? archivedNotes
+        : apiNotes;
+
+    return type?.map((note: any) => (
+      <div onClick={() => setViewToggledNote(note)} key={note._id}>
+        <NoteCardSummary note={note} viewToggledNote={viewToggledNote} />
       </div>
     ));
   };
   return (
-    <div className="flex md:h-[90vh] gap-4 pl-6">
-      <div className="hidden w-[290px] md:flex flex-col flex-none text-wrap overflow-auto gap-2 py-4">
+    <div className="flex flex-grow gap-4 pl-6 overflow-hidden">
+      <div className="hidden w-[290px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4">
         <PrimaryBtn
           text={"+ Create new Note"}
           backgroundColor={"bg-blue-500"}
@@ -70,11 +69,11 @@ const NoteCardSummaryContainer = ({ apiNotes }: NoteList) => {
           </p>
         )}
 
-        {renderNoteCardSummary()}
+        <div className="">{renderNoteCardSummary()}</div>
       </div>
-      <NoteCard
-        note={pathname == "/" ? viewToggledNote : viewToggledArchivedNote}
-      />
+
+      <NoteCard note={viewToggledNote} />
+
       <SidebarRight />
     </div>
   );

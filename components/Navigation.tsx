@@ -28,10 +28,36 @@ const Navigation = () => {
     />
   );
 
+  const renderLinks = (
+    <div className="flex flex-col">
+      {tags.map((tag) => (
+        <Link
+          href={`/tag/${tag.toLowerCase()}`}
+          key={tag}
+          className={`flex justify-between cursor-pointer p-2 rounded-lg ${
+            pathname == `/tag/${tag.toLowerCase()}` ? "bg-neutral-100" : ""
+          }`}
+        >
+          <div className="flex gap-2">
+            <Image
+              src={"/images/icon-tag.svg"}
+              width={0}
+              height={0}
+              className="size-5"
+              alt="icon-tag"
+            />
+            <span className="text-neutral-700 text-sm">{tag}</span>
+          </div>
+          {pathname == `/tag/${tag.toLowerCase()}` && toggleChevron}
+        </Link>
+      ))}
+    </div>
+  );
+
   return (
     <div className="hidden w-[266px] md:flex flex-col flex-none gap-6 border-r  p-4">
       <Image src={"/images/logo.svg"} width={95} height={28} alt="logo" />
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 overflow-auto">
         <div className="flex flex-col">
           <Link
             href={"/"}
@@ -73,31 +99,7 @@ const Navigation = () => {
         <div className="w-full h-[1px] bg-neutral-200" />
         <div className="flex flex-col gap-2">
           <span className="text-neutral-500 text-sm pl-2">Tags</span>
-          <div className="flex flex-col">
-            {tags.map((tag) => (
-              <Link
-                href={`/tag/${tag.toLowerCase()}`}
-                key={tag}
-                className={`flex justify-between cursor-pointer p-2 rounded-lg ${
-                  pathname == `/tag/${tag.toLowerCase()}`
-                    ? "bg-neutral-100"
-                    : ""
-                }`}
-              >
-                <div className="flex gap-2">
-                  <Image
-                    src={"/images/icon-tag.svg"}
-                    width={0}
-                    height={0}
-                    className="size-5"
-                    alt="icon-tag"
-                  />
-                  <span className="text-neutral-700 text-sm">{tag}</span>
-                </div>
-                {pathname == `/tag/${tag.toLowerCase()}` && toggleChevron}
-              </Link>
-            ))}
-          </div>
+          <div className="flex flex-col overflow-auto">{renderLinks}</div>
         </div>
       </div>
     </div>

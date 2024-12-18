@@ -5,21 +5,23 @@ import { useParams } from "next/navigation";
 import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
 import notes from "@/data.json";
 import Navigation from "./Navigation";
+import { Note } from "@/app/_types/types";
 
 const Dashboard = () => {
   const { tag } = useParams() as { tag: string };
-  const [includeTag, setIncludeTag] = useState(
-    notes.filter((note) =>
+  const [viewByTag, setViewByTag] = useState(
+    notes.filter((note: Note) =>
       note.tags.includes(tag?.charAt(0).toUpperCase() + tag?.slice(1))
-    ) || notes
+    )
   );
-  console.log(includeTag);
   return (
-    <div className="flex flex-col md:flex-row">
-      <Navigation />
-      <div className="flex flex-col flex-grow">
-        <Topbar />
-        <NoteCardSummaryContainer apiNotes={notes} />
+    <div className="h-screen overflow-y-hidden">
+      <div className="flex flex-col md:flex-row h-screen">
+        <Navigation />
+        <div className="flex flex-col flex-grow">
+          <Topbar />
+          <NoteCardSummaryContainer apiNotes={tag ? viewByTag : notes} />
+        </div>
       </div>
     </div>
   );

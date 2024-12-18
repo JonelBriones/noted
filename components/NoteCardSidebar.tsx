@@ -12,8 +12,8 @@ const NoteCardSummary = ({ note, viewToggledNote }: Params) => {
   const { _id, title, tags, lastEdited, isArchived } = note;
   return (
     <div
-      className={`flex flex-col w-full gap-4 cursor-pointer rounded-lg ${
-        _id == viewToggledNote?._id ? "md:bg-neutral-100" : ""
+      className={`flex flex-col cursor-pointer rounded-lg border-b ${
+        _id == viewToggledNote?._id ? "md:bg-neutral-100 border-b-white" : ""
       }`}
     >
       <div className="flex flex-col gap-3 p-2 rounded-md border-b md:border-none">
