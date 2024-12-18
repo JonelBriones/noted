@@ -6,34 +6,15 @@ import NoteCard from "./NoteCard";
 import NoteCardSummary from "../NoteCardSidebar";
 import { useParams, usePathname } from "next/navigation";
 import { NoteList } from "@/app/_types/types";
-import path from "path";
 
 const NoteCardSummaryContainer = ({ apiNotes }: NoteList) => {
   const pathname = usePathname();
   const { tag } = useParams() as { tag: string };
-  console.log("NOTES", apiNotes);
 
-  // const notes = apiNotes.filter((note: any) => note.isArchived == false);
   const [viewToggledNote, setViewToggledNote] = useState(apiNotes[0]);
 
-  const archivedNotes =
-    apiNotes.filter((note: any) => note.isArchived == true) || [];
-
   const renderNoteCardSummary = () => {
-    const openedNotes = apiNotes.filter(
-      (note: any) => note.isArchived == false
-    );
-    const archivedNotes = apiNotes.filter(
-      (note: any) => note.isArchived == true
-    );
-    let type =
-      pathname == "/"
-        ? openedNotes
-        : pathname == "/archived"
-        ? archivedNotes
-        : apiNotes;
-
-    return type?.map((note: any) => (
+    return apiNotes?.map((note: any) => (
       <div onClick={() => setViewToggledNote(note)} key={note._id}>
         <NoteCardSummary note={note} viewToggledNote={viewToggledNote} />
       </div>
@@ -54,7 +35,7 @@ const NoteCardSummaryContainer = ({ apiNotes }: NoteList) => {
               All your archived notes are stored here. You can restore or delete
               them anytime.
             </p>
-            {!archivedNotes.length && (
+            {!apiNotes.length && (
               <p className="text-sm text-neutral-700 bg-neutral-100 rounded-lg p-2">
                 No notes have been archived yet. Move notes here for
                 safekeeping, or{" "}
