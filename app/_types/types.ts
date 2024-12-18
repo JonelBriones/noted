@@ -6,7 +6,5 @@ type Note = {
   lastEdited: string;
   isArchived: boolean;
 };
-type NoteList = {
-  apiNotes: Note[];
-};
-export type { Note, NoteList };
+
+export type { Note };

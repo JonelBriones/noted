@@ -5,24 +5,48 @@ import SidebarRight from "../SidebarActions";
 import NoteCard from "./NoteCard";
 import NoteCardSummary from "../NoteCardSidebar";
 import { useParams, usePathname } from "next/navigation";
-import { NoteList } from "@/app/_types/types";
+import { Note } from "@/app/_types/types";
 
-const NoteCardSummaryContainer = ({ apiNotes }: NoteList) => {
+interface Params {
+  apiNotes: Note[];
+  search: string;
+}
+
+const NoteCardSummaryContainer = ({ apiNotes, search }: Params) => {
   const pathname = usePathname();
   const { tag } = useParams() as { tag: string };
-
   const [viewToggledNote, setViewToggledNote] = useState(apiNotes[0]);
 
+  let formattedSearch = search?.toLowerCase();
+
+  const searchNotes = apiNotes.filter(
+    (notes: any) =>
+      notes.tags.find((tag: string) =>
+        tag.toLocaleLowerCase().includes(formattedSearch)
+      ) ||
+      notes.title.toLocaleLowerCase().includes(formattedSearch) ||
+      notes.content.toLocaleLowerCase().includes(formattedSearch)
+  );
+
   const renderNoteCardSummary = () => {
-    return apiNotes?.map((note: any) => (
-      <div onClick={() => setViewToggledNote(note)} key={note._id}>
-        <NoteCardSummary note={note} viewToggledNote={viewToggledNote} />
-      </div>
-    ));
+    if (search) {
+      return searchNotes?.map((note: any) => (
+        <div onClick={() => setViewToggledNote(note)} key={note._id}>
+          <NoteCardSummary note={note} viewToggledNote={viewToggledNote} />
+        </div>
+      ));
+    } else
+      return apiNotes?.map((note: any) => (
+        <div onClick={() => setViewToggledNote(note)} key={note._id}>
+          <NoteCardSummary note={note} viewToggledNote={viewToggledNote} />
+        </div>
+      ));
   };
+
   return (
     <div className="flex flex-grow gap-4 pl-6 overflow-hidden">
       <div className="hidden w-[290px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4">
+        {search}
         <PrimaryBtn
           text={"+ Create new Note"}
           backgroundColor={"bg-blue-500"}

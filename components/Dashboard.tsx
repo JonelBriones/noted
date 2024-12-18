@@ -14,19 +14,21 @@ const Dashboard = () => {
   const viewByTag = notes.filter((note: Note) =>
     note.tags.includes(tag?.charAt(0).toUpperCase() + tag?.slice(1))
   );
-  const openedNotes = notes.filter((note: any) => note.isArchived == false);
-  const archivedNotes = notes.filter((note: any) => note.isArchived == true);
+  const [search, setSearch] = useState("");
+  const openedNotes = notes.filter((note: Note) => note.isArchived == false);
+  const archivedNotes = notes.filter((note: Note) => note.isArchived == true);
 
   return (
     <div className="h-screen overflow-y-hidden">
       <div className="flex flex-col md:flex-row h-screen">
         <Navigation />
         <div className="flex flex-col flex-grow">
-          <Topbar />
+          <Topbar search={search} setSearch={setSearch} />
           <NoteCardSummaryContainer
             apiNotes={
               tag ? viewByTag : pathname == "/" ? openedNotes : archivedNotes
             }
+            search={search}
           />
         </div>
       </div>

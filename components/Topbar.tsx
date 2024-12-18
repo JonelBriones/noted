@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Searchbar from "./Searchbar";
 import Image from "next/image";
 import { useParams, usePathname } from "next/navigation";
@@ -8,10 +8,9 @@ interface Params {
   text?: string;
   tag?: string;
 }
-const Topbar = () => {
+const Topbar = ({ search, setSearch }: any) => {
   const pathname = usePathname();
   const tag = useParams().tag as string;
-
   return (
     <div className="flex flex-none place-items-center justify-between md:border-b p-6">
       <h1 className="font-bold text-2xl">
@@ -21,7 +20,7 @@ const Topbar = () => {
           `Notes Tagged: ${tag.charAt(0).toUpperCase() + tag.slice(1)}`}
       </h1>
       <div className="hidden md:flex gap-4 place-items-center">
-        <Searchbar />
+        <Searchbar search={search} setSearch={setSearch} />
         <Image
           src={"/images/icon-settings.svg"}
           width={20}

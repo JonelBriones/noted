@@ -2,8 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-const Searchbar = () => {
-  const [search, setSearch] = useState("");
+const Searchbar = ({ search, setSearch }: any) => {
   return (
     <div className="w-[300px] flex gap-4 border rounded-lg p-2 text-neutral-500 text-sm">
       <Image
