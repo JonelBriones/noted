@@ -9,6 +9,7 @@ interface PrimaryBtnInterface {
   padding?: string;
   setToggleModal?: any;
   deleteNote?: () => {};
+  createNote?: () => {};
 }
 
 const PrimaryBtn = ({
@@ -18,7 +19,6 @@ const PrimaryBtn = ({
   url,
   padding,
   setToggleModal,
-  deleteNote,
 }: PrimaryBtnInterface) => {
   return (
     <>
@@ -31,7 +31,9 @@ const PrimaryBtn = ({
         </Link>
       ) : (
         <button
-          onClick={() => setToggleModal(false)}
+          onClick={() => {
+            setToggleModal(false);
+          }}
           className={`block text-center p-2 ${textColor} ${backgroundColor} rounded-lg text-sm font-medium cursor-pointer ${padding}`}
         >
           {text}

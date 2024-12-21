@@ -1,12 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import PrimaryBtn from "../buttons/PrimaryBtn";
+import CreateNoteBtn from "../buttons/PrimaryBtn";
 import SidebarRight from "../SidebarActions";
 import NoteCard from "./NoteCard";
 import NoteCardSummary from "../NoteCardSidebar";
 import { useParams, usePathname } from "next/navigation";
 import { Note } from "@/app/_types/types";
 import { useAppContext } from "../Providers";
+import NoteForm from "../forms/NoteForm";
 
 interface Params {
   apiNotes: Note[];
@@ -23,7 +24,7 @@ const NoteCardSummaryContainer = ({
 }: Params) => {
   const pathname = usePathname();
   const { tag } = useParams() as { tag: string };
-
+  const [toggleCreateNote, setToggleCreateNote] = useState(false);
   let formattedSearch = search?.toLowerCase();
 
   const searchNotes = apiNotes.filter(
@@ -38,26 +39,39 @@ const NoteCardSummaryContainer = ({
   const renderNoteCardSummary = () => {
     if (search) {
       return searchNotes?.map((note: Note) => (
-        <div onClick={() => setViewToggledNote(note)} key={note._id}>
+        <div
+          onClick={() => {
+            setViewToggledNote(note), setToggleCreateNote(false);
+          }}
+          key={note._id}
+        >
           <NoteCardSummary note={note} viewToggledNote={viewToggledNote} />
         </div>
       ));
     } else
       return apiNotes?.map((note: any) => (
-        <div onClick={() => setViewToggledNote(note)} key={note._id}>
+        <div
+          onClick={() => {
+            setViewToggledNote(note), setToggleCreateNote(false);
+          }}
+          key={note._id}
+        >
           <NoteCardSummary note={note} viewToggledNote={viewToggledNote} />
         </div>
       ));
   };
-
+  let [note, setNote] = useState({});
   return (
     <div className="flex flex-grow gap-4 pl-6 overflow-hidden">
       <div className="hidden w-[290px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4">
-        <PrimaryBtn
-          text={"+ Create new Note"}
-          backgroundColor={"bg-blue-500"}
-          textColor="text-white"
-        />
+        <button
+          onClick={() => {
+            setToggleCreateNote(true), setViewToggledNote(undefined);
+          }}
+          className={`block text-center p-2 text-white bg-blue-500 rounded-lg text-sm font-medium cursor-pointer px-3 py-2`}
+        >
+          + Create new note
+        </button>
         {pathname == "/archived" && (
           <>
             <p className="text-sm  text-neutral-700">
@@ -88,11 +102,18 @@ const NoteCardSummaryContainer = ({
         )}
         {renderNoteCardSummary()}
       </div>
-      {apiNotes.find((note) => note._id == viewToggledNote?._id) && (
-        <>
-          <NoteCard note={viewToggledNote} />
-          <SidebarRight note={viewToggledNote} />
-        </>
+      {toggleCreateNote ? (
+        <NoteForm
+          toggleCreateNote={toggleCreateNote}
+          setToggleCreateNote={setToggleCreateNote}
+        />
+      ) : (
+        apiNotes.find((note) => note._id == viewToggledNote?._id) && (
+          <>
+            <NoteCard note={viewToggledNote} />
+            <SidebarRight note={viewToggledNote} />
+          </>
+        )
       )}
     </div>
   );

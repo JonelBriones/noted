@@ -29,12 +29,12 @@ const NoteCard = ({ note }: Params) => {
     ?.map((line: string, index: number) => <div key={index}>{line}</div>);
 
   return (
-    <div className="hidden md:flex flex-col flex-1 gap-4 border-l border-r text-sm overflow-auto">
-      <div className="flex flex-col gap-4 p-4">
+    <div className="hidden md:flex flex-col flex-1 border-l border-r text-sm overflow-auto min-w-[588px]">
+      <div className="flex flex-col gap-3 p-4">
         <h1 className="text-2xl font-bold">{title}</h1>
-        <div className="flex flex-col  ">
+        <div className="flex flex-col gap-3">
           <div className="flex place-items-center">
-            <span className="flex gap-2 p-2 w-[150px]">
+            <span className="flex basis-1/3 place-items-center gap-2 w-[115px]">
               <Image
                 src={"/images/icon-tag.svg"}
                 width={0}
@@ -56,7 +56,7 @@ const NoteCard = ({ note }: Params) => {
 
           {isArchived && (
             <div className="flex place-items-center">
-              <span className="flex gap-2 p-2 w-[150px]">
+              <span className="flex basis-1/3 place-items-center gap-2 w-[115px]">
                 <Image
                   src={"/images/icon-status.svg"}
                   width={0}
@@ -70,7 +70,7 @@ const NoteCard = ({ note }: Params) => {
             </div>
           )}
           <div className="flex place-items-center">
-            <span className="flex gap-2 p-2 w-[150px]">
+            <span className="flex basis-1/3 place-items-center gap-2 w-[115px]">
               <Image
                 src={"/images/icon-clock.svg"}
                 width={0}

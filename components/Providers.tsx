@@ -1,5 +1,5 @@
 "use client";
-import { redirect, useParams } from "next/navigation";
+import { redirect, useParams, usePathname } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import fakeNotes from "@/data.json";
 import { Note } from "@/app/_types/types";
@@ -7,6 +7,7 @@ import { Note } from "@/app/_types/types";
 const ThemeContext = createContext<any>(undefined);
 
 const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
+  const pathname = usePathname();
   const { tag } = useParams() as { tag: string };
   const [apiNotes, setApiNotes] = useState<Note[]>(fakeNotes);
   const openedNotes = apiNotes.filter((note: Note) => note.isArchived == false);
@@ -66,6 +67,11 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
     );
   }, [apiNotes, tag]);
 
+  const [note, setNote] = useState({
+    tags: "",
+    content: [],
+  });
+
   return (
     <ThemeContext.Provider
       value={{
@@ -79,6 +85,8 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
         openedNotes,
         deleteNote,
         archiveNote,
+        note,
+        setNote,
       }}
     >
       {children}

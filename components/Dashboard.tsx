@@ -25,19 +25,20 @@ const Dashboard = () => {
         <Navigation />
         <div className="flex flex-col flex-grow">
           <Topbar search={search} setSearch={setSearch} />
-          {pathname == "/settings" && (
+          {pathname == "/settings" ? (
             <Settings search={search} setSearch={setSearch} />
+          ) : (
+            <NoteCardSummaryContainer
+              apiNotes={
+                (pathname == "/" && openedNotes) ||
+                (pathname == "/archived" && archivedNotes) ||
+                (pathname.includes(`/tag/${tag}`) && viewByTag)
+              }
+              search={search}
+              viewToggledNote={viewToggledNote}
+              setViewToggledNote={setViewToggledNote}
+            />
           )}
-          <NoteCardSummaryContainer
-            apiNotes={
-              (pathname == "/" && openedNotes) ||
-              (pathname == "/archived" && archivedNotes) ||
-              (pathname.includes(`/tag/${tag}`) && viewByTag)
-            }
-            search={search}
-            viewToggledNote={viewToggledNote}
-            setViewToggledNote={setViewToggledNote}
-          />
         </div>
       </div>
     </div>
