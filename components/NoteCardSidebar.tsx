@@ -9,7 +9,13 @@ interface Params {
 }
 
 const NoteCardSummary = ({ note, viewToggledNote }: Params) => {
-  const { _id, title, tags, lastEdited, isArchived } = note;
+  const { _id, title, tags, lastEdited } = note;
+  const formatLastEdited = new Date(lastEdited).toLocaleString("en-us", {
+    timezone: "UTC",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  } as any);
   return (
     <div
       className={`flex flex-col cursor-pointer rounded-lg border-b ${
@@ -28,7 +34,7 @@ const NoteCardSummary = ({ note, viewToggledNote }: Params) => {
             </span>
           ))}
         </div>
-        <span className="text-neutral-700 text-xs">{lastEdited}</span>
+        <span className="text-neutral-700 text-xs">{formatLastEdited}</span>
       </div>
     </div>
   );

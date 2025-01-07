@@ -4,16 +4,33 @@ import Image from "next/image";
 import { useAppContext } from "../Providers";
 
 const NoteForm = ({ setToggleCreateNote }: any) => {
-  const { note, setNote } = useAppContext();
-  const [tag, setTag] = useState("");
-  const [tagInput, setTagInput] = useState(true);
-  const tagRef = useRef(null);
+  let options = { year: "numeric", month: "long", day: "numeric" };
 
+  const {
+    note,
+    setNote,
+    setApiNotes,
+    apiNotes,
+    error,
+    setError,
+    onHandlerSubmit,
+    setTagInput,
+    tagInput,
+    inputTag: tag,
+    setTag,
+  } = useAppContext();
+
+  const date = new Date();
+
+  // const [tag, setTag] = useState("");
+
+  const tagRef = useRef(null);
+  const titleRef = useRef(null);
+  const pattern = /^(?!.*,,).*$/;
   const tagsFormattedValidation = tag
     .split(",")
     .filter((valid) => valid !== "")
     .map((tag) => tag[0].toUpperCase() + tag?.slice(1));
-  console.log(tagsFormattedValidation);
   const convertedTags = (
     <div
       onClick={() => {
@@ -38,22 +55,10 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
     </div>
   );
 
-  const [error, setError] = useState(false);
-  const onHanderSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(false);
-    setNote({
-      ...note,
-      tags: tagsFormattedValidation.join(", "),
-    });
-    if (tag !== "") setTagInput(false);
-  };
-
   useEffect(() => {
-    if (tagRef.current && tagInput) {
-      tagRef.current.focus();
+    if (titleRef.current && tagInput) {
+      titleRef.current.focus();
     }
-    console.log(note.tags);
   }, [tagInput]);
   const renderTagInput = (
     <input
@@ -63,15 +68,14 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
       placeholder="Add tags separated by commas (e.g. Work, Planning)"
       className="w-full rounded-lg border border-neutral-700 p-1 outline-none"
       value={tag}
-      pattern="[a-zA-Z,]*"
+      pattern="^[a-zA-Z]+(,[a-zA-Z]+)*$"
+      title="Only letters and words followed by ',' is allowed."
       onChange={(e) => {
-        if (e.target.value.includes(",,")) {
-          setError(true);
-          return;
-        }
         if (e.target.value.length == 0) {
           setTag("");
-        } else if (e.target.value !== "") {
+        }
+
+        if (pattern.test(e.target.value)) {
           setTag(e.target.value.trim());
         }
       }}
@@ -82,10 +86,18 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
   return (
     <form
       className="hidden md:flex flex-col border-l border-r text-sm overflow-auto p-4 min-w-[588px] justify-between"
-      onSubmit={onHanderSubmit}
+      onSubmit={onHandlerSubmit}
     >
+      {/* {note.lastEdited && note.lastEdited.toLocaleDateString("en-us", options)} */}
       <div className="flex flex-col gap-3">
-        <h1 className="text-2xl font-bold">Enter a title...</h1>
+        <input
+          ref={titleRef}
+          type="text"
+          placeholder="Enter a title..."
+          className="text-2xl font-bold outline-none"
+          value={note.title}
+          onChange={(e) => setNote({ ...note, title: e.target.value })}
+        />
         <div className="flex place-items-center">
           <span className="flex basis-1/3 place-items-center gap-2 w-[115px]">
             <Image
@@ -112,11 +124,7 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
             />
             Last edited
           </span>
-          <input
-            type="text"
-            placeholder="Not yet saved"
-            className="w-full outline-none"
-          />
+          <span className="w-full text-neutral-400">Not yet saved</span>
         </div>
         <span className="text-red-500 text-xs">
           {error && "Add tags separated by commas (e.g. Work, Planning)"}
@@ -131,12 +139,15 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
         />
       </div>
       <div className="flex gap-4 w-fit">
-        <button className="block text-center p-2 text-white bg-blue-500 rounded-lg text-sm font-medium cursor-pointer">
+        <button
+          className="block text-center p-2 text-white bg-blue-500 rounded-lg text-sm font-medium cursor-pointer"
+          type="submit"
+          disabled={!note.title}
+        >
           Save Note
         </button>
         <button
           onClick={() => setToggleCreateNote(false)}
-          type="submit"
           className="block text-center p-2 text-neutral-800 bg-neutral-100 rounded-lg text-sm font-medium cursor-pointer"
         >
           Cancel

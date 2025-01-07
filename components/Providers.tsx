@@ -67,10 +67,41 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
     );
   }, [apiNotes, tag]);
 
-  const [note, setNote] = useState({
-    tags: "",
-    content: [],
-  });
+  // NOTE FORM
+  const defaultNote = {
+    content: "",
+    isArchived: false,
+    lastEdited: "",
+    tags: [],
+    title: "",
+    _id: "",
+  };
+  const [note, setNote] = useState(defaultNote);
+  const [tagInput, setTagInput] = useState(true);
+  const [inputTag, setTag] = useState("");
+  const pattern2 = /^[a-zA-Z]+(,[a-zA-Z]+)*$/;
+  const tagsFormattedValidation = inputTag
+    .split(",")
+    .filter((valid) => valid !== "")
+    .map((tag) => tag[0].toUpperCase() + tag?.slice(1));
+  const [error, setError] = useState(pattern2.test(inputTag));
+  const onHandlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(false);
+    let newNoteObj: Note = {
+      content: note.content,
+      isArchived: false,
+      lastEdited: new Date().toDateString(),
+      tags: tagsFormattedValidation,
+      title: note.title,
+      _id: Math.floor(Math.random() * 1000).toString(),
+    };
+    let updatedNotes = [...apiNotes, newNoteObj];
+    setApiNotes(updatedNotes);
+    setNote(defaultNote);
+    setTag("");
+    setTagInput(true);
+  };
 
   return (
     <ThemeContext.Provider
@@ -87,6 +118,14 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
         archiveNote,
         note,
         setNote,
+        setApiNotes,
+        onHandlerSubmit,
+        error,
+        setError,
+        tagInput,
+        setTagInput,
+        inputTag,
+        setTag,
       }}
     >
       {children}
