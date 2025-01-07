@@ -13,7 +13,7 @@ interface Params {
   apiNotes: Note[];
   search: string;
   viewToggledNote?: Note;
-  setViewToggledNote: (note: Note) => {};
+  setViewToggledNote: (note: Note | undefined) => {};
 }
 
 const NoteCardSummaryContainer = ({

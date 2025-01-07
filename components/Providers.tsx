@@ -126,6 +126,7 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
         setTagInput,
         inputTag,
         setTag,
+        tagsFormattedValidation,
       }}
     >
       {children}

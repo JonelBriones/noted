@@ -1,36 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
-import PrimaryBtn from "../buttons/PrimaryBtn";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useAppContext } from "../Providers";
 
 const NoteForm = ({ setToggleCreateNote }: any) => {
-  let options = { year: "numeric", month: "long", day: "numeric" };
-
   const {
     note,
     setNote,
-    setApiNotes,
-    apiNotes,
     error,
-    setError,
     onHandlerSubmit,
     setTagInput,
     tagInput,
     inputTag: tag,
     setTag,
+    tagsFormattedValidation,
   } = useAppContext();
 
-  const date = new Date();
-
-  // const [tag, setTag] = useState("");
-
-  const tagRef = useRef(null);
-  const titleRef = useRef(null);
+  const titleRef = useRef<HTMLInputElement>(null);
   const pattern = /^(?!.*,,).*$/;
-  const tagsFormattedValidation = tag
-    .split(",")
-    .filter((valid) => valid !== "")
-    .map((tag) => tag[0].toUpperCase() + tag?.slice(1));
   const convertedTags = (
     <div
       onClick={() => {
@@ -39,7 +25,7 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
       className="w-full text-left rounded-lg p-1"
     >
       <div className="inline cursor-pointer">
-        {tagsFormattedValidation.map(
+        {tagsFormattedValidation?.map(
           (tag: string, idx: number) =>
             tag && (
               <span key={idx}>
@@ -62,7 +48,6 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
   }, [tagInput]);
   const renderTagInput = (
     <input
-      ref={tagRef}
       id="tag"
       type="text"
       placeholder="Add tags separated by commas (e.g. Work, Planning)"
@@ -88,7 +73,6 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
       className="hidden md:flex flex-col border-l border-r text-sm overflow-auto p-4 min-w-[588px] justify-between"
       onSubmit={onHandlerSubmit}
     >
-      {/* {note.lastEdited && note.lastEdited.toLocaleDateString("en-us", options)} */}
       <div className="flex flex-col gap-3">
         <input
           ref={titleRef}
