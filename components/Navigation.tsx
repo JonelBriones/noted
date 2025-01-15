@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import React, { useState } from "react";
 
 const Navigation = () => {
@@ -27,7 +27,6 @@ const Navigation = () => {
       alt="icon-chevron-right"
     />
   );
-
   const renderLinks = (
     <div className="flex flex-col">
       {tags.map((tag) => (

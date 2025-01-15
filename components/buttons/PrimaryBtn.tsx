@@ -8,6 +8,7 @@ interface PrimaryBtnInterface {
   url?: string;
   padding?: string;
   setToggleModal?: any;
+  hoverColor?: any;
   deleteNote?: () => {};
   createNote?: () => {};
 }
@@ -19,13 +20,14 @@ const PrimaryBtn = ({
   url,
   padding,
   setToggleModal,
+  hoverColor,
 }: PrimaryBtnInterface) => {
   return (
     <>
       {url ? (
         <Link
           href={url}
-          className={`block text-center p-2 ${textColor} ${backgroundColor} rounded-lg text-white text-sm font-medium cursor-pointer`}
+          className={`block text-center p-2 ${textColor} ${backgroundColor}  hover:bg-blue-700 rounded-lg text-white text-sm font-medium cursor-pointer`}
         >
           {text}
         </Link>
@@ -34,7 +36,7 @@ const PrimaryBtn = ({
           onClick={() => {
             setToggleModal(false);
           }}
-          className={`block text-center p-2 ${textColor} ${backgroundColor} rounded-lg text-sm font-medium cursor-pointer ${padding}`}
+          className={`block text-center p-2 ${textColor} ${backgroundColor} ${hoverColor} rounded-lg text-sm font-medium cursor-pointer ${padding}`}
         >
           {text}
         </button>

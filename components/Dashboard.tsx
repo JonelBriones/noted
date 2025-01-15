@@ -1,11 +1,12 @@
 "use client";
 import React from "react";
 import Topbar from "./Topbar";
-import { useParams, usePathname } from "next/navigation";
+import { redirect, useParams, usePathname } from "next/navigation";
 import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
 import Navigation from "./Navigation";
 import Settings from "./Settings";
 import { useAppContext } from "./Providers";
+import { useSession } from "next-auth/react";
 
 const Dashboard = () => {
   const { tag } = useParams() as { tag: string };
@@ -19,12 +20,22 @@ const Dashboard = () => {
     viewByTag,
     openedNotes,
   } = useAppContext();
+
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    return <div>LOADING...</div>;
+  }
+  if (!session) {
+    return redirect("/login");
+  }
+
   return (
     <div className="h-screen overflow-y-hidden">
       <div className="flex flex-col md:flex-row h-screen">
         <Navigation />
         <div className="flex flex-col flex-grow">
           <Topbar search={search} setSearch={setSearch} />
+
           {pathname == "/settings" ? (
             <Settings search={search} setSearch={setSearch} />
           ) : (

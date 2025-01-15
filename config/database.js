@@ -2,10 +2,20 @@ import mongoose from "mongoose";
 
 let connected = false;
 
-try {
-  await mongoose.connect("");
-  connected = true;
-} catch (error) {
-  console.error(error);
-  connected = false;
-}
+const connectDB = async () => {
+  mongoose.set("strictQuery", true);
+
+  if (connected) {
+    console.log("MONGODB is connected");
+    return;
+  }
+
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    connected = true;
+    console.log("MONGODB is connecting");
+  } catch (error) {
+    console.log(error);
+  }
+};
+export default connectDB;

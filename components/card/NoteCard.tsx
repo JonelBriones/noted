@@ -19,8 +19,6 @@ const NoteCard = ({ note }: Params) => {
     day: "numeric",
     month: "short",
     year: "numeric",
-    // hour: "2-digit",
-    // minute: "2-digit",
   } as any);
 
   // if want to format note with new lines add "\n" to content string
