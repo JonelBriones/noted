@@ -14,6 +14,8 @@ interface Params {
   search: string;
   viewToggledNote?: Note;
   setViewToggledNote: (note: Note | undefined) => {};
+  toggleCreateNote: boolean;
+  setToggleCreateNote: (value: boolean) => boolean;
 }
 
 const NoteCardSummaryContainer = ({
@@ -21,10 +23,11 @@ const NoteCardSummaryContainer = ({
   apiNotes,
   viewToggledNote,
   setViewToggledNote,
+  toggleCreateNote,
+  setToggleCreateNote,
 }: Params) => {
   const pathname = usePathname();
   const { tag } = useParams() as { tag: string };
-  const [toggleCreateNote, setToggleCreateNote] = useState(false);
   let formattedSearch = search?.toLowerCase();
 
   const searchNotes = apiNotes.filter(

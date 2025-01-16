@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import Dashboard from "./Dashboard";
 import Image from "next/image";
-import Topbar from "./Topbar";
-import Navigation from "./Navigation";
 import PrimaryBtn from "./buttons/PrimaryBtn";
-import { redirect } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 const Settings = ({ search }: any) => {
   const settings = ["Color Theme", "Font Theme", "Change Password"];
@@ -33,12 +29,6 @@ const Settings = ({ search }: any) => {
 
   const [fontTheme, setFontTheme] = useState("sans-serif");
   const [toggleColorTheme, setToggleColorTheme] = useState("Light Mode");
-
-  // const { data: session } = useSession();
-
-  // if (!session?.user) {
-  //   redirect("/login");
-  // }
 
   return (
     <div className="flex flex-grow gap-4 px-2 md:pl-6 overflow-hidden">
@@ -129,7 +119,7 @@ const Settings = ({ search }: any) => {
                     <div
                       className={`size-[16px] rounded-full border border-neutral-300 ${
                         toggleColorTheme == theme
-                          ? "border-blue-500 border-4 bg-white"
+                          ? "border-blue-600 border-4 bg-white"
                           : ""
                       }`}
                     />
@@ -166,7 +156,7 @@ const Settings = ({ search }: any) => {
                   <div
                     className={`size-[16px] rounded-full border border-neutral-300 ${
                       fontTheme == "sans-serif"
-                        ? "border-blue-500 border-4 bg-white"
+                        ? "border-blue-600 border-4 bg-white"
                         : ""
                     }`}
                   />
@@ -195,7 +185,7 @@ const Settings = ({ search }: any) => {
                   <div
                     className={`size-[16px] rounded-full border border-neutral-300 ${
                       fontTheme == "serif"
-                        ? "border-blue-500 border-4 bg-white"
+                        ? "border-blue-600 border-4 bg-white"
                         : ""
                     }`}
                   />
@@ -225,7 +215,7 @@ const Settings = ({ search }: any) => {
                   <div
                     className={`size-[16px] rounded-full border border-neutral-300 ${
                       fontTheme == "monospace"
-                        ? "border-blue-500 border-4 bg-white"
+                        ? "border-blue-600 border-4 bg-white"
                         : ""
                     }`}
                   />

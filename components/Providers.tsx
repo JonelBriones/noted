@@ -1,27 +1,33 @@
 "use client";
 import { redirect, useParams } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import fakeNotes from "@/data.json";
-import { Note } from "@/app/_types/types";
+import { Note as NoteType } from "@/app/_types/types";
 const ThemeContext = createContext<any>(undefined);
 
-const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
+interface Context {
+  children: React.ReactNode;
+  notesAPI: NoteType[];
+}
+
+const ContextWrapper = ({ children, notesAPI }: Context) => {
   const { tag } = useParams() as { tag: string };
-  const [apiNotes, setApiNotes] = useState<Note[]>(fakeNotes);
-  const openedNotes = apiNotes.filter((note: Note) => note.isArchived == false);
-  const archivedNotes = apiNotes.filter(
-    (note: Note) => note.isArchived == true
+  const [apiNotes, setApiNotes] = useState<NoteType[]>(notesAPI);
+  const openedNotes = apiNotes?.filter(
+    (note: NoteType) => note?.isArchived == false
+  );
+  const archivedNotes = apiNotes?.filter(
+    (note: NoteType) => note?.isArchived == true
   );
   const [viewByTag, setViewByTag] = useState(
-    apiNotes.filter(
-      (note: Note) =>
+    apiNotes?.filter(
+      (note: NoteType) =>
         note.tags.includes(tag?.charAt(0).toUpperCase() + tag?.slice(1)) &&
         !note.isArchived
     )
   );
   const [search, setSearch] = useState("");
 
-  const [viewToggledNote, setViewToggledNote] = useState<Note>(apiNotes[0]);
+  const [viewToggledNote, setViewToggledNote] = useState<NoteType>(apiNotes[0]);
 
   const deleteNote = (id: string) => {
     const isNoteExist = apiNotes.find((note) => note._id == id);
@@ -58,7 +64,7 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setViewByTag(
       apiNotes.filter(
-        (note: Note) =>
+        (note: NoteType) =>
           note.tags.includes(tag?.charAt(0).toUpperCase() + tag?.slice(1)) &&
           !note.isArchived
       )
@@ -74,7 +80,9 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
     title: "",
     _id: "",
   };
+
   const [note, setNote] = useState(defaultNote);
+  const [toggleCreateNote, setToggleCreateNote] = useState(false);
   const [tagInput, setTagInput] = useState(true);
   const [inputTag, setTag] = useState("");
   const pattern2 = /^[a-zA-Z]+(,[a-zA-Z]+)*$/;
@@ -86,7 +94,7 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
   const onHandlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(false);
-    let newNoteObj: Note = {
+    let newNoteObj: NoteType = {
       content: note.content,
       isArchived: false,
       lastEdited: new Date().toDateString(),
@@ -99,6 +107,9 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
     setNote(defaultNote);
     setTag("");
     setTagInput(true);
+    setViewToggledNote(updatedNotes[updatedNotes.length - 1]);
+    setToggleCreateNote(false);
+    redirect("/");
   };
 
   return (
@@ -125,6 +136,8 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
         inputTag,
         setTag,
         tagsFormattedValidation,
+        toggleCreateNote,
+        setToggleCreateNote,
       }}
     >
       {children}

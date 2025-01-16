@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Topbar from "./Topbar";
 import { redirect, useParams, usePathname } from "next/navigation";
 import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
@@ -19,6 +19,8 @@ const Dashboard = () => {
     archivedNotes,
     viewByTag,
     openedNotes,
+    toggleCreateNote,
+    setToggleCreateNote,
   } = useAppContext();
 
   const { data: session, status } = useSession();
@@ -48,6 +50,8 @@ const Dashboard = () => {
               search={search}
               viewToggledNote={viewToggledNote}
               setViewToggledNote={setViewToggledNote}
+              toggleCreateNote={toggleCreateNote}
+              setToggleCreateNote={setToggleCreateNote}
             />
           )}
         </div>
