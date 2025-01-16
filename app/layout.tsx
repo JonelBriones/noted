@@ -21,7 +21,7 @@ export default async function RootLayout({
     <AuthProvider>
       <ContextWrapper notesAPI={JSON.parse(JSON.stringify(notesAPI))}>
         <html lang="en">
-          <body className="containe mx-auto flex flex-col justify-between h-screen px-6 relative">
+          <body className="mx-auto flex flex-col h-screen px-6 relative">
             {children}
             <MobileNavbar />
           </body>

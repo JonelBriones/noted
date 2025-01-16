@@ -37,7 +37,6 @@ const Dashboard = () => {
         <Navigation />
         <div className="flex flex-col flex-grow">
           <Topbar search={search} setSearch={setSearch} />
-
           {pathname == "/settings" ? (
             <Settings search={search} setSearch={setSearch} />
           ) : (

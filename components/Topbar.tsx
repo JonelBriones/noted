@@ -17,7 +17,7 @@ const Topbar = ({ search, setSearch }: any) => {
   const { data: session } = useSession();
 
   return (
-    <div className="flex place-items-center justify-between md:border-b p-6 w-full">
+    <div className="w-full flex place-items-center justify-between md:border-b p-6">
       {search ? (
         <h1 className="font-bold text-2xl">Showing results for: {search}</h1>
       ) : (
