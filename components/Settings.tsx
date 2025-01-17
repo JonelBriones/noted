@@ -5,11 +5,7 @@ import { signOut } from "next-auth/react";
 
 const Settings = ({ search }: any) => {
   const settings = ["Color Theme", "Font Theme", "Change Password"];
-  const [colorTheme, setColorTheme] = useState([
-    "Light Mode",
-    "Dark Mode",
-    "System",
-  ]);
+  const colorTheme = ["Light Mode", "Dark Mode", "System"];
   const colorThemeImage = {
     "Light Mode": "sun",
     "Dark Mode": "moon",
@@ -27,8 +23,9 @@ const Settings = ({ search }: any) => {
   const [toggleHideConfirmNewPassword, setToggleHideConfirmNewPassword] =
     useState(true);
 
-  const [fontTheme, setFontTheme] = useState("sans-serif");
+  const fontTheme = ["sans-serif", "serif", "monospace"];
   const [toggleColorTheme, setToggleColorTheme] = useState("Light Mode");
+  const [toggleFontTheme, setToggleFontTheme] = useState("sans-serif");
 
   return (
     <div className="flex flex-grow gap-4 px-2 md:pl-6 overflow-hidden">
@@ -118,9 +115,9 @@ const Settings = ({ search }: any) => {
                     <div
                       className={`size-[16px] rounded-full border border-neutral-300 ${
                         toggleColorTheme == theme
-                          ? "border-blue-600 border-4 bg-white"
+                          ? "border-[#335CFF] border-4 bg-white"
                           : ""
-                      }`}
+                      } `}
                     />
                   </button>
                 ))}
@@ -131,94 +128,38 @@ const Settings = ({ search }: any) => {
             <div>
               <h1>Choose your font theme:</h1>
               <div className="flex flex-col gap-4 mt-6">
-                <button
-                  className={`flex gap-4 border border-neutral-200 p-4 rounded-xl place-items-center ${
-                    fontTheme == "sans-serif" ? "bg-neutral-100" : ""
-                  }`}
-                  onClick={() => setFontTheme("sans-serif")}
-                >
-                  <div className="flex place-items-center justify-center rounded-xl border-2 border-neutral-200 h-[40px] w-[40px] bg-white">
-                    <Image
-                      src={"/images/icon-font-sans-serif.svg"}
-                      width={0}
-                      height={0}
-                      alt="icon-sans-serif"
-                      className="size-[24px]"
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center flex-1 place-items-start">
-                    <h4 className="text-sm">Sans-serif</h4>
-                    <p className="text-xs text-neutral-700">
-                      Clean and modern, easy to read.
-                    </p>
-                  </div>
-                  <div
-                    className={`size-[16px] rounded-full border border-neutral-300 ${
-                      fontTheme == "sans-serif"
-                        ? "border-blue-600 border-4 bg-white"
-                        : ""
+                {fontTheme.map((font) => (
+                  <button
+                    key={font}
+                    className={`flex gap-4 border border-neutral-200 p-4 rounded-xl place-items-center ${
+                      font == toggleFontTheme ? "bg-neutral-100" : ""
                     }`}
-                  />
-                </button>
-                <button
-                  className={`flex gap-4 border border-neutral-200 p-4 rounded-xl place-items-center ${
-                    fontTheme == "serif" ? "bg-neutral-100" : ""
-                  }`}
-                  onClick={() => setFontTheme("serif")}
-                >
-                  <div className="flex place-items-center justify-center rounded-xl border-2 border-neutral-200 h-[40px] w-[40px] bg-white">
-                    <Image
-                      src={"/images/icon-font-serif.svg"}
-                      width={0}
-                      height={0}
-                      alt="icon-serif"
-                      className="size-[24px] "
+                    onClick={() => setToggleFontTheme(font)}
+                  >
+                    <div className="flex place-items-center justify-center rounded-xl border-2 border-neutral-200 h-[40px] w-[40px] bg-white">
+                      <Image
+                        src={"/images/icon-font-sans-serif.svg"}
+                        width={0}
+                        height={0}
+                        alt="icon-sans-serif"
+                        className="size-[24px]"
+                      />
+                    </div>
+                    <div className="flex flex-col justify-center flex-1 place-items-start">
+                      <h4 className="text-sm">Sans-serif</h4>
+                      <p className="text-xs text-neutral-700">
+                        Clean and modern, easy to read.
+                      </p>
+                    </div>
+                    <div
+                      className={`size-[16px] rounded-full border border-neutral-300 ${
+                        font == toggleFontTheme
+                          ? "border-[#335CFF] border-4 bg-white"
+                          : ""
+                      }`}
                     />
-                  </div>
-                  <div className="flex flex-col justify-center flex-1 place-items-start">
-                    <h4 className="text-sm">Serif</h4>
-                    <p className="text-xs text-neutral-700">
-                      Classic and melegant for a timeless feel.
-                    </p>
-                  </div>
-                  <div
-                    className={`size-[16px] rounded-full border border-neutral-300 ${
-                      fontTheme == "serif"
-                        ? "border-blue-600 border-4 bg-white"
-                        : ""
-                    }`}
-                  />
-                </button>
-
-                <button
-                  className={`flex gap-4 border border-neutral-200 p-4 rounded-xl place-items-center ${
-                    fontTheme == "monospace" ? "bg-neutral-100" : ""
-                  }`}
-                  onClick={() => setFontTheme("monospace")}
-                >
-                  <div className="flex place-items-center justify-center rounded-xl border-2 border-neutral-200 h-[40px] w-[40px] bg-white">
-                    <Image
-                      src={"/images/icon-font-monospace.svg"}
-                      width={0}
-                      height={0}
-                      alt="icon-monospace"
-                      className="size-[24px] "
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center flex-1 place-items-start">
-                    <h4 className="text-sm">Monospace</h4>
-                    <p className="text-xs text-neutral-700">
-                      Code-like, great for a technical vibe.
-                    </p>
-                  </div>
-                  <div
-                    className={`size-[16px] rounded-full border border-neutral-300 ${
-                      fontTheme == "monospace"
-                        ? "border-blue-600 border-4 bg-white"
-                        : ""
-                    }`}
-                  />
-                </button>
+                  </button>
+                ))}
               </div>
             </div>
           )}
