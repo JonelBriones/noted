@@ -35,7 +35,7 @@ const Settings = ({ search }: any) => {
       <div className="hidden w-[258px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4 border-r pr-4">
         <div className="flex flex-col">
           {settings.map((setting: any) => (
-            <div
+            <button
               key={setting}
               onClick={() => setToggleSettingType(setting)}
               className={`flex justify-between p-2 rounded-lg ${
@@ -62,26 +62,25 @@ const Settings = ({ search }: any) => {
                   alt="icon-chevron-right"
                 />
               )}
-            </div>
+            </button>
           ))}
           <div className="border-b my-1"></div>
-          <div className="flex justify-between p-2 rounded-lg">
-            <button
-              className="flex gap-2 cursor-pointer"
-              onClick={() => {
-                signOut();
-              }}
-            >
-              <Image
-                src={`/images/icon-logout.svg`}
-                width={0}
-                height={0}
-                className="size-5"
-                alt={`icon-logout`}
-              />
-              Logout
-            </button>
-          </div>
+
+          <button
+            className="flex justify-start place-items-center p-2 rounded-lg gap-2 cursor-pointer "
+            onClick={() => {
+              signOut();
+            }}
+          >
+            <Image
+              src={`/images/icon-logout.svg`}
+              width={0}
+              height={0}
+              className="size-5"
+              alt={`icon-logout`}
+            />
+            Logout
+          </button>
         </div>
       </div>
       <div className="md:pl-2 py-6 w-[562px]">

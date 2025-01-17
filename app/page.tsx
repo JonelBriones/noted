@@ -4,7 +4,7 @@ import User from "@/models/User";
 import Note from "@/models/Note";
 export default async function Home() {
   await connectDB();
-  const userAPI = await User.find({}).lean();
+  const notesApi = await Note.find({}).lean();
 
-  return <Dashboard />;
+  return <Dashboard notesApi={JSON.parse(JSON.stringify(notesApi))} />;
 }

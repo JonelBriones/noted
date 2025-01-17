@@ -1,36 +1,30 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import CreateNoteBtn from "../buttons/PrimaryBtn";
+import React, { useState } from "react";
 import SidebarRight from "../SidebarActions";
 import NoteCard from "./NoteCard";
 import NoteCardSummary from "../NoteCardSidebar";
 import { useParams, usePathname } from "next/navigation";
 import { Note } from "@/app/_types/types";
-import { useAppContext } from "../Providers";
 import NoteForm from "../forms/NoteForm";
 
 interface Params {
-  apiNotes: Note[];
+  notes: any;
   search: string;
-  viewToggledNote?: Note;
-  setViewToggledNote: (note: Note | undefined) => {};
   toggleCreateNote: boolean;
   setToggleCreateNote: (value: boolean) => boolean;
 }
 
-const NoteCardSummaryContainer = ({
-  search,
-  apiNotes,
-  viewToggledNote,
-  setViewToggledNote,
-  toggleCreateNote,
-  setToggleCreateNote,
-}: Params) => {
+const NoteCardSummaryContainer = ({ notes, search }: Params) => {
+  const [viewToggledNote, setViewToggledNote] = useState<Note | undefined>(
+    notes[0]
+  );
   const pathname = usePathname();
   const { tag } = useParams() as { tag: string };
-  let formattedSearch = search?.toLowerCase();
 
-  const searchNotes = apiNotes.filter(
+  let formattedSearch = search?.toLowerCase();
+  const [toggleCreateNote, setToggleCreateNote] = useState(false);
+
+  const searchNotes = notes?.filter(
     (notes: any) =>
       notes.tags.find((tag: string) =>
         tag.toLocaleLowerCase().includes(formattedSearch)
@@ -52,7 +46,7 @@ const NoteCardSummaryContainer = ({
         </div>
       ));
     } else
-      return apiNotes?.map((note: any) => (
+      return notes?.map((note: any) => (
         <div
           onClick={() => {
             setViewToggledNote(note), setToggleCreateNote(false);
@@ -81,7 +75,7 @@ const NoteCardSummaryContainer = ({
               All your archived notes are stored here. You can restore or delete
               them anytime.
             </p>
-            {!apiNotes.length && (
+            {!notes?.length && (
               <p className="text-sm text-neutral-700 bg-neutral-100 rounded-lg p-2">
                 No notes have been archived yet. Move notes here for
                 safekeeping, or{" "}
@@ -90,7 +84,7 @@ const NoteCardSummaryContainer = ({
             )}
           </>
         )}
-        {pathname == "/" && apiNotes.length == 0 && (
+        {pathname == "/" && notes?.length == 0 && (
           <>
             <p className="text-sm  text-neutral-700">
               You don’t have any notes yet. Start a new note to capture your
@@ -111,7 +105,7 @@ const NoteCardSummaryContainer = ({
           setToggleCreateNote={setToggleCreateNote}
         />
       ) : (
-        apiNotes.find((note) => note._id == viewToggledNote?._id) && (
+        notes?.find((note: Note) => note._id == viewToggledNote?._id) && (
           <>
             <NoteCard note={viewToggledNote} />
             <SidebarRight note={viewToggledNote} />

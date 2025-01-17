@@ -13,8 +13,9 @@ const Modal = ({
   textColor,
   backgroundColor,
   setToggleModal,
+  deleteNote,
+  archiveNote,
 }: any) => {
-  const { deleteNote, archiveNote } = useAppContext();
   return (
     <>
       <div className="absolute top-0 bottom-0 left-0 right-0 h-screen w-screen bg-neutral-950 opacity-50" />

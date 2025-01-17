@@ -21,7 +21,38 @@ const SidebarRight = ({ note }: Params) => {
   const { img, backgroundColor } = params;
 
   useEffect(() => {}, [note]);
-  const { deleteNote, archiveNote } = useAppContext();
+  const deleteNote = (id: string) => {
+    console.log("delete button");
+    // const isNoteExist = apiNotes.find((note) => note._id == id);
+
+    // if (isNoteExist) {
+    //   let updatedNotes = apiNotes.filter((note) => note._id != id);
+    //   //   console.log("deleting", isNoteExist);
+    //   setApiNotes(apiNotes.filter((note) => note._id != id));
+    //   setViewToggledNote(updatedNotes[0]);
+    // }
+  };
+
+  const archiveNote = (id: string, isArchived: boolean) => {
+    console.log("archived button");
+    // const isNoteExist = apiNotes.find((note) => note._id == id);
+    // if (!isNoteExist) return;
+    // let updatedNotes;
+    // if (isArchived) {
+    //   updatedNotes = apiNotes.map((note) =>
+    //     note._id == id ? { ...note, isArchived: false } : note
+    //   );
+    //   //   // change isArchive to true
+    // } else {
+    //   // change isArchive to false
+    //   updatedNotes = apiNotes.map((note) =>
+    //     note._id == id ? { ...note, isArchived: true } : note
+    //   );
+    // }
+    // setApiNotes(updatedNotes);
+    // setViewToggledNote(updatedNotes[0]);
+    // console.log("updated", updatedNotes);
+  };
   return (
     <div className="hidden md:flex flex-col w-[242px] flex-none gap-4 p-4">
       <div className="flex flex-col gap-3 text-sm">
@@ -70,6 +101,8 @@ const SidebarRight = ({ note }: Params) => {
           textColor={"text-white"}
           backgroundColor={backgroundColor}
           setToggleModal={setToggleModal}
+          deleteNote={deleteNote}
+          archiveNote={archiveNote}
         />
       )}
     </div>

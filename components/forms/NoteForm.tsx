@@ -1,20 +1,36 @@
-import React, { useEffect, useRef } from "react";
+"use client";
+import React, { useActionState, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useAppContext } from "../Providers";
+import { createNote } from "@/app/_actions/createNote";
+import { redirect } from "next/navigation";
 
-const NoteForm = ({ setToggleCreateNote }: any) => {
-  const {
-    note,
-    setNote,
-    error,
-    onHandlerSubmit,
-    setTagInput,
-    tagInput,
-    inputTag: tag,
-    setTag,
-    tagsFormattedValidation,
-  } = useAppContext();
+const NoteForm = ({ toggleCreateNote }: any) => {
+  const defaultNote = {
+    content: "",
+    isArchived: false,
+    lastEdited: "",
+    tags: [],
+    title: "",
+    _id: "",
+  };
+  const intialState = {
+    zodErrors: "",
+    mongooseErrors: "",
+    title: "",
+    tags: [],
+    content: "",
+  };
+  const [note, setNote] = useState(defaultNote);
 
+  const [tagInput, setTagInput] = useState(true);
+  const [inputTag, setTag] = useState("");
+  const pattern2 = /^[a-zA-Z]+(,[a-zA-Z]+)*$/;
+  const tagsFormattedValidation = inputTag
+    .split(",")
+    .filter((valid) => valid !== "")
+    .map((tag) => tag[0].toUpperCase() + tag?.slice(1));
+  const [error, setError] = useState(pattern2.test(inputTag));
   const titleRef = useRef<HTMLInputElement>(null);
   const pattern = /^(?!.*,,).*$/;
   const convertedTags = (
@@ -41,20 +57,16 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
     </div>
   );
 
-  useEffect(() => {
-    if (titleRef.current && tagInput) {
-      titleRef.current.focus();
-    }
-  }, [tagInput]);
   const renderTagInput = (
     <input
       id="tag"
       type="text"
       placeholder="Add tags separated by commas (e.g. Work, Planning)"
       className="w-full rounded-lg border border-neutral-700 p-1 outline-none"
-      value={tag}
       pattern="^[a-zA-Z]+(,[a-zA-Z]+)*$"
       title="Only letters and words followed by ',' is allowed."
+      value={inputTag}
+      name="tags"
       onChange={(e) => {
         if (e.target.value.length == 0) {
           setTag("");
@@ -64,14 +76,52 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
           setTag(e.target.value.trim());
         }
       }}
-      onBlur={() => setTagInput(tag ? false : true)}
+      onBlur={() => setTagInput(tagInput ? false : true)}
     />
   );
 
+  // const onHandlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //     e.preventDefault();
+  //     setError(false);
+  //     let newNoteObj: NoteType = {
+  //       content: note.content,
+  //       isArchived: false,
+  //       lastEdited: new Date().toDateString(),
+  //       tags: tagsFormattedValidation,
+  //       title: note.title,
+  //       _id: Math.floor(Math.random() * 1000).toString(),
+  //     };
+  //     let updatedNotes = [...apiNotes, newNoteObj];
+  //     setApiNotes(updatedNotes);
+  //     setNote(defaultNote);
+  //     setTag("");
+  //     setTagInput(true);
+  //     setViewToggledNote(updatedNotes[updatedNotes.length - 1]);
+  //     setToggleCreateNote(false);
+  //     // redirect("/");
+  //   };
+  useEffect(() => {
+    if (titleRef.current && tagInput) {
+      titleRef.current.focus();
+    }
+  }, [tagInput]);
+
+  const [state, formAction, pending] = useActionState(createNote, intialState);
+
+  useEffect(() => {
+    if (state.successMsg) {
+      setTag("");
+      console.log(note);
+      console.log(state.successMsg);
+      setTagInput(true);
+    }
+    console.log(state);
+  }, [state?.data]);
+  const { title, tags, content } = state?.data || {};
   return (
     <form
       className="hidden md:flex flex-col border-l border-r text-sm overflow-auto p-4 min-w-[588px] justify-between"
-      onSubmit={onHandlerSubmit}
+      action={formAction}
     >
       <div className="flex flex-col gap-3">
         <input
@@ -79,9 +129,11 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
           type="text"
           placeholder="Enter a title..."
           className="text-2xl font-bold outline-none"
-          value={note.title}
-          onChange={(e) => setNote({ ...note, title: e.target.value })}
+          name="title"
+          defaultValue={title}
         />
+        {state.zodErrors?.title && <span>{state.zodErrors?.title}</span>}
+        <input type="text" name="tags" defaultValue={inputTag} hidden />
         <div className="flex place-items-center">
           <span className="flex basis-1/3 place-items-center gap-2 w-[115px]">
             <Image
@@ -93,9 +145,9 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
             />
             Tags
           </span>
-          {(!tag && tagInput && renderTagInput) ||
-            (tag && tagInput && renderTagInput) ||
-            (tag && !tagInput && convertedTags)}
+          {(!inputTag && tagInput && renderTagInput) ||
+            (inputTag && tagInput && renderTagInput) ||
+            (inputTag && !tagInput && convertedTags)}
         </div>
         <div className="flex place-items-center">
           <span className="flex basis-1/3 place-items-center gap-2 w-[115px]">
@@ -118,15 +170,15 @@ const NoteForm = ({ setToggleCreateNote }: any) => {
           type="text"
           placeholder="Start typing your note here..."
           className="text-sm text-neutral-700 outline-none"
-          value={note.content}
-          onChange={(e) => setNote({ ...note, content: e.target.value })}
+          name="content"
+          defaultValue={content}
         />
       </div>
       <div className="flex gap-4 w-fit">
         <button
           className="block text-center p-2 text-white bg-blue-500 rounded-lg text-sm font-medium cursor-pointer"
           type="submit"
-          disabled={!note.title}
+          disabled={pending}
         >
           Save Note
         </button>

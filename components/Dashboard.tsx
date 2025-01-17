@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import Topbar from "./Topbar";
 import { redirect, useParams, usePathname } from "next/navigation";
 import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
@@ -7,21 +7,31 @@ import Navigation from "./Navigation";
 import Settings from "./Settings";
 import { useAppContext } from "./Providers";
 import { useSession } from "next-auth/react";
-
-const Dashboard = () => {
+import { Note } from "@/app/_types/types";
+type NoteType = {
+  notesApi: Note[];
+};
+const Dashboard = ({ notesApi }: NoteType) => {
   const { tag } = useParams() as { tag: string };
   const pathname = usePathname();
-  const {
-    viewToggledNote,
-    setViewToggledNote,
-    search,
-    setSearch,
-    archivedNotes,
-    viewByTag,
-    openedNotes,
-    toggleCreateNote,
-    setToggleCreateNote,
-  } = useAppContext();
+  const { search, setSearch, toggleCreateNote, setToggleCreateNote } =
+    useAppContext();
+
+  const openedNotes = notesApi?.filter(
+    (note: Note) => note?.isArchived == false
+  );
+  const archivedNotes = notesApi?.filter(
+    (note: Note) => note?.isArchived == true
+  );
+  const viewByTag = notesApi?.filter(
+    (note: Note) =>
+      note.tags.includes(tag?.charAt(0).toUpperCase() + tag?.slice(1)) &&
+      !note.isArchived
+  );
+  const notes =
+    (pathname.includes("/tag") && viewByTag) ||
+    (pathname == "/archived" && archivedNotes) ||
+    openedNotes;
 
   const { data: session, status } = useSession();
   if (status === "loading") {
@@ -41,14 +51,8 @@ const Dashboard = () => {
             <Settings search={search} setSearch={setSearch} />
           ) : (
             <NoteCardSummaryContainer
-              apiNotes={
-                (pathname == "/" && openedNotes) ||
-                (pathname == "/archived" && archivedNotes) ||
-                (pathname.includes(`/tag/${tag}`) && viewByTag)
-              }
+              notes={notes}
               search={search}
-              viewToggledNote={viewToggledNote}
-              setViewToggledNote={setViewToggledNote}
               toggleCreateNote={toggleCreateNote}
               setToggleCreateNote={setToggleCreateNote}
             />
