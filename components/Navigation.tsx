@@ -1,21 +1,20 @@
 "use client";
+import { Note } from "@/app/_types/types";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
-import React, { useState } from "react";
-
-const Navigation = () => {
-  const [tags, setTags] = useState([
-    "Cooking",
-    "Dev",
-    "Fitness",
-    "Health",
-    "Personal",
-    "React",
-    "Recipes",
-    "Travel",
-    "Typescript",
-  ]);
+import { usePathname } from "next/navigation";
+import React from "react";
+interface OpenedNotes {
+  openedNotes: Note[];
+}
+const Navigation = ({ openedNotes }: OpenedNotes) => {
+  const tags = [
+    ...new Set(
+      openedNotes.flatMap((note: any) =>
+        Array.isArray(note.tags) ? note.tags : []
+      )
+    ),
+  ];
 
   const pathname = usePathname();
 
@@ -29,7 +28,7 @@ const Navigation = () => {
   );
   const renderLinks = (
     <div className="flex flex-col">
-      {tags.map((tag) => (
+      {tags.map((tag: string) => (
         <Link
           href={`/tag/${tag.toLowerCase()}`}
           key={tag}

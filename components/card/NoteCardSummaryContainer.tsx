@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SidebarRight from "../SidebarActions";
 import NoteCard from "./NoteCard";
 import NoteCardSummary from "../NoteCardSidebar";
@@ -10,8 +10,6 @@ import NoteForm from "../forms/NoteForm";
 interface Params {
   notes: any;
   search: string;
-  toggleCreateNote: boolean;
-  setToggleCreateNote: (value: boolean) => boolean;
 }
 
 const NoteCardSummaryContainer = ({ notes, search }: Params) => {
@@ -58,6 +56,10 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
       ));
   };
 
+  useEffect(() => {
+    console.log("creating note?", toggleCreateNote);
+  }, [toggleCreateNote]);
+
   return (
     <div className="flex flex-grow gap-4 pl-6 overflow-hidden">
       <div className="hidden w-[290px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4">
@@ -103,6 +105,8 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
         <NoteForm
           toggleCreateNote={toggleCreateNote}
           setToggleCreateNote={setToggleCreateNote}
+          setViewToggledNote={setViewToggledNote}
+          notes={notes}
         />
       ) : (
         notes?.find((note: Note) => note._id == viewToggledNote?._id) && (

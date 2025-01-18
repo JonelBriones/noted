@@ -5,34 +5,44 @@ import { useAppContext } from "../Providers";
 import { createNote } from "@/app/_actions/createNote";
 import { redirect } from "next/navigation";
 
-const NoteForm = ({ toggleCreateNote }: any) => {
-  const defaultNote = {
-    content: "",
-    isArchived: false,
-    lastEdited: "",
-    tags: [],
-    title: "",
-    _id: "",
-  };
+const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
   const intialState = {
     zodErrors: "",
     mongooseErrors: "",
     title: "",
     tags: [],
     content: "",
+    successMsg: "",
   };
-  const [note, setNote] = useState(defaultNote);
+  const [state, formAction, pending] = useActionState(createNote, intialState);
+  const { title, tags, content } = state?.data || {};
+  const { successMsg } = state?.successMsg;
 
   const [tagInput, setTagInput] = useState(true);
   const [inputTag, setTag] = useState("");
   const pattern2 = /^[a-zA-Z]+(,[a-zA-Z]+)*$/;
+
   const tagsFormattedValidation = inputTag
     .split(",")
     .filter((valid) => valid !== "")
     .map((tag) => tag[0].toUpperCase() + tag?.slice(1));
+
   const [error, setError] = useState(pattern2.test(inputTag));
   const titleRef = useRef<HTMLInputElement>(null);
   const pattern = /^(?!.*,,).*$/;
+
+  useEffect(() => {
+    if (state.successMsg) {
+      console.log("success add", state.successMsg);
+      setTagInput(true);
+      console.log("setting toggle create note to off");
+      setToggleCreateNote(false);
+      console.log(notes.length, notes.length - 1);
+      setViewToggledNote(notes[notes.length - 1]);
+      setTag("");
+    }
+  }, [state.successMsg]);
+
   const convertedTags = (
     <div
       onClick={() => {
@@ -80,49 +90,19 @@ const NoteForm = ({ toggleCreateNote }: any) => {
     />
   );
 
-  // const onHandlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //     e.preventDefault();
-  //     setError(false);
-  //     let newNoteObj: NoteType = {
-  //       content: note.content,
-  //       isArchived: false,
-  //       lastEdited: new Date().toDateString(),
-  //       tags: tagsFormattedValidation,
-  //       title: note.title,
-  //       _id: Math.floor(Math.random() * 1000).toString(),
-  //     };
-  //     let updatedNotes = [...apiNotes, newNoteObj];
-  //     setApiNotes(updatedNotes);
-  //     setNote(defaultNote);
-  //     setTag("");
-  //     setTagInput(true);
-  //     setViewToggledNote(updatedNotes[updatedNotes.length - 1]);
-  //     setToggleCreateNote(false);
-  //     // redirect("/");
-  //   };
   useEffect(() => {
     if (titleRef.current && tagInput) {
       titleRef.current.focus();
     }
   }, [tagInput]);
 
-  const [state, formAction, pending] = useActionState(createNote, intialState);
-
-  useEffect(() => {
-    if (state.successMsg) {
-      setTag("");
-      console.log(note);
-      console.log(state.successMsg);
-      setTagInput(true);
-    }
-    console.log(state);
-  }, [state?.data]);
-  const { title, tags, content } = state?.data || {};
   return (
     <form
       className="hidden md:flex flex-col border-l border-r text-sm overflow-auto p-4 min-w-[588px] justify-between"
       action={formAction}
     >
+      {state.successMsg}
+
       <div className="flex flex-col gap-3">
         <input
           ref={titleRef}

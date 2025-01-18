@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "./modals/Modal";
 import { Note } from "@/app/_types/types";
 import { useAppContext } from "./Providers";
+import { deleteNote } from "@/app/_actions/deleteNote";
 
 interface Params {
   note?: Note;
@@ -21,17 +22,6 @@ const SidebarRight = ({ note }: Params) => {
   const { img, backgroundColor } = params;
 
   useEffect(() => {}, [note]);
-  const deleteNote = (id: string) => {
-    console.log("delete button");
-    // const isNoteExist = apiNotes.find((note) => note._id == id);
-
-    // if (isNoteExist) {
-    //   let updatedNotes = apiNotes.filter((note) => note._id != id);
-    //   //   console.log("deleting", isNoteExist);
-    //   setApiNotes(apiNotes.filter((note) => note._id != id));
-    //   setViewToggledNote(updatedNotes[0]);
-    // }
-  };
 
   const archiveNote = (id: string, isArchived: boolean) => {
     console.log("archived button");

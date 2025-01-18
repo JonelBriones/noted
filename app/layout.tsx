@@ -3,7 +3,6 @@ import "./globals.css";
 import ContextWrapper from "@/components/Providers";
 import MobileNavbar from "@/components/mobile/MobileNavbar";
 import AuthProvider from "@/components/AuthProvider";
-import Note from "@/models/Note";
 
 export const metadata: Metadata = {
   title: "Noted",
@@ -15,11 +14,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const notesAPI = await Note.find({}).lean();
-  console.log(notesAPI);
   return (
     <AuthProvider>
-      <ContextWrapper notesAPI={JSON.parse(JSON.stringify(notesAPI))}>
+      <ContextWrapper>
         <html lang="en">
           <body className="mx-auto flex flex-col h-screen px-6 relative">
             {children}

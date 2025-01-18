@@ -1,17 +1,25 @@
 "use server";
-import Note from "@/models/Note";
 import { noteSchema } from "../_schemas/noteSchema";
-import { Note as NoteType } from "../_types/types";
 import { revalidatePath } from "next/cache";
 import connectDB from "@/config/database";
+import User from "@/models/User";
+import { auth } from "../api/auth/[...nextauth]/auth";
 
 export const createNote = async (prevState: any, formData: FormData) => {
   await connectDB();
+  const session = await auth();
+
+  if (!session || !session.user?.id) {
+    console.error("YOU MUST BE LOGGED IN");
+  }
+
   const getFormData = {
     title: formData.get("title"),
     tags: formData.get("tags"),
     content: formData.get("content"),
   };
+
+  console.log("TAGS:", formData.get("tags"));
   const validated = noteSchema.safeParse(getFormData);
   console.log(validated);
   if (!validated.success) {
@@ -25,21 +33,30 @@ export const createNote = async (prevState: any, formData: FormData) => {
       ),
     };
   } else {
+    console.log("VALIDATION:", validated);
     const noteObject = {
-      title: getFormData.title,
-      tags: getFormData.tags || [],
+      title: validated.data.title,
+      tags: getFormData.tags?.split(",") || [],
       content: getFormData.content,
       lastEdited: new Date().toDateString(),
       isArchived: false,
     };
-    const newNote = new Note(noteObject);
-    await newNote.save();
-
-    revalidatePath("/", "layout");
-
-    return {
-      successMsg: "Note added!",
-      data: JSON.parse(JSON.stringify(newNote._id)),
-    };
+    const user = await User.findById(session?.user?.id);
+    user.notes.push(noteObject);
+    console.log("user", noteObject);
+    try {
+      await user.save();
+      revalidatePath("/", "layout");
+      return {
+        successMsg: "Note added!",
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        ...prevState,
+        mongooseError: "Failed to save note.",
+        data: JSON.parse(JSON.stringify(noteObject)),
+      };
+    }
   }
 };

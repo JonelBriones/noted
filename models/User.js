@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-
+import mongoose from "mongoose";
 const UserSchema = new Schema(
   {
     email: {
@@ -7,17 +7,50 @@ const UserSchema = new Schema(
       unique: [true, "Email already exists"],
       required: [true, "Email is required"],
     },
-    username: [
-      {
-        type: String,
-        unique: [true, "username already exists"],
-        required: [true, "username is required"],
-      },
-    ],
+    username: {
+      type: String,
+      unique: [true, "username already exists"],
+      required: [true, "username is required"],
+    },
+
     notes: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "Note",
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          auto: true,
+        },
+        title: {
+          type: String,
+          required: [true, "Title is required"],
+        },
+        tags: [
+          {
+            type: String,
+          },
+        ],
+        lastEdited: {
+          type: String,
+        },
+        isArchived: {
+          type: Boolean,
+        },
+
+        content: {
+          type: String,
+        },
+      },
+    ],
+    settings: [
+      {
+        colorTheme: {
+          type: String,
+        },
+        FrontTheme: {
+          type: String,
+        },
+        password: {
+          type: String,
+        },
       },
     ],
   },

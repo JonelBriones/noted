@@ -1,14 +1,17 @@
 "use server";
 import Dashboard from "@/components/Dashboard";
 import connectDB from "@/config/database";
-import Note from "@/models/Note";
 import React from "react";
+import { auth } from "../api/auth/[...nextauth]/auth";
+import User from "@/models/User";
 
 const page = async () => {
   await connectDB();
-  const notesApi = await Note.find({}).lean();
+  const session = await auth();
+  const userApi = await User.findOne({ _id: session?.user?.id });
+  const { notes } = userApi;
 
-  return <Dashboard notesApi={JSON.parse(JSON.stringify(notesApi))} />;
+  return <Dashboard notesApi={JSON.parse(JSON.stringify(notes))} />;
 };
 
 export default page;

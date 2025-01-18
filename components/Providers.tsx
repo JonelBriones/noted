@@ -4,12 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { Note as NoteType } from "@/app/_types/types";
 const ThemeContext = createContext<any>(undefined);
 
-interface Context {
-  children: React.ReactNode;
-  notesAPI: NoteType[];
-}
-
-const ContextWrapper = ({ children }: Context) => {
+const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
   const [search, setSearch] = useState("");
 
   return (

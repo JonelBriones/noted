@@ -14,8 +14,7 @@ type NoteType = {
 const Dashboard = ({ notesApi }: NoteType) => {
   const { tag } = useParams() as { tag: string };
   const pathname = usePathname();
-  const { search, setSearch, toggleCreateNote, setToggleCreateNote } =
-    useAppContext();
+  const { search, setSearch } = useAppContext();
 
   const openedNotes = notesApi?.filter(
     (note: Note) => note?.isArchived == false
@@ -24,9 +23,7 @@ const Dashboard = ({ notesApi }: NoteType) => {
     (note: Note) => note?.isArchived == true
   );
   const viewByTag = notesApi?.filter(
-    (note: Note) =>
-      note.tags.includes(tag?.charAt(0).toUpperCase() + tag?.slice(1)) &&
-      !note.isArchived
+    (note: Note) => note.tags.includes(tag) && !note.isArchived
   );
   const notes =
     (pathname.includes("/tag") && viewByTag) ||
@@ -41,21 +38,18 @@ const Dashboard = ({ notesApi }: NoteType) => {
     return redirect("/login");
   }
 
+  console.log(viewByTag);
+
   return (
     <div className="h-screen overflow-y-hidden">
       <div className="flex flex-col md:flex-row h-screen">
-        <Navigation />
+        <Navigation openedNotes={openedNotes} />
         <div className="flex flex-col flex-grow">
           <Topbar search={search} setSearch={setSearch} />
           {pathname == "/settings" ? (
             <Settings search={search} setSearch={setSearch} />
           ) : (
-            <NoteCardSummaryContainer
-              notes={notes}
-              search={search}
-              toggleCreateNote={toggleCreateNote}
-              setToggleCreateNote={setToggleCreateNote}
-            />
+            <NoteCardSummaryContainer notes={notes} search={search} />
           )}
         </div>
       </div>

@@ -138,15 +138,17 @@ const Settings = ({ search }: any) => {
                   >
                     <div className="flex place-items-center justify-center rounded-xl border-2 border-neutral-200 h-[40px] w-[40px] bg-white">
                       <Image
-                        src={"/images/icon-font-sans-serif.svg"}
+                        src={`/images/icon-font-${font}.svg`}
                         width={0}
                         height={0}
-                        alt="icon-sans-serif"
+                        alt={`icon-${font}`}
                         className="size-[24px]"
                       />
                     </div>
                     <div className="flex flex-col justify-center flex-1 place-items-start">
-                      <h4 className="text-sm">Sans-serif</h4>
+                      <h4 className="text-sm">
+                        {font.charAt(0).toUpperCase() + font.slice(1)}
+                      </h4>
                       <p className="text-xs text-neutral-700">
                         Clean and modern, easy to read.
                       </p>
