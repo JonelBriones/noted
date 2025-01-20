@@ -56,10 +56,6 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
       ));
   };
 
-  useEffect(() => {
-    console.log("creating note?", toggleCreateNote);
-  }, [toggleCreateNote]);
-
   return (
     <div className="flex flex-grow gap-4 pl-6 overflow-hidden">
       <div className="hidden w-[290px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4">

@@ -1,7 +1,6 @@
 "use client";
-import { redirect, useParams, usePathname } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Note as NoteType } from "@/app/_types/types";
+
 const ThemeContext = createContext<any>(undefined);
 
 const ContextWrapper = ({ children }: { children: React.ReactNode }) => {

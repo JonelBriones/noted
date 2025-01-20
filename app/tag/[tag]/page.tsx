@@ -8,8 +8,13 @@ const page = async () => {
   await connectDB();
   const session = await auth();
   const userApi = await User.findOne({ _id: session?.user?.id });
-  const { notes } = userApi;
-  return <Dashboard notesApi={JSON.parse(JSON.stringify(notes))} />;
+  console.log("checking auth...");
+  if (!session || !session?.user?.id) {
+    console.log("not authenticated, redirecting to login.");
+  }
+  let notesApi = JSON.parse(JSON.stringify(userApi?.notes || []));
+
+  return <Dashboard notesApi={notesApi} />;
 };
 
 export default page;

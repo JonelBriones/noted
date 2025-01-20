@@ -34,9 +34,14 @@ export const createNote = async (prevState: any, formData: FormData) => {
     };
   } else {
     console.log("VALIDATION:", validated);
+
+    const tags = getFormData.tags
+      ?.split(",")
+      .map((tag: string) => tag.toLowerCase());
+
     const noteObject = {
       title: validated.data.title,
-      tags: getFormData.tags?.split(",") || [],
+      tags: tags || [],
       content: getFormData.content,
       lastEdited: new Date().toDateString(),
       isArchived: false,

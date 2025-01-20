@@ -4,13 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import { useAppContext } from "./Providers";
 interface OpenedNotes {
   openedNotes: Note[];
 }
 const Navigation = ({ openedNotes }: OpenedNotes) => {
   const tags = [
     ...new Set(
-      openedNotes.flatMap((note: any) =>
+      openedNotes?.flatMap((note: any) =>
         Array.isArray(note.tags) ? note.tags : []
       )
     ),

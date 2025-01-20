@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Topbar from "./Topbar";
 import { redirect, useParams, usePathname } from "next/navigation";
 import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
@@ -25,6 +25,7 @@ const Dashboard = ({ notesApi }: NoteType) => {
   const viewByTag = notesApi?.filter(
     (note: Note) => note.tags.includes(tag) && !note.isArchived
   );
+
   const notes =
     (pathname.includes("/tag") && viewByTag) ||
     (pathname == "/archived" && archivedNotes) ||
@@ -38,6 +39,7 @@ const Dashboard = ({ notesApi }: NoteType) => {
     return redirect("/login");
   }
 
+  console.log(notesApi);
   console.log(viewByTag);
 
   return (
