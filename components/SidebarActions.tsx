@@ -6,6 +6,7 @@ import Modal from "./modals/Modal";
 import { Note } from "@/app/_types/types";
 import { useAppContext } from "./Providers";
 import { deleteNote } from "@/app/_actions/deleteNote";
+import { archiveNote } from "@/app/_actions/archiveNote";
 
 interface Params {
   note?: Note;
@@ -23,26 +24,6 @@ const SidebarRight = ({ note }: Params) => {
 
   useEffect(() => {}, [note]);
 
-  const archiveNote = (id: string, isArchived: boolean) => {
-    console.log("archived button");
-    // const isNoteExist = apiNotes.find((note) => note._id == id);
-    // if (!isNoteExist) return;
-    // let updatedNotes;
-    // if (isArchived) {
-    //   updatedNotes = apiNotes.map((note) =>
-    //     note._id == id ? { ...note, isArchived: false } : note
-    //   );
-    //   //   // change isArchive to true
-    // } else {
-    //   // change isArchive to false
-    //   updatedNotes = apiNotes.map((note) =>
-    //     note._id == id ? { ...note, isArchived: true } : note
-    //   );
-    // }
-    // setApiNotes(updatedNotes);
-    // setViewToggledNote(updatedNotes[0]);
-    // console.log("updated", updatedNotes);
-  };
   return (
     <div className="hidden md:flex flex-col w-[242px] flex-none gap-4 p-4">
       <div className="flex flex-col gap-3 text-sm">
