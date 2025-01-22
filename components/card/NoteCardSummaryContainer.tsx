@@ -55,6 +55,7 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
         </div>
       ));
   };
+  useEffect(() => {}, [viewToggledNote]);
 
   return (
     <div className="flex flex-grow gap-4 pl-6 overflow-hidden">
@@ -107,7 +108,11 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
       ) : (
         notes?.find((note: Note) => note._id == viewToggledNote?._id) && (
           <>
-            <NoteCard note={viewToggledNote} />
+            <NoteCard
+              note={viewToggledNote}
+              notes={notes}
+              setViewToggledNote={setViewToggledNote}
+            />
             <SidebarRight note={viewToggledNote} />
           </>
         )

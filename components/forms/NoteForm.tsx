@@ -24,11 +24,11 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
 
   const tagsFormattedValidation = inputTag
     .split(",")
-    .filter((valid) => valid !== "")
-    .map((tag) => tag[0].toUpperCase() + tag?.slice(1));
+    .filter((valid) => valid !== "");
 
   const [error, setError] = useState(pattern2.test(inputTag));
   const titleRef = useRef<HTMLInputElement>(null);
+  const tagRef = useRef<HTMLInputElement>(null);
   const pattern = /^(?!.*,,).*$/;
 
   useEffect(() => {
@@ -69,10 +69,11 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
 
   const renderTagInput = (
     <input
+      ref={tagRef}
       id="tag"
       type="text"
       placeholder="Add tags separated by commas (e.g. Work, Planning)"
-      className="w-full rounded-lg border border-neutral-700 p-1 outline-none"
+      className="w-full rounded-lg p-1 outline-none"
       pattern="^[a-zA-Z]+(,[a-zA-Z]+)*$"
       title="Only letters and words followed by ',' is allowed."
       value={inputTag}
@@ -91,15 +92,19 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
   );
 
   useEffect(() => {
-    if (titleRef.current && tagInput) {
+    if (titleRef.current) {
       titleRef.current.focus();
     }
-  }, [tagInput]);
+    if (tagRef.current && tagInput && titleRef?.current?.value !== "") {
+      tagRef.current.focus();
+    }
+  }, []);
 
   return (
     <form
       className="hidden md:flex flex-col border-l border-r text-sm overflow-auto p-4 min-w-[588px] justify-between"
       action={formAction}
+      autoComplete="off"
     >
       {state.successMsg}
 
@@ -125,9 +130,12 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
             />
             Tags
           </span>
-          {(!inputTag && tagInput && renderTagInput) ||
-            (inputTag && tagInput && renderTagInput) ||
-            (inputTag && !tagInput && convertedTags)}
+          {renderTagInput}
+          {/* {tagInput
+            ? renderTagInput
+            : !inputTag
+            ? renderTagInput
+            : convertedTags} */}
         </div>
         <div className="flex place-items-center">
           <span className="flex basis-1/3 place-items-center gap-2 w-[115px]">
@@ -163,7 +171,10 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
           Save Note
         </button>
         <button
-          onClick={() => setToggleCreateNote(false)}
+          onClick={() => {
+            setToggleCreateNote(false);
+            setViewToggledNote(notes[0]);
+          }}
           className="block text-center p-2 text-neutral-800 bg-neutral-100 rounded-lg text-sm font-medium cursor-pointer"
         >
           Cancel

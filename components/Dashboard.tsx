@@ -39,9 +39,6 @@ const Dashboard = ({ notesApi }: NoteType) => {
     return redirect("/login");
   }
 
-  console.log(notesApi);
-  console.log(viewByTag);
-
   return (
     <div className="h-screen overflow-y-hidden">
       <div className="flex flex-col md:flex-row h-screen">

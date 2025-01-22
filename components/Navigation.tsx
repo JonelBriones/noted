@@ -29,27 +29,30 @@ const Navigation = ({ openedNotes }: OpenedNotes) => {
   );
   const renderLinks = (
     <div className="flex flex-col">
-      {tags.map((tag: string) => (
-        <Link
-          href={`/tag/${tag.toLowerCase()}`}
-          key={tag}
-          className={`flex justify-between cursor-pointer p-2 rounded-lg ${
-            pathname == `/tag/${tag.toLowerCase()}` ? "bg-neutral-100" : ""
-          }`}
-        >
-          <div className="flex gap-2">
-            <Image
-              src={"/images/icon-tag.svg"}
-              width={0}
-              height={0}
-              className="size-5"
-              alt="icon-tag"
-            />
-            <span className="text-neutral-700 text-sm">{tag}</span>
-          </div>
-          {pathname == `/tag/${tag.toLowerCase()}` && toggleChevron}
-        </Link>
-      ))}
+      {tags.map(
+        (tag: string) =>
+          tag.length >= 1 && (
+            <Link
+              href={`/tag/${tag.toLowerCase()}`}
+              key={tag}
+              className={`flex justify-between cursor-pointer p-2 rounded-lg ${
+                pathname == `/tag/${tag.toLowerCase()}` ? "bg-neutral-100" : ""
+              }`}
+            >
+              <div className="flex gap-2">
+                <Image
+                  src={"/images/icon-tag.svg"}
+                  width={0}
+                  height={0}
+                  className="size-5"
+                  alt="icon-tag"
+                />
+                <span className="text-neutral-700 text-sm">{tag}</span>
+              </div>
+              {pathname == `/tag/${tag.toLowerCase()}` && toggleChevron}
+            </Link>
+          )
+      )}
     </div>
   );
 

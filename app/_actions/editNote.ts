@@ -1,32 +1,32 @@
 "use server";
+import connectDB from "@/config/database";
+import { auth } from "../api/auth/[...nextauth]/auth";
 import { noteSchema } from "../_schemas/noteSchema";
 import { revalidatePath } from "next/cache";
-import connectDB from "@/config/database";
 import User from "@/models/User";
-import { auth } from "../api/auth/[...nextauth]/auth";
 
-export const createNote = async (prevState: any, formData: FormData) => {
+export const editNote = async (note_id: any, formData: FormData) => {
   await connectDB();
   const session = await auth();
 
   if (!session || !session.user?.id) {
-    console.error("YOU MUST BE LOGGED IN");
+    console.log("User not logged in");
   }
 
   const getFormData = {
     title: formData.get("title"),
     tags: formData.get("tags"),
     content: formData.get("content"),
+    isArchived: formData.get("isArchived"),
   };
 
   if (!getFormData.title) return;
 
   const validated = noteSchema.safeParse(getFormData);
-  console.log(validated);
+
   if (!validated.success) {
     return {
-      ...prevState,
-      data: { ...prevState.data, ...getFormData },
+      ...getFormData,
       zodErrors: Object.fromEntries(
         Object.entries(validated.error.flatten().fieldErrors).map(
           ([key, value]) => [key, value.join(",")]
@@ -34,24 +34,29 @@ export const createNote = async (prevState: any, formData: FormData) => {
       ),
     };
   } else {
-    console.log("VALIDATION:", validated);
-
+    console.log(validated);
     const tags = getFormData.tags
       ?.split(",")
       .map((tag: string) => tag.toLowerCase());
-
     const noteObject = {
       title: validated.data.title,
       tags: tags || [],
       content: getFormData.content,
       lastEdited: new Date().toDateString(),
-      isArchived: false,
+      isArchived: getFormData.isArchived == "true" ? true : false,
     };
-    const user = await User.findById(session?.user?.id);
-    user.notes.push(noteObject);
-    console.log("user", noteObject);
+
     try {
-      await user.save();
+      console.log("NOTE:", noteObject);
+
+      await User.updateOne(
+        { _id: session?.user?.id, "notes._id": note_id },
+        {
+          $set: {
+            "notes.$": noteObject,
+          },
+        }
+      );
       revalidatePath("/", "layout");
       return {
         successMsg: "Note added!",
@@ -59,7 +64,7 @@ export const createNote = async (prevState: any, formData: FormData) => {
     } catch (error) {
       console.log(error);
       return {
-        ...prevState,
+        ...getFormData,
         mongooseError: "Failed to save note.",
         data: JSON.parse(JSON.stringify(noteObject)),
       };
