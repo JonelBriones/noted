@@ -12,23 +12,6 @@ interface Params {
 }
 
 const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
-  const intialState = {
-    zodErrors: "",
-    mongooseErrors: "",
-    title: "",
-    tags: [],
-    content: "",
-    successMsg: "",
-  };
-
-  let currentViewNoteIdx = () => {
-    for (let [idx, n] of notes?.entries()) {
-      if (n._id == note?._id) {
-        return idx;
-      }
-    }
-  };
-
   if (!note) {
     return (
       <div className="hidden md:flex  flex-col flex-1 gap-4 p-4 border-l border-r text-sm"></div>
@@ -37,6 +20,8 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
 
   const { _id, title, tags, content, lastEdited, isArchived } = note;
   const bindedAction = editNote.bind(null, _id);
+  const [inputTag, setTag] = useState(tags.join(","));
+  const pattern = /^(?!.*,,).*$/;
 
   const [defaultNote, setDefaultNote] = useState({
     title: title || "",
@@ -44,6 +29,14 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
     content: content || "",
     isArchived: isArchived,
   });
+
+  let currentViewNoteIdx = () => {
+    for (let [idx, n] of notes?.entries()) {
+      if (n._id == note?._id) {
+        return idx;
+      }
+    }
+  };
 
   const onChangeHandler = (
     e: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
@@ -64,7 +57,6 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
       [name]: value,
     }));
   };
-  const validated = noteSchema.safeParse(defaultNote);
 
   const formatLastEdited = new Date(lastEdited).toLocaleString("en-us", {
     timezone: "UTC",
@@ -77,12 +69,7 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
   let convert = content
     ?.split("\n")
     ?.map((line: string, index: number) => <div key={index}>{line}</div>);
-  const [inputTag, setTag] = useState(tags.join(","));
 
-  const pattern = /^(?!.*,,).*$/;
-  const pattern2 = /^[a-zA-Z]+(,[a-zA-Z]+)*$/;
-  const titleRef = useRef<HTMLInputElement>(null);
-  const [error, setError] = useState(pattern2.test(inputTag));
   const renderTagInput = (
     <input
       id="tag"
@@ -185,7 +172,7 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
             value={defaultNote.content}
             name="content"
             onChange={onChangeHandler}
-            className="outline-none"
+            className="outline-none h-full"
           />
         </div>
         <div className="w-full h-[1px] bg-neutral-200" />
