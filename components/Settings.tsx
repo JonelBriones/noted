@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import PrimaryBtn from "./buttons/PrimaryBtn";
 import { signOut } from "next-auth/react";
-
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 const Settings = ({ search }: any) => {
   const settings = ["Color Theme", "Font Theme", "Change Password"];
   const colorTheme = ["Light Mode", "Dark Mode", "System"];
@@ -113,11 +114,12 @@ const Settings = ({ search }: any) => {
                       </p>
                     </div>
                     <div
-                      className={`size-[16px] rounded-full border border-neutral-300 ${
+                      className={twMerge(
+                        "size-[16px] rounded-full border border-neutral-300",
                         toggleColorTheme == theme
-                          ? "border-[#335CFF] border-4 bg-white"
-                          : ""
-                      } `}
+                          ? "border-blue-500 border-4 bg-white"
+                          : "border-neutral-300"
+                      )}
                     />
                   </button>
                 ))}
@@ -154,11 +156,12 @@ const Settings = ({ search }: any) => {
                       </p>
                     </div>
                     <div
-                      className={`size-[16px] rounded-full border border-neutral-300 ${
+                      className={twMerge(
+                        "size-[16px] rounded-full border border-neutral-300",
                         font == toggleFontTheme
-                          ? "border-[#335CFF] border-4 bg-white"
-                          : ""
-                      }`}
+                          ? "border-blue-500 border-4 bg-white"
+                          : "border-neutral-300"
+                      )}
                     />
                   </button>
                 ))}
