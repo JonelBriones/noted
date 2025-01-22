@@ -12,11 +12,13 @@ type NoteType = {
   notesApi: Note[];
 };
 const Dashboard = ({ notesApi }: NoteType) => {
+  console.log(notesApi.reverse());
+  let reverseOrder = notesApi?.reverse();
   const { tag } = useParams() as { tag: string };
   const pathname = usePathname();
   const { search, setSearch } = useAppContext();
 
-  const openedNotes = notesApi?.filter(
+  const openedNotes = reverseOrder?.filter(
     (note: Note) => note?.isArchived == false
   );
   const archivedNotes = notesApi?.filter(

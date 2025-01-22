@@ -10,8 +10,9 @@ const page = async () => {
   const session = await auth();
   const userApi = await User.findOne({ _id: session?.user?.id });
   const { notes } = userApi;
-
-  return <Dashboard notesApi={JSON.parse(JSON.stringify(notes))} />;
+  let notesApi = JSON.parse(JSON.stringify(userApi?.notes || []));
+  let newToOldestNotes = notesApi.reverse();
+  return <Dashboard notesApi={newToOldestNotes} />;
 };
 
 export default page;

@@ -1,15 +1,15 @@
 "use client";
 import Image from "next/image";
-import React, { useActionState, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Note } from "@/app/_types/types";
 import { editNote } from "@/app/_actions/editNote";
-import { noteSchema } from "@/app/_schemas/noteSchema";
-import { z } from "zod";
 interface Params {
   note?: Note;
-  notes?: Note[];
-  setViewToggledNote: () => {};
+  notes: Note[];
+  setViewToggledNote: React.Dispatch<React.SetStateAction<Note | undefined>>;
 }
+
+// BUG IF ON tag/test and create a new note with project, it doesnt vies tag/project
 
 const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
   if (!note) {
@@ -30,16 +30,18 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
     isArchived: isArchived,
   });
 
-  let currentViewNoteIdx = () => {
+  let currentViewNoteIdx = (): number => {
     for (let [idx, n] of notes?.entries()) {
       if (n._id == note?._id) {
         return idx;
       }
     }
+    return 0;
   };
 
+  let changeNote = notes && notes[currentViewNoteIdx()];
   const onChangeHandler = (
-    e: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     if (name == "tags") {
@@ -64,11 +66,6 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
     month: "short",
     year: "numeric",
   } as any);
-
-  // if want to format note with new lines add "\n" to content string
-  let convert = content
-    ?.split("\n")
-    ?.map((line: string, index: number) => <div key={index}>{line}</div>);
 
   const renderTagInput = (
     <input
@@ -130,6 +127,12 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
               {renderTagInput}
               <input
                 type="text"
+                name="isArchived"
+                defaultValue={isArchived ? "true" : "false"}
+                hidden
+              />
+              <input
+                type="text"
                 name="tags"
                 defaultValue={inputTag ? inputTag : tags.join(",")}
                 hidden
@@ -177,7 +180,9 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
         </div>
         <div className="w-full h-[1px] bg-neutral-200" />
         <div className="flex gap-4 w-fit p-4">
-          <button type="submit">Save</button>
+          <button type="submit" onClick={() => setViewToggledNote(notes[2])}>
+            Save
+          </button>
           <button
             onClick={() => {
               setDefaultNote({
@@ -186,7 +191,7 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
                 content: content || "",
                 isArchived: isArchived,
               });
-              setViewToggledNote(notes[currentViewNoteIdx]);
+              setViewToggledNote(changeNote);
             }}
           >
             reset

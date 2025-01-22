@@ -19,8 +19,6 @@ export const createNote = async (prevState: any, formData: FormData) => {
     content: formData.get("content"),
   };
 
-  if (!getFormData.title) return;
-
   const validated = noteSchema.safeParse(getFormData);
   console.log(validated);
   if (!validated.success) {
@@ -53,6 +51,7 @@ export const createNote = async (prevState: any, formData: FormData) => {
     try {
       await user.save();
       revalidatePath("/", "layout");
+
       return {
         successMsg: "Note added!",
       };

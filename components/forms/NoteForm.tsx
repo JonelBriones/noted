@@ -3,7 +3,8 @@ import React, { useActionState, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useAppContext } from "../Providers";
 import { createNote } from "@/app/_actions/createNote";
-import { redirect } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
+import { Note } from "@/app/_types/types";
 
 const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
   const intialState = {
@@ -16,15 +17,10 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
   };
   const [state, formAction, pending] = useActionState(createNote, intialState);
   const { title, tags, content } = state?.data || {};
-  const { successMsg } = state?.successMsg;
-
+  const { tag: pathname } = useParams() as { tag: string };
   const [tagInput, setTagInput] = useState(true);
   const [inputTag, setTag] = useState("");
   const pattern2 = /^[a-zA-Z]+(,[a-zA-Z]+)*$/;
-
-  const tagsFormattedValidation = inputTag
-    .split(",")
-    .filter((valid) => valid !== "");
 
   const [error, setError] = useState(pattern2.test(inputTag));
   const titleRef = useRef<HTMLInputElement>(null);
@@ -33,39 +29,17 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
 
   useEffect(() => {
     if (state.successMsg) {
-      console.log("success add", state.successMsg);
       setTagInput(true);
-      console.log("setting toggle create note to off");
       setToggleCreateNote(false);
-      console.log(notes.length, notes.length - 1);
-      setViewToggledNote(notes[notes.length - 1]);
+      if (inputTag.includes(pathname)) {
+        setViewToggledNote(notes[0]);
+      } else {
+        let tags = inputTag.split(",");
+        redirect(`/tag/${tags[0]}`);
+      }
       setTag("");
     }
   }, [state.successMsg]);
-
-  const convertedTags = (
-    <div
-      onClick={() => {
-        setTagInput(true);
-      }}
-      className="w-full text-left rounded-lg p-1"
-    >
-      <div className="inline cursor-pointer">
-        {tagsFormattedValidation?.map(
-          (tag: string, idx: number) =>
-            tag && (
-              <span key={idx}>
-                {tag}
-                {tagsFormattedValidation.length == 1 ||
-                tagsFormattedValidation.length - 1 == idx
-                  ? ""
-                  : ","}
-              </span>
-            )
-        )}
-      </div>
-    </div>
-  );
 
   const renderTagInput = (
     <input
@@ -107,7 +81,6 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
       autoComplete="off"
     >
       {state.successMsg}
-
       <div className="flex flex-col gap-3">
         <input
           ref={titleRef}
@@ -131,11 +104,6 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
             Tags
           </span>
           {renderTagInput}
-          {/* {tagInput
-            ? renderTagInput
-            : !inputTag
-            ? renderTagInput
-            : convertedTags} */}
         </div>
         <div className="flex place-items-center">
           <span className="flex basis-1/3 place-items-center gap-2 w-[115px]">

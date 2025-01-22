@@ -4,6 +4,19 @@ import { auth } from "../api/auth/[...nextauth]/auth";
 import { noteSchema } from "../_schemas/noteSchema";
 import { revalidatePath } from "next/cache";
 import User from "@/models/User";
+import { Note } from "../_types/types";
+
+interface NoteFormData {
+  title: string;
+  tags: string;
+  content: string;
+  isArchived: string;
+}
+
+interface ExtraFormData {
+  zodError: {};
+  mongooseError: "";
+}
 
 export const editNote = async (note_id: any, formData: FormData) => {
   await connectDB();
@@ -20,54 +33,24 @@ export const editNote = async (note_id: any, formData: FormData) => {
     isArchived: formData.get("isArchived"),
   };
 
-  if (!getFormData.title) return;
+  const tags =
+    typeof getFormData.tags === "string" &&
+    getFormData.tags?.split(",").map((tag: string) => tag.toLowerCase());
+  const noteObject = {
+    title: getFormData.title,
+    tags: tags || [],
+    content: getFormData.content,
+    lastEdited: new Date().toDateString(),
+    isArchived: getFormData.isArchived == "true" ? true : false,
+  };
 
-  const validated = noteSchema.safeParse(getFormData);
-
-  if (!validated.success) {
-    return {
-      ...getFormData,
-      zodErrors: Object.fromEntries(
-        Object.entries(validated.error.flatten().fieldErrors).map(
-          ([key, value]) => [key, value.join(",")]
-        )
-      ),
-    };
-  } else {
-    console.log(validated);
-    const tags = getFormData.tags
-      ?.split(",")
-      .map((tag: string) => tag.toLowerCase());
-    const noteObject = {
-      title: validated.data.title,
-      tags: tags || [],
-      content: getFormData.content,
-      lastEdited: new Date().toDateString(),
-      isArchived: getFormData.isArchived == "true" ? true : false,
-    };
-
-    try {
-      console.log("NOTE:", noteObject);
-
-      await User.updateOne(
-        { _id: session?.user?.id, "notes._id": note_id },
-        {
-          $set: {
-            "notes.$": noteObject,
-          },
-        }
-      );
-      revalidatePath("/", "layout");
-      return {
-        successMsg: "Note added!",
-      };
-    } catch (error) {
-      console.log(error);
-      return {
-        ...getFormData,
-        mongooseError: "Failed to save note.",
-        data: JSON.parse(JSON.stringify(noteObject)),
-      };
+  await User.updateOne(
+    { _id: session?.user?.id, "notes._id": note_id },
+    {
+      $set: {
+        "notes.$": noteObject,
+      },
     }
-  }
+  );
+  revalidatePath("/", "layout");
 };

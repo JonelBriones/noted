@@ -31,6 +31,10 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
       notes.content.toLocaleLowerCase().includes(formattedSearch)
   );
 
+  useEffect(() => {
+    setViewToggledNote(searchNotes[0]);
+  }, [search]);
+
   const renderNoteCardSummary = () => {
     if (search) {
       return searchNotes?.map((note: Note) => (
@@ -55,7 +59,6 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
         </div>
       ));
   };
-  useEffect(() => {}, [viewToggledNote]);
 
   return (
     <div className="flex flex-grow gap-4 pl-6 overflow-hidden">

@@ -1,4 +1,5 @@
 "use client";
+import { Note } from "@/app/_types/types";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 const ThemeContext = createContext<any>(undefined);
