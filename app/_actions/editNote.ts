@@ -60,5 +60,5 @@ export const editNote = async (note_id: any, formData: FormData) => {
       },
     }
   );
-  revalidatePath("/", "layout");
+  revalidatePath("/", "page");
 };

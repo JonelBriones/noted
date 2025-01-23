@@ -40,19 +40,17 @@ const UserSchema = new Schema(
         },
       },
     ],
-    settings: [
-      {
-        colorTheme: {
-          type: String,
-        },
-        FrontTheme: {
-          type: String,
-        },
-        password: {
-          type: String,
-        },
+    settings: {
+      colorTheme: {
+        type: String,
       },
-    ],
+      fontTheme: {
+        type: String,
+      },
+      password: {
+        type: String,
+      },
+    },
   },
   { timestamps: true }
 );

@@ -4,14 +4,11 @@ import PrimaryBtn from "./buttons/PrimaryBtn";
 import { signOut } from "next-auth/react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import ColorTheme from "./forms/ColorTheme";
+import FontTheme from "./forms/FontTheme";
 const Settings = ({ search }: any) => {
   const settings = ["Color Theme", "Font Theme", "Change Password"];
-  const colorTheme = ["Light Mode", "Dark Mode", "System"];
-  const colorThemeImage = {
-    "Light Mode": "sun",
-    "Dark Mode": "moon",
-    System: "system-theme",
-  } as const;
+
   const [toggleSettingType, setToggleSettingType] = useState("Color Theme");
   const settingImg = {
     "Color Theme": "sun",
@@ -23,10 +20,6 @@ const Settings = ({ search }: any) => {
   const [toggleHideNewPassword, setToggleHideNewPassword] = useState(true);
   const [toggleHideConfirmNewPassword, setToggleHideConfirmNewPassword] =
     useState(true);
-
-  const fontTheme = ["sans-serif", "serif", "monospace"];
-  const [toggleColorTheme, setToggleColorTheme] = useState("Light Mode");
-  const [toggleFontTheme, setToggleFontTheme] = useState("sans-serif");
 
   return (
     <div className="flex flex-grow gap-4 px-2 md:pl-6 overflow-hidden">
@@ -84,90 +77,8 @@ const Settings = ({ search }: any) => {
       <div className="md:pl-2 py-6 w-[562px]">
         <div className="flex flex-col gap-2 mb-4">
           <h1 className="font-bold">{toggleSettingType}</h1>
-          {toggleSettingType == "Color Theme" && (
-            <div>
-              <h1>Choose your color theme:</h1>
-              <div className="flex flex-col gap-4 mt-6">
-                {colorTheme.map((theme) => (
-                  <button
-                    key={theme}
-                    className={`flex gap-4 border border-neutral-200 p-4 rounded-xl place-items-center ${
-                      toggleColorTheme == theme ? "bg-neutral-100" : ""
-                    }`}
-                    onClick={() => setToggleColorTheme(theme)}
-                  >
-                    <div className="flex place-items-center justify-center rounded-xl border-2 border-neutral-200 h-[40px] w-[40px] bg-white">
-                      <Image
-                        src={`/images/icon-${
-                          colorThemeImage[theme as keyof typeof colorThemeImage]
-                        }.svg`}
-                        width={0}
-                        height={0}
-                        alt="icon-sans-serif"
-                        className="size-[24px]"
-                      />
-                    </div>
-                    <div className="flex flex-col justify-center flex-1 place-items-start">
-                      <h4 className="text-sm">{theme}</h4>
-                      <p className="text-xs text-neutral-700">
-                        Clean and modern, easy to read.
-                      </p>
-                    </div>
-                    <div
-                      className={twMerge(
-                        "size-[16px] rounded-full border border-neutral-300",
-                        toggleColorTheme == theme
-                          ? "border-blue-500 border-4 bg-white"
-                          : "border-neutral-300"
-                      )}
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-          {toggleSettingType == "Font Theme" && (
-            <div>
-              <h1>Choose your font theme:</h1>
-              <div className="flex flex-col gap-4 mt-6">
-                {fontTheme.map((font) => (
-                  <button
-                    key={font}
-                    className={`flex gap-4 border border-neutral-200 p-4 rounded-xl place-items-center ${
-                      font == toggleFontTheme ? "bg-neutral-100" : ""
-                    }`}
-                    onClick={() => setToggleFontTheme(font)}
-                  >
-                    <div className="flex place-items-center justify-center rounded-xl border-2 border-neutral-200 h-[40px] w-[40px] bg-white">
-                      <Image
-                        src={`/images/icon-font-${font}.svg`}
-                        width={0}
-                        height={0}
-                        alt={`icon-${font}`}
-                        className="size-[24px]"
-                      />
-                    </div>
-                    <div className="flex flex-col justify-center flex-1 place-items-start">
-                      <h4 className="text-sm">
-                        {font.charAt(0).toUpperCase() + font.slice(1)}
-                      </h4>
-                      <p className="text-xs text-neutral-700">
-                        Clean and modern, easy to read.
-                      </p>
-                    </div>
-                    <div
-                      className={twMerge(
-                        "size-[16px] rounded-full border border-neutral-300",
-                        font == toggleFontTheme
-                          ? "border-blue-500 border-4 bg-white"
-                          : "border-neutral-300"
-                      )}
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          {toggleSettingType == "Color Theme" && <ColorTheme />}
+          {toggleSettingType == "Font Theme" && <FontTheme />}
         </div>
         {toggleSettingType == "Change Password" && (
           <div>

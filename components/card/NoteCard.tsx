@@ -25,7 +25,6 @@ const NoteCard = ({ note }: Params) => {
     content: content || "",
     isArchived: isArchived,
   });
-  console.log(isArchived);
 
   const onChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

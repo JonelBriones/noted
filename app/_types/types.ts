@@ -6,5 +6,10 @@ type Note = {
   lastEdited: number;
   isArchived: boolean;
 };
+type SettingsT = {
+  colorTheme?: string;
+  fontTheme?: string;
+  password?: string;
+};
 
-export type { Note };
+export type { Note, SettingsT };

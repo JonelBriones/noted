@@ -9,7 +9,6 @@ interface OpenedNotes {
   openedNotes: Note[];
 }
 const Navigation = ({ openedNotes }: OpenedNotes) => {
-  console.log(openedNotes);
   const tags = [
     ...new Set(
       openedNotes?.flatMap((note: any) =>

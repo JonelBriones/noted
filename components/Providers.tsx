@@ -6,6 +6,11 @@ const ThemeContext = createContext<any>(undefined);
 
 const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
   const [search, setSearch] = useState("");
+  const [settings, setSettings] = useState({
+    colorTheme: "Light Mode",
+    fontTheme: "sans-serif",
+    password: "",
+  });
   const [viewToggledNote, setViewToggledNote] = useState<Note | undefined>(
     undefined
   );
@@ -17,6 +22,8 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
         setSearch,
         viewToggledNote,
         setViewToggledNote,
+        settings,
+        setSettings,
       }}
     >
       {children}

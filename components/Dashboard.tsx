@@ -7,18 +7,22 @@ import Navigation from "./Navigation";
 import Settings from "./Settings";
 import { useAppContext } from "./Providers";
 import { useSession } from "next-auth/react";
-import { Note } from "@/app/_types/types";
+import { Note, SettingsT } from "@/app/_types/types";
 type NoteType = {
   notesApi: Note[];
+  settings?: SettingsT;
 };
-const Dashboard = ({ notesApi }: NoteType) => {
-  const { search, setSearch, setViewToggledNote } = useAppContext();
+const Dashboard = ({ notesApi, settings }: NoteType) => {
+  const { search, setSearch, setViewToggledNote, setSettings } =
+    useAppContext();
   const { tag } = useParams() as { tag: string };
   const pathname = usePathname();
 
   useEffect(() => {
     setViewToggledNote(notes[0]);
-  }, [notesApi]);
+    setSettings(settings);
+    console.log("settings", settings);
+  }, [notesApi, settings]);
 
   const openedNotes = notesApi?.filter(
     (note: Note) => note?.isArchived == false

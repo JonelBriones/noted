@@ -13,7 +13,7 @@ const page = async () => {
     console.log("not authenticated, redirecting to login.");
   }
   let notesApi = JSON.parse(JSON.stringify(userApi?.notes || []));
-  let newToOldestNotes = notesApi.reverse();
-  return <Dashboard notesApi={newToOldestNotes} />;
+  let user = JSON.parse(JSON.stringify(userApi));
+  return <Dashboard notesApi={notesApi} settings={user.settings} />;
 };
 export default page;
