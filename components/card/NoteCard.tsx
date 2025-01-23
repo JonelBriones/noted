@@ -180,14 +180,14 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
         <div className="flex gap-4 w-fit p-4">
           <button type="submit">Save</button>
           <button
+            type="reset"
             onClick={() => {
               setDefaultNote({
-                title: title || "",
-                tags: tags.join(",") || "",
-                content: content || "",
+                title: title,
+                tags: tags.join(","),
+                content: content,
                 isArchived: isArchived,
               });
-              setViewToggledNote(changeNote);
             }}
           >
             reset
