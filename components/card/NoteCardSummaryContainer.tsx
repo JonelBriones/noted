@@ -1,11 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import SidebarRight from "../SidebarActions";
 import NoteCard from "./NoteCard";
 import NoteCardSummary from "../NoteCardSidebar";
 import { useParams, usePathname } from "next/navigation";
 import { Note } from "@/app/_types/types";
 import NoteForm from "../forms/NoteForm";
+import { editNote } from "@/app/_actions/editNote";
+import { useAppContext } from "../Providers";
 
 interface Params {
   notes: any;
@@ -13,9 +15,8 @@ interface Params {
 }
 
 const NoteCardSummaryContainer = ({ notes, search }: Params) => {
-  const [viewToggledNote, setViewToggledNote] = useState<Note | undefined>(
-    notes[0]
-  );
+  const { viewToggledNote, setViewToggledNote } = useAppContext();
+
   const pathname = usePathname();
   const { tag } = useParams() as { tag: string };
 
@@ -30,10 +31,6 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
       notes.title.toLocaleLowerCase().includes(formattedSearch) ||
       notes.content.toLocaleLowerCase().includes(formattedSearch)
   );
-
-  useEffect(() => {
-    setViewToggledNote(searchNotes[0]);
-  }, [search]);
 
   const renderNoteCardSummary = () => {
     if (search) {
@@ -59,6 +56,8 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
         </div>
       ));
   };
+
+  // useEffect(() => {}, [notes]);
 
   return (
     <div className="flex flex-grow gap-4 pl-6 overflow-hidden">

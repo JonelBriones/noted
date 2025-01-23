@@ -12,20 +12,23 @@ type NoteType = {
   notesApi: Note[];
 };
 const Dashboard = ({ notesApi }: NoteType) => {
-  console.log(notesApi.reverse());
   let reverseOrder = notesApi?.reverse();
+  const { search, setSearch, setViewToggledNote } = useAppContext();
   const { tag } = useParams() as { tag: string };
   const pathname = usePathname();
-  const { search, setSearch } = useAppContext();
+
+  useEffect(() => {
+    setViewToggledNote(notes[0]);
+  }, [notesApi]);
 
   const openedNotes = reverseOrder?.filter(
     (note: Note) => note?.isArchived == false
   );
-  const archivedNotes = notesApi?.filter(
+  const archivedNotes = reverseOrder?.filter(
     (note: Note) => note?.isArchived == true
   );
-  const viewByTag = notesApi?.filter(
-    (note: Note) => note.tags.includes(tag) && !note.isArchived
+  const viewByTag = openedNotes?.filter((note: Note) =>
+    note.tags.includes(tag)
   );
 
   const notes =

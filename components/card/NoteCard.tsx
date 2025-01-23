@@ -9,8 +9,6 @@ interface Params {
   setViewToggledNote: React.Dispatch<React.SetStateAction<Note | undefined>>;
 }
 
-// BUG IF ON tag/test and create a new note with project, it doesnt vies tag/project
-
 const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
   if (!note) {
     return (
@@ -180,9 +178,7 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
         </div>
         <div className="w-full h-[1px] bg-neutral-200" />
         <div className="flex gap-4 w-fit p-4">
-          <button type="submit" onClick={() => setViewToggledNote(notes[2])}>
-            Save
-          </button>
+          <button type="submit">Save</button>
           <button
             onClick={() => {
               setDefaultNote({
