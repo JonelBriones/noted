@@ -10,8 +10,9 @@ import { archiveNote } from "@/app/_actions/archiveNote";
 
 interface Params {
   note?: Note;
+  notes?: Note[];
 }
-const SidebarRight = ({ note }: Params) => {
+const SidebarRight = ({ note, notes }: Params) => {
   if (!note) return;
   const { isArchived } = note;
   const [type, setType] = useState("");
@@ -23,6 +24,24 @@ const SidebarRight = ({ note }: Params) => {
   const { img, backgroundColor } = params;
 
   useEffect(() => {}, [note]);
+
+  let currentViewNoteIdx = (): number => {
+    if (notes) {
+      for (let [idx, n] of notes?.entries()) {
+        if (n._id == note?._id) {
+          return idx;
+        }
+      }
+    }
+    return 0;
+  };
+  let changeNote = notes && notes[currentViewNoteIdx()];
+  console.log("idx:", currentViewNoteIdx());
+  console.log("note:", changeNote);
+
+  useEffect(() => {
+    console.log("note", note);
+  }, [note]);
 
   return (
     <div className="hidden md:flex flex-col w-[242px] flex-none gap-4 p-4">

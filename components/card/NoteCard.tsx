@@ -28,16 +28,6 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
     isArchived: isArchived,
   });
 
-  let currentViewNoteIdx = (): number => {
-    for (let [idx, n] of notes?.entries()) {
-      if (n._id == note?._id) {
-        return idx;
-      }
-    }
-    return 0;
-  };
-
-  let changeNote = notes && notes[currentViewNoteIdx()];
   const onChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {

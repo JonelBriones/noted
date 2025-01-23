@@ -1,9 +1,7 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import PrimaryBtn from "../buttons/PrimaryBtn";
-import { useAppContext } from "../Providers";
-import { text } from "stream/consumers";
+import { redirect } from "next/navigation";
 
 const Modal = ({
   id,

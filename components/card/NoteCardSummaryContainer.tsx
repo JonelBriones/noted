@@ -115,7 +115,7 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
               notes={notes}
               setViewToggledNote={setViewToggledNote}
             />
-            <SidebarRight note={viewToggledNote} />
+            <SidebarRight note={viewToggledNote} notes={notes} />
           </>
         )
       )}

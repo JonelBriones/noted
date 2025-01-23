@@ -3,6 +3,7 @@ import connectDB from "@/config/database";
 import { auth } from "../api/auth/[...nextauth]/auth";
 import User from "@/models/User";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export const archiveNote = async (note_id: string, isArchived: boolean) => {
   await connectDB();
@@ -20,8 +21,12 @@ export const archiveNote = async (note_id: string, isArchived: boolean) => {
       },
     }
   );
-  // 1. filter by the user id and then find the note of note_id
-  // 2. "$" to only update the note object that first matched note_id
 
-  revalidatePath("/", "layout");
+  if (isArchived) {
+    revalidatePath("/", "layout");
+    redirect("/");
+  } else {
+    revalidatePath("/archived", "layout");
+    redirect("/archived");
+  }
 };
