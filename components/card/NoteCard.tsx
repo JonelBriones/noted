@@ -55,6 +55,19 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
     year: "numeric",
   } as any);
 
+  const currentTime = new Date();
+  const dateInNumber = currentTime.getTime();
+  const lastTime = new Date(lastEdited);
+  const now = new Date();
+  // const lastEditedTimeElapse = now - lastEdited
+  const day = now.getDate();
+  const month = now.getMonth() + 1;
+  const year = now.getFullYear();
+  const second = now.getSeconds();
+  const minute = now.getMinutes();
+  const hour = now.getHours();
+  // console.log(`Day:${day},Month:${month},Year:${year}`);
+
   const renderTagInput = (
     <input
       id="tag"

@@ -38,20 +38,23 @@ export const createNote = async (prevState: any, formData: FormData) => {
       ?.split(",")
       .map((tag: string) => tag.toLowerCase());
 
+    const currentTime = new Date();
+    const currentTimeInNumber = currentTime.getTime();
+
     const noteObject = {
       title: validated.data.title,
       tags: tags || [],
       content: getFormData.content,
-      lastEdited: new Date().toDateString(),
+      lastEdited: currentTimeInNumber,
       isArchived: false,
     };
+
     const user = await User.findById(session?.user?.id);
     user.notes.push(noteObject);
-    console.log("user", noteObject);
+
     try {
       await user.save();
       revalidatePath("/", "layout");
-
       return {
         successMsg: "Note added!",
       };

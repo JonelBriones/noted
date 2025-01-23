@@ -16,6 +16,9 @@ interface Params {
 
 const NoteCardSummaryContainer = ({ notes, search }: Params) => {
   const { viewToggledNote, setViewToggledNote } = useAppContext();
+  let oldestToLatestUpdated = notes.sort(
+    (a: any, b: any) => b.lastEdited - a.lastEdited
+  );
 
   const pathname = usePathname();
   const { tag } = useParams() as { tag: string };
@@ -23,7 +26,7 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
   let formattedSearch = search?.toLowerCase();
   const [toggleCreateNote, setToggleCreateNote] = useState(false);
 
-  const searchNotes = notes?.filter(
+  const searchNotes = oldestToLatestUpdated?.filter(
     (notes: any) =>
       notes.tags.find((tag: string) =>
         tag.toLocaleLowerCase().includes(formattedSearch)
@@ -45,7 +48,7 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
         </div>
       ));
     } else
-      return notes?.map((note: any) => (
+      return oldestToLatestUpdated?.map((note: any) => (
         <div
           onClick={() => {
             setViewToggledNote(note), setToggleCreateNote(false);

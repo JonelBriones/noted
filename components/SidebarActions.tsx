@@ -36,12 +36,8 @@ const SidebarRight = ({ note, notes }: Params) => {
     return 0;
   };
   let changeNote = notes && notes[currentViewNoteIdx()];
-  console.log("idx:", currentViewNoteIdx());
-  console.log("note:", changeNote);
 
-  useEffect(() => {
-    console.log("note", note);
-  }, [note]);
+  useEffect(() => {}, [note]);
 
   return (
     <div className="hidden md:flex flex-col w-[242px] flex-none gap-4 p-4">

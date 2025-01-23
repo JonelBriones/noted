@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Topbar from "./Topbar";
 import { redirect, useParams, usePathname } from "next/navigation";
 import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
@@ -12,19 +12,20 @@ type NoteType = {
   notesApi: Note[];
 };
 const Dashboard = ({ notesApi }: NoteType) => {
-  let reverseOrder = notesApi?.reverse();
   const { search, setSearch, setViewToggledNote } = useAppContext();
   const { tag } = useParams() as { tag: string };
   const pathname = usePathname();
 
   useEffect(() => {
     setViewToggledNote(notes[0]);
+    console.log(notes);
   }, [notesApi]);
 
-  const openedNotes = reverseOrder?.filter(
+  const openedNotes = notesApi?.filter(
     (note: Note) => note?.isArchived == false
   );
-  const archivedNotes = reverseOrder?.filter(
+
+  const archivedNotes = notesApi?.filter(
     (note: Note) => note?.isArchived == true
   );
   const viewByTag = openedNotes?.filter((note: Note) =>

@@ -13,11 +13,15 @@ export const archiveNote = async (note_id: string, isArchived: boolean) => {
     console.error("User must be logged in");
   }
 
+  const currentTime = new Date();
+  const currentTimeInNumber = currentTime.getTime();
+
   await User.updateOne(
     { _id: session?.user?.id, "notes._id": note_id },
     {
       $set: {
         "notes.$.isArchived": !isArchived,
+        "notes.$.lastEdited": currentTimeInNumber,
       },
     }
   );

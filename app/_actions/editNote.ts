@@ -36,11 +36,15 @@ export const editNote = async (note_id: any, formData: FormData) => {
   const tags =
     typeof getFormData.tags === "string" &&
     getFormData.tags?.split(",").map((tag: string) => tag.toLowerCase());
+
+  const currentTime = new Date();
+  const currentTimeInNumber = currentTime.getTime();
+
   const noteObject = {
     title: getFormData.title,
     tags: tags || [],
     content: getFormData.content,
-    lastEdited: new Date().toDateString(),
+    lastEdited: currentTimeInNumber,
     isArchived: getFormData.isArchived == "true" ? true : false,
   };
 

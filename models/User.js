@@ -29,7 +29,7 @@ const UserSchema = new Schema(
           },
         ],
         lastEdited: {
-          type: String,
+          type: Number,
         },
         isArchived: {
           type: Boolean,
