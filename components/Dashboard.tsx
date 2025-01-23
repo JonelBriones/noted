@@ -18,7 +18,6 @@ const Dashboard = ({ notesApi }: NoteType) => {
 
   useEffect(() => {
     setViewToggledNote(notes[0]);
-    console.log(notes);
   }, [notesApi]);
 
   const openedNotes = notesApi?.filter(

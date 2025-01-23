@@ -34,9 +34,9 @@ export const createNote = async (prevState: any, formData: FormData) => {
   } else {
     console.log("VALIDATION:", validated);
 
-    const tags = getFormData.tags
-      ?.split(",")
-      .map((tag: string) => tag.toLowerCase());
+    const tags =
+      typeof getFormData.tags === "string" &&
+      getFormData.tags?.split(",").map((tag: string) => tag.toLowerCase());
 
     const currentTime = new Date();
     const currentTimeInNumber = currentTime.getTime();

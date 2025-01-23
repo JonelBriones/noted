@@ -5,11 +5,9 @@ import { Note } from "@/app/_types/types";
 import { editNote } from "@/app/_actions/editNote";
 interface Params {
   note?: Note;
-  notes: Note[];
-  setViewToggledNote: React.Dispatch<React.SetStateAction<Note | undefined>>;
 }
 
-const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
+const NoteCard = ({ note }: Params) => {
   if (!note) {
     return (
       <div className="hidden md:flex  flex-col flex-1 gap-4 p-4 border-l border-r text-sm"></div>
@@ -27,6 +25,7 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
     content: content || "",
     isArchived: isArchived,
   });
+  console.log(isArchived);
 
   const onChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -47,26 +46,17 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
       [name]: value,
     }));
   };
-
-  const formatLastEdited = new Date(lastEdited).toLocaleString("en-us", {
-    timezone: "UTC",
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  } as any);
-
-  const currentTime = new Date();
-  const dateInNumber = currentTime.getTime();
-  const lastTime = new Date(lastEdited);
-  const now = new Date();
-  // const lastEditedTimeElapse = now - lastEdited
-  const day = now.getDate();
-  const month = now.getMonth() + 1;
-  const year = now.getFullYear();
-  const second = now.getSeconds();
-  const minute = now.getMinutes();
-  const hour = now.getHours();
-  // console.log(`Day:${day},Month:${month},Year:${year}`);
+  const timestamp = lastEdited;
+  const date = new Date(timestamp);
+  const formattedDate = date.toLocaleString("en-US", {
+    weekday: "short", // Full weekday name
+    year: "numeric", // Full year
+    month: "short", // Full month name
+    day: "numeric", // Day of the month
+    hour: "numeric", // Hour
+    minute: "numeric", // Minutes
+    second: "numeric", // Seconds
+  });
 
   const renderTagInput = (
     <input
@@ -110,12 +100,12 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
             value={defaultNote.title}
             onChange={onChangeHandler}
             name="title"
-            className="text-2xl font-bold outline-none"
+            className="text-2xl font-bold outline-none flex-1"
           />
           {!defaultNote.title && <span>Title is required.</span>}
           <div className="flex flex-col gap-3">
             <div className="flex place-items-center">
-              <span className="flex basis-1/3 place-items-center gap-2 w-[115px]">
+              <span className="flex place-items-center gap-2 w-[150px]">
                 <Image
                   src={"/images/icon-tag.svg"}
                   width={0}
@@ -125,11 +115,12 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
                 />
                 Tags
               </span>
-              {renderTagInput}
+              <div>{renderTagInput}</div>
               <input
-                type="text"
+                type="checkbox"
                 name="isArchived"
-                defaultValue={isArchived ? "true" : "false"}
+                checked={isArchived}
+                readOnly
                 hidden
               />
               <input
@@ -142,7 +133,7 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
 
             {isArchived && (
               <div className="flex place-items-center">
-                <span className="flex basis-1/3 place-items-center gap-2 w-[115px]">
+                <span className="flex place-items-center gap-2 w-[150px]">
                   <Image
                     src={"/images/icon-status.svg"}
                     width={0}
@@ -156,7 +147,7 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
               </div>
             )}
             <div className="flex place-items-center">
-              <span className="flex basis-1/3 place-items-center gap-2 w-[115px]">
+              <span className="flex place-items-center gap-2 w-[150px]">
                 <Image
                   src={"/images/icon-clock.svg"}
                   width={0}
@@ -166,7 +157,7 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
                 />
                 Last edited
               </span>
-              <span>{formatLastEdited}</span>
+              <div>{formattedDate}</div>
             </div>
           </div>
         </div>
@@ -181,9 +172,15 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
         </div>
         <div className="w-full h-[1px] bg-neutral-200" />
         <div className="flex gap-4 w-fit p-4">
-          <button type="submit">Save</button>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white rounded-lg py-3 px-4 font-bold"
+          >
+            Save
+          </button>
           <button
             type="reset"
+            className="bg-neutral-100 text-neutral-600 rounded-lg py-3 px-4 font-bold"
             onClick={() => {
               setDefaultNote({
                 title: title,
@@ -193,7 +190,7 @@ const NoteCard = ({ note, notes, setViewToggledNote }: Params) => {
               });
             }}
           >
-            reset
+            Cancel
           </button>
         </div>
       </form>

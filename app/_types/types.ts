@@ -3,7 +3,7 @@ type Note = {
   title: string;
   tags: string[];
   content: string;
-  lastEdited: string;
+  lastEdited: number;
   isArchived: boolean;
 };
 

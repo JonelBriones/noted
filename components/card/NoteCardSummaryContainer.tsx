@@ -1,12 +1,11 @@
 "use client";
-import React, { useActionState, useEffect, useState } from "react";
+import React, { useState } from "react";
 import SidebarRight from "../SidebarActions";
 import NoteCard from "./NoteCard";
 import NoteCardSummary from "../NoteCardSidebar";
 import { useParams, usePathname } from "next/navigation";
 import { Note } from "@/app/_types/types";
 import NoteForm from "../forms/NoteForm";
-import { editNote } from "@/app/_actions/editNote";
 import { useAppContext } from "../Providers";
 
 interface Params {
@@ -60,8 +59,6 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
       ));
   };
 
-  // useEffect(() => {}, [notes]);
-
   return (
     <div className="flex flex-grow gap-4 pl-6 overflow-hidden">
       <div className="hidden w-[290px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4">
@@ -82,7 +79,7 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
             {!notes?.length && (
               <p className="text-sm text-neutral-700 bg-neutral-100 rounded-lg p-2">
                 No notes have been archived yet. Move notes here for
-                safekeeping, or{" "}
+                safekeeping, or
                 <span className="underline">create a new note.</span>
               </p>
             )}
@@ -90,18 +87,18 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
         )}
         {pathname == "/" && notes?.length == 0 && (
           <>
-            <p className="text-sm  text-neutral-700">
+            <p className="text-sm  text-neutral-700 mt-3">
               You don’t have any notes yet. Start a new note to capture your
               thoughts and ideas.
             </p>
           </>
         )}
         {pathname.includes("/tag/") && (
-          <p className="text-sm  text-neutral-700">
+          <p className="text-sm  text-neutral-700 mt-3">
             All notes with the {tag} tag are shown here.
           </p>
         )}
-        {renderNoteCardSummary()}
+        <div className="mt-3">{renderNoteCardSummary()}</div>
       </div>
       {toggleCreateNote ? (
         <NoteForm
@@ -113,11 +110,7 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
       ) : (
         notes?.find((note: Note) => note._id == viewToggledNote?._id) && (
           <>
-            <NoteCard
-              note={viewToggledNote}
-              notes={notes}
-              setViewToggledNote={setViewToggledNote}
-            />
+            <NoteCard note={viewToggledNote} />
             <SidebarRight note={viewToggledNote} notes={notes} />
           </>
         )
