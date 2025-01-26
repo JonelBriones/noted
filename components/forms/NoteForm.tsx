@@ -16,6 +16,7 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
     successMsg: "",
   };
   const [state, formAction, pending] = useActionState(createNote, intialState);
+  const { darkMode } = useAppContext();
   const { title, tags, content } = state?.data || {};
   const { tag: pathname } = useParams() as { tag: string };
   const [tagInput, setTagInput] = useState(true);
@@ -47,7 +48,7 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
       id="tag"
       type="text"
       placeholder="Add tags separated by commas (e.g. Work, Planning)"
-      className="w-full rounded-lg p-1 outline-none"
+      className="w-full rounded-lg p-1 outline-none dark:bg-stone-900 dark:text-white"
       pattern="^[a-zA-Z]+(,[a-zA-Z]+)*$"
       title="Only letters and words followed by ',' is allowed."
       value={inputTag}
@@ -76,7 +77,7 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
 
   return (
     <form
-      className="hidden md:flex flex-col border-l border-r text-sm overflow-auto p-4 min-w-[588px] justify-between"
+      className="hidden md:flex flex-col border-l border-r text-sm overflow-auto p-4 min-w-[588px] justify-between dark:border-neutral-700"
       action={formAction}
       autoComplete="off"
     >
@@ -86,7 +87,7 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
           ref={titleRef}
           type="text"
           placeholder="Enter a title..."
-          className="text-2xl font-bold outline-none"
+          className="text-2xl font-bold outline-none dark:bg-stone-900 dark:text-white"
           name="title"
           defaultValue={title}
         />
@@ -100,6 +101,7 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
               height={0}
               className="size-4"
               alt="icon-tag"
+              style={{ filter: darkMode && "invert(100%)" }}
             />
             Tags
           </span>
@@ -113,6 +115,7 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
               height={0}
               className="size-4"
               alt="icon-clock"
+              style={{ filter: darkMode && "invert(100%)" }}
             />
             Last edited
           </span>
@@ -121,29 +124,28 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
         <span className="text-red-500 text-xs">
           {error && "Add tags separated by commas (e.g. Work, Planning)"}
         </span>
-        <div className="w-full h-[1px] bg-neutral-200" />
-        <input
-          type="text"
+        <div className="w-full h-[1px] bg-neutral-200 dark:bg-neutral-700" />
+        <textarea
           placeholder="Start typing your note here..."
-          className="text-sm text-neutral-700 outline-none"
           name="content"
           defaultValue={content}
+          className="outline-none h-full dark:bg-stone-900 dark:text-white"
         />
       </div>
-      <div className="flex gap-4 w-fit">
+      <div className="flex gap-4 w-fit ">
         <button
-          className="block text-center p-2 text-white bg-blue-500 rounded-lg text-sm font-medium cursor-pointer"
+          className="bg-blue-500 text-white rounded-lg py-3 px-4 font-bold"
           type="submit"
           disabled={pending}
         >
-          Save Note
+          Save
         </button>
         <button
           onClick={() => {
             setToggleCreateNote(false);
             setViewToggledNote(notes[0]);
           }}
-          className="block text-center p-2 text-neutral-800 bg-neutral-100 rounded-lg text-sm font-medium cursor-pointer"
+          className="bg-neutral-100 text-neutral-600 rounded-lg py-3 px-4 font-bold"
         >
           Cancel
         </button>

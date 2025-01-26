@@ -13,16 +13,29 @@ type NoteType = {
   settings?: SettingsT;
 };
 const Dashboard = ({ notesApi, settings }: NoteType) => {
-  const { search, setSearch, setViewToggledNote, setSettings } =
+  const { search, setSearch, setViewToggledNote, setSettings, darkMode } =
     useAppContext();
+
   const { tag } = useParams() as { tag: string };
   const pathname = usePathname();
 
   useEffect(() => {
     setViewToggledNote(notes[0]);
     setSettings(settings);
-    console.log("settings", settings);
   }, [notesApi, settings]);
+
+  useEffect(() => {
+    console.log("choose mode:");
+    if (settings?.colorTheme == "Dark Mode") {
+      console.log("adding dark mode");
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      console.log("removing dark mode");
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [settings?.colorTheme === "Dark Mode"]);
 
   const openedNotes = notesApi?.filter(
     (note: Note) => note?.isArchived == false

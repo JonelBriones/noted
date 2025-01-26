@@ -12,7 +12,8 @@ const page = async () => {
 
   let notesApi = JSON.parse(JSON.stringify(userApi?.notes || []));
 
-  return <Dashboard notesApi={notesApi} />;
+  let user = JSON.parse(JSON.stringify(userApi));
+  return <Dashboard notesApi={notesApi} settings={user.settings} />;
 };
 
 export default page;

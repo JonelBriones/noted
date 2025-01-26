@@ -25,6 +25,11 @@ export const authOptions = {
           email: profile.email,
           username: username,
           image: profile.image,
+          settings: {
+            colorTheme: "Light Mode",
+            fontTheme: "sans-serif",
+            password: "",
+          },
         });
       }
       return true;

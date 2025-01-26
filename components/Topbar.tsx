@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useAppContext } from "./Providers";
 
 interface Params {
   text?: string;
@@ -15,13 +16,14 @@ const Topbar = ({ search, setSearch }: any) => {
   const tag = useParams().tag as string;
 
   const { data: session } = useSession();
+  const { darkMode } = useAppContext();
 
   return (
-    <div className="w-full flex place-items-center justify-between md:border-b p-6">
+    <div className="w-full flex place-items-center justify-between md:border-b p-6 dark:border-neutral-700">
       {search ? (
         <h1 className="font-bold text-2xl">Showing results for: {search}</h1>
       ) : (
-        <h1 className="font-bold text-2xl">
+        <h1 className="font-bold text-2xl dark:text-white">
           {pathname == "/" && "All Notes"}
           {pathname == "/archived" && "Archived Notes"}
           {pathname.includes("/tag/") &&
@@ -40,6 +42,7 @@ const Topbar = ({ search, setSearch }: any) => {
             sizes="100vw"
             className="size-5 rounded-full"
             alt="icon-tag"
+            style={{ filter: darkMode && "invert(100%)" }}
           />
         </Link>
         {session?.user && (

@@ -72,14 +72,14 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
         </button>
         {pathname == "/archived" && (
           <>
-            <p className="text-sm  text-neutral-700">
+            <p className="text-sm  text-neutral-700 dark:text-white">
               All your archived notes are stored here. You can restore or delete
               them anytime.
             </p>
             {!notes?.length && (
-              <p className="text-sm text-neutral-700 bg-neutral-100 rounded-lg p-2">
+              <p className="text-sm text-neutral-700 bg-neutral-100 rounded-lg p-2 dark:text-white dark:bg-neutral-600">
                 No notes have been archived yet. Move notes here for
-                safekeeping, or
+                safekeeping, or{" "}
                 <span className="underline">create a new note.</span>
               </p>
             )}
@@ -87,18 +87,20 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
         )}
         {pathname == "/" && notes?.length == 0 && (
           <>
-            <p className="text-sm  text-neutral-700 mt-3">
+            <p className="text-sm  text-neutral-700 mt-3 dark:text-white">
               You don’t have any notes yet. Start a new note to capture your
               thoughts and ideas.
             </p>
           </>
         )}
         {pathname.includes("/tag/") && (
-          <p className="text-sm  text-neutral-700 mt-3">
+          <p className="text-sm  text-neutral-700 mt-3 dark:text-white">
             All notes with the {tag} tag are shown here.
           </p>
         )}
-        <div className="mt-3">{renderNoteCardSummary()}</div>
+        <div className="mt-3">
+          <div className="flex flex-col">{renderNoteCardSummary()}</div>
+        </div>
       </div>
       {toggleCreateNote ? (
         <NoteForm

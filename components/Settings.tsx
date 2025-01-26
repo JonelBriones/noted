@@ -6,7 +6,10 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import ColorTheme from "./forms/ColorTheme";
 import FontTheme from "./forms/FontTheme";
+import ChangePassword from "./forms/ChangePassword";
+import { useAppContext } from "./Providers";
 const Settings = ({ search }: any) => {
+  const { darkMode } = useAppContext();
   const settings = ["Color Theme", "Font Theme", "Change Password"];
 
   const [toggleSettingType, setToggleSettingType] = useState("Color Theme");
@@ -16,24 +19,21 @@ const Settings = ({ search }: any) => {
     "Change Password": "lock",
   } as const;
 
-  const [toggleHideOldPassword, setToggleHideOldPassword] = useState(true);
-  const [toggleHideNewPassword, setToggleHideNewPassword] = useState(true);
-  const [toggleHideConfirmNewPassword, setToggleHideConfirmNewPassword] =
-    useState(true);
-
   return (
-    <div className="flex flex-grow gap-4 px-2 md:pl-6 overflow-hidden">
-      <div className="hidden w-[258px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4 border-r pr-4">
+    <div className="flex flex-grow gap-4 px-2 md:pl-6 overflow-hidden ">
+      <div className="hidden w-[258px] md:flex flex-col flex-none text-wrap overflow-y-auto gap-2 py-4 border-r pr-4 dark:border-neutral-700">
         <div className="flex flex-col">
           {settings.map((setting: any) => (
             <button
               key={setting}
               onClick={() => setToggleSettingType(setting)}
-              className={`flex justify-between p-2 rounded-lg ${
-                toggleSettingType == setting ? "bg-neutral-100" : ""
+              className={`flex justify-between p-2 rounded-lg place-items-center ${
+                toggleSettingType == setting
+                  ? "bg-neutral-100 dark:bg-neutral-800"
+                  : ""
               }`}
             >
-              <div className="flex gap-2 cursor-pointer">
+              <div className="flex gap-2 cursor-pointer place-items-center">
                 <Image
                   src={`/images/icon-${
                     settingImg[setting as keyof typeof settingImg]
@@ -42,6 +42,7 @@ const Settings = ({ search }: any) => {
                   height={0}
                   className="size-5"
                   alt={`icon-${setting}`}
+                  style={{ filter: darkMode && "invert(100%)" }}
                 />
                 {setting}
               </div>
@@ -51,11 +52,12 @@ const Settings = ({ search }: any) => {
                   width={20}
                   height={20}
                   alt="icon-chevron-right"
+                  style={{ filter: darkMode && "invert(100%)" }}
                 />
               )}
             </button>
           ))}
-          <div className="border-b my-1"></div>
+          <div className="border-b my-1 dark:border-neutral-700" />
 
           <button
             className="flex justify-start place-items-center p-2 rounded-lg gap-2 cursor-pointer "
@@ -80,94 +82,7 @@ const Settings = ({ search }: any) => {
           {toggleSettingType == "Color Theme" && <ColorTheme />}
           {toggleSettingType == "Font Theme" && <FontTheme />}
         </div>
-        {toggleSettingType == "Change Password" && (
-          <div>
-            <form className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1">
-                <label htmlFor="">Old Password</label>
-                <div className="relative">
-                  <input
-                    type={toggleHideOldPassword ? "password" : "text"}
-                    className="p-2 rounded-lg border-2 border-neutral-300 focus:border-neutral-600 text-neutral-500 text-sm hover:bg-neutral-50 outline-none outline-offset-2 focus:ring-neutral-600 focus:outline-neutral-500 w-full"
-                  />
-                  <div
-                    onClick={() =>
-                      setToggleHideOldPassword(!toggleHideOldPassword)
-                    }
-                  >
-                    <Image
-                      src={`/images/icon-${
-                        toggleHideOldPassword ? "hide" : "show"
-                      }-password.svg`}
-                      width={0}
-                      height={0}
-                      alt="icon-hide-password"
-                      className="size-5 absolute right-4 top-[10px] cursor-pointer"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col gap-1">
-                <label htmlFor="">New Password</label>
-                <div className="relative">
-                  <input
-                    type={toggleHideNewPassword ? "password" : "text"}
-                    className="p-2 rounded-lg border-2 border-neutral-300 focus:border-neutral-600 text-neutral-500 text-sm hover:bg-neutral-50 outline-none outline-offset-2 focus:ring-neutral-600 focus:outline-neutral-500 w-full"
-                  />
-                  <div
-                    onClick={() =>
-                      setToggleHideNewPassword(!toggleHideNewPassword)
-                    }
-                  >
-                    <Image
-                      src={`/images/icon-${
-                        toggleHideNewPassword ? "hide" : "show"
-                      }-password.svg`}
-                      width={0}
-                      height={0}
-                      alt="icon-hide-password"
-                      className="size-5 absolute right-4 top-[10px] cursor-pointer"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col gap-1">
-                <label htmlFor="">Confirm New Password</label>
-                <div className="relative">
-                  <input
-                    type={toggleHideConfirmNewPassword ? "password" : "text"}
-                    className="p-2 rounded-lg border-2 border-neutral-300 focus:border-neutral-600 text-neutral-500 text-sm hover:bg-neutral-50 outline-none outline-offset-2 focus:ring-neutral-600 focus:outline-neutral-500 w-full"
-                  />
-                  <div
-                    onClick={() =>
-                      setToggleHideConfirmNewPassword(
-                        !toggleHideConfirmNewPassword
-                      )
-                    }
-                  >
-                    <Image
-                      src={`/images/icon-${
-                        toggleHideConfirmNewPassword ? "hide" : "show"
-                      }-password.svg`}
-                      width={0}
-                      height={0}
-                      alt="icon-hide-password"
-                      className="size-5 absolute right-4 top-[10px] cursor-pointer"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-end">
-                <PrimaryBtn
-                  text="Save Password"
-                  textColor={"text-white"}
-                  backgroundColor={"bg-blue-500"}
-                  padding={"px-4 py-3"}
-                />
-              </div>
-            </form>
-          </div>
-        )}
+        {toggleSettingType == "Change Password" && <ChangePassword />}
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import connectDB from "@/config/database";
 import React from "react";
 import { auth } from "../api/auth/[...nextauth]/auth";
 import User from "@/models/User";
+import { redirect } from "next/navigation";
 
 const page = async () => {
   await connectDB();
@@ -11,6 +12,7 @@ const page = async () => {
   console.log("checking auth...");
   if (!session || !session?.user?.id) {
     console.log("not authenticated, redirecting to login.");
+    redirect("/login");
   }
   let notesApi = JSON.parse(JSON.stringify(userApi?.notes || []));
   let user = JSON.parse(JSON.stringify(userApi));

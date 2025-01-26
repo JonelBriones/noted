@@ -12,9 +12,10 @@ interface Params {
   note?: Note;
   notes?: Note[];
 }
-const SidebarRight = ({ note, notes }: Params) => {
+const SidebarRight = ({ note }: Params) => {
   if (!note) return;
   const { isArchived } = note;
+  const { darkMode } = useAppContext();
   const [type, setType] = useState("");
   const [toggleModal, setToggleModal] = useState(false);
   let params = {
@@ -23,27 +24,11 @@ const SidebarRight = ({ note, notes }: Params) => {
   };
   const { img, backgroundColor } = params;
 
-  useEffect(() => {}, [note]);
-
-  let currentViewNoteIdx = (): number => {
-    if (notes) {
-      for (let [idx, n] of notes?.entries()) {
-        if (n._id == note?._id) {
-          return idx;
-        }
-      }
-    }
-    return 0;
-  };
-  let changeNote = notes && notes[currentViewNoteIdx()];
-
-  useEffect(() => {}, [note]);
-
   return (
     <div className="hidden md:flex flex-col w-[242px] flex-none gap-4 p-4">
       <div className="flex flex-col gap-3 text-sm">
         <button
-          className="flex gap-2 border rounded-lg p-3"
+          className="flex gap-2 border rounded-lg p-3 dark:border-neutral-700"
           onClick={() => {
             {
               isArchived
@@ -59,11 +44,12 @@ const SidebarRight = ({ note, notes }: Params) => {
             height={0}
             className="size-5"
             alt="icon-tag"
+            style={{ filter: darkMode && "invert(100%)" }}
           />
           {isArchived ? "Restore" : "Archive"} Note
         </button>
         <button
-          className="flex gap-2 border rounded-lg p-3"
+          className="flex gap-2 border rounded-lg p-3 dark:border-neutral-700"
           onClick={() => {
             setToggleModal(true), setType("Delete");
           }}
@@ -74,6 +60,7 @@ const SidebarRight = ({ note, notes }: Params) => {
             height={0}
             className="size-5"
             alt="icon-delete"
+            style={{ filter: darkMode && "invert(100%)" }}
           />
           Delete Note
         </button>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Note } from "@/app/_types/types";
 import { editNote } from "@/app/_actions/editNote";
+import { useAppContext } from "../Providers";
 interface Params {
   note?: Note;
 }
@@ -15,6 +16,7 @@ const NoteCard = ({ note }: Params) => {
   }
 
   const { _id, title, tags, content, lastEdited, isArchived } = note;
+  const { darkMode } = useAppContext();
   const bindedAction = editNote.bind(null, _id);
   const [inputTag, setTag] = useState(tags.join(","));
   const pattern = /^(?!.*,,).*$/;
@@ -47,22 +49,24 @@ const NoteCard = ({ note }: Params) => {
   };
   const timestamp = lastEdited;
   const date = new Date(timestamp);
-  const formattedDate = date.toLocaleString("en-US", {
-    weekday: "short", // Full weekday name
-    year: "numeric", // Full year
-    month: "short", // Full month name
-    day: "numeric", // Day of the month
+  const day = date.getDate();
+  const month = date.toLocaleString("en-US", {
+    month: "long", // Full month name
+  });
+  const time = date.toLocaleString("en-US", {
     hour: "numeric", // Hour
     minute: "numeric", // Minutes
-    second: "numeric", // Seconds
   });
+  const year = date.getFullYear();
+
+  const formattedDate = `${month} ${day}, ${year} at ${time}`;
 
   const renderTagInput = (
     <input
       id="tag"
       type="text"
       placeholder="Add tags separated by commas (e.g. Work, Planning)"
-      className="w-full rounded-lg p-1 outline-none"
+      className="w-full rounded-lg p-1 outline-none dark:bg-stone-900 dark:text-white"
       pattern="^[a-zA-Z]+(,[a-zA-Z]+)*$"
       value={defaultNote.tags}
       title="Example: gym,health,personal"
@@ -92,14 +96,15 @@ const NoteCard = ({ note }: Params) => {
       <form
         action={bindedAction}
         autoComplete="off"
-        className="hidden md:flex flex-col flex-1 border-l border-r text-sm overflow-auto min-w-[588px]"
+        className="hidden md:flex flex-col flex-1 border-l border-r text-sm overflow-auto min-w-[588px] dark:border-neutral-700"
+        spellCheck="false"
       >
         <div className="flex flex-col gap-3 p-4">
           <input
             value={defaultNote.title}
             onChange={onChangeHandler}
             name="title"
-            className="text-2xl font-bold outline-none flex-1"
+            className="text-2xl font-bold outline-none flex-1 dark:bg-stone-900 dark:text-white"
           />
           {!defaultNote.title && <span>Title is required.</span>}
           <div className="flex flex-col gap-3">
@@ -111,6 +116,7 @@ const NoteCard = ({ note }: Params) => {
                   height={0}
                   className="size-4"
                   alt="icon-tag"
+                  style={{ filter: darkMode && "invert(100%)" }}
                 />
                 Tags
               </span>
@@ -139,6 +145,7 @@ const NoteCard = ({ note }: Params) => {
                     height={0}
                     className="size-4"
                     alt="icon-status"
+                    style={{ filter: darkMode && "invert(100%)" }}
                   />
                   Status
                 </span>
@@ -153,6 +160,7 @@ const NoteCard = ({ note }: Params) => {
                   height={0}
                   className="size-4"
                   alt="icon-clock"
+                  style={{ filter: darkMode && "invert(100%)" }}
                 />
                 Last edited
               </span>
@@ -160,16 +168,16 @@ const NoteCard = ({ note }: Params) => {
             </div>
           </div>
         </div>
-        <div className="w-full h-[1px] bg-neutral-200" />
-        <div className="flex flex-col gap-4 text-neutral-800 flex-1 p-4">
+        <div className="w-full h-[1px] bg-neutral-200 dark:bg-neutral-700" />
+        <div className="flex flex-col gap-4 text-neutral-900 flex-1 p-4">
           <textarea
             value={defaultNote.content}
             name="content"
             onChange={onChangeHandler}
-            className="outline-none h-full"
+            className="outline-none h-full dark:bg-stone-900 dark:text-white"
           />
         </div>
-        <div className="w-full h-[1px] bg-neutral-200" />
+
         <div className="flex gap-4 w-fit p-4">
           <button
             type="submit"

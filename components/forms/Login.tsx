@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PrimaryBtn from "../buttons/PrimaryBtn";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
@@ -16,7 +16,9 @@ const Login = () => {
   };
 
   return (
-    <div className="m-auto md:w-[540px] h-full p-8 w-full flex gap-4 flex-col justify-start">
+    <div
+      className={`m-auto md:w-[540px] h-full p-8 w-full flex gap-4 flex-col justify-start`}
+    >
       <Link href={"/"} className="flex justify-center">
         <Image
           src={"/images/logo.svg"}

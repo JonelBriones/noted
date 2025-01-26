@@ -2,12 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-@media (prefers-color-scheme: dark) {
-}
+/* @media (prefers-color-scheme: dark) {
+} */
+/* @variant dark (&:where(.dark, .dark *));
+.dark {
+  @apply transition-colors duration-200;
+} */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 body {
+  transition: "background-color";
+  transition-duration: 200ms;
 }

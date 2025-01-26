@@ -11,9 +11,16 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
     fontTheme: "sans-serif",
     password: "",
   });
+  const [darkMode, setDarkMode] = useState(false);
   const [viewToggledNote, setViewToggledNote] = useState<Note | undefined>(
     undefined
   );
+
+  useEffect(() => {
+    if (settings.colorTheme) {
+      setDarkMode(settings?.colorTheme == "Dark Mode" ? true : false);
+    }
+  }, [settings]);
 
   return (
     <ThemeContext.Provider
@@ -24,6 +31,8 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
         setViewToggledNote,
         settings,
         setSettings,
+        darkMode,
+        setDarkMode,
       }}
     >
       {children}
