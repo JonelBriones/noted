@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Topbar from "./Topbar";
 import { redirect, useParams, usePathname } from "next/navigation";
 import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
@@ -13,7 +13,7 @@ type NoteType = {
   settings?: SettingsT;
 };
 const Dashboard = ({ notesApi, settings }: NoteType) => {
-  const { search, setSearch, setViewToggledNote, setSettings, darkMode } =
+  const { search, setSearch, setViewToggledNote, setSettings } =
     useAppContext();
 
   const { tag } = useParams() as { tag: string };

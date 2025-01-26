@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import MobileNavbar from "./mobile/MobileNavbar";
-import { useAppContext } from "./Providers";
 
 const Body = ({ children }: { children: React.ReactNode }) => {
   return (
