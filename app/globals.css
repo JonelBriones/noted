@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 /* @media (prefers-color-scheme: dark) {
-} */
-/* @variant dark (&:where(.dark, .dark *));
+}
+@variant dark (&:where(.dark, .dark *));
 .dark {
   @apply transition-colors duration-200;
 } */
@@ -13,7 +13,12 @@
   padding: 0;
   box-sizing: border-box;
 }
+@layer utilities {
+  .dark-transition {
+    @apply transition-colors duration-200;
+  }
+}
 body {
-  transition: "background-color";
-  transition-duration: 200ms;
+  /* transition: "background-color";
+  transition-duration: 200ms; */
 }

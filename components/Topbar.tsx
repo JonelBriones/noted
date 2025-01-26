@@ -19,7 +19,7 @@ const Topbar = ({ search, setSearch }: any) => {
   const { darkMode } = useAppContext();
 
   return (
-    <div className="w-full flex place-items-center justify-between md:border-b p-6 dark:border-neutral-700">
+    <div className=" hidden md:flex w-full place-items-center justify-between md:border-b p-6 dark:border-neutral-700">
       {search ? (
         <h1 className="font-bold text-2xl">Showing results for: {search}</h1>
       ) : (

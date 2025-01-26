@@ -40,7 +40,7 @@ const Navigation = ({ openedNotes }: OpenedNotes) => {
               className={` text-neutral-700 text-sm flex justify-between cursor-pointer p-2 rounded-lg transition-colors duration-200 ${
                 pathname == `/tag/${tag.toLowerCase()}`
                   ? "dark:text-white bg-neutral-100 dark:bg-neutral-800"
-                  : "dark:text-white dark:hover:bg-neutral-800 dark:hover:text-white"
+                  : "dark:text-white dark:hover:bg-neutral-800 dark:hover:text-white hover:bg-neutral-100"
               }`}
             >
               <div className="flex gap-2">
@@ -62,7 +62,7 @@ const Navigation = ({ openedNotes }: OpenedNotes) => {
   );
 
   return (
-    <div className="hidden w-[266px] md:flex flex-col flex-none gap-6 border-r p-4 dark:border-neutral-700">
+    <div className="hidden md:flex flex-col flex-none w-[266px] gap-6 border-r p-4 dark:border-neutral-700">
       {darkMode ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"

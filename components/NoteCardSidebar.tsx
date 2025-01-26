@@ -20,7 +20,7 @@ const NoteCardSummary = ({ note, viewToggledNote }: Params) => {
     <div
       className={`flex flex-col cursor-pointer rounded-lg mb-2 ${
         _id == viewToggledNote?._id
-          ? "md:bg-neutral-100 dark:bg-neutral-800"
+          ? "bg-neutral-100 dark:bg-neutral-800"
           : "rounded-none border-b border-neutral-200 dark:border-neutral-700"
       }`}
     >

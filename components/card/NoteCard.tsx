@@ -96,7 +96,7 @@ const NoteCard = ({ note }: Params) => {
       <form
         action={bindedAction}
         autoComplete="off"
-        className="hidden md:flex flex-col flex-1 border-l border-r text-sm overflow-auto min-w-[588px] dark:border-neutral-700"
+        className="flex flex-col flex-1 md:border-l md:border-r border-t md:border-t-0 text-sm overflow-auto dark:border-neutral-700"
         spellCheck="false"
       >
         <div className="flex flex-col gap-3 p-4">

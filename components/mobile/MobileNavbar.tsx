@@ -2,15 +2,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
+import { useAppContext } from "../Providers";
 
 const MobileNavbar = () => {
   const pathname = usePathname();
+  const { showMobileSearch, setShowMobileSearch } = useAppContext();
+  const toggleMobileSearch = () => {
+    setShowMobileSearch(true);
+  };
   return (
     <div className="md:hidden flex flex-none justify-between p-4">
       <Link
         href={"/"}
-        className={`p-1 px-4 ${pathname == "/" ? "bg-blue-50" : ""}`}
+        className={`p-1 px-4 rounded-lg ${pathname == "/" ? "bg-blue-50" : ""}`}
       >
         <Image
           src={"/images/icon-home.svg"}
@@ -19,20 +24,19 @@ const MobileNavbar = () => {
           alt="icon-home"
         />
       </Link>
-      <Link
-        href={"/search"}
-        className={`p-1 px-4 ${pathname == "/search" ? "bg-blue-50" : ""}`}
-      >
+      <button onClick={toggleMobileSearch} className="rounded-lg">
         <Image
           src={"/images/icon-search.svg"}
           width={24}
           height={24}
           alt="icon-search"
         />
-      </Link>
+      </button>
       <Link
         href={"/archived"}
-        className={`p-1 px-4 ${pathname == "/archived" ? "bg-blue-50" : ""}`}
+        className={`p-1 px-4 rounded-lg ${
+          pathname == "/archived" ? "bg-blue-50" : ""
+        }`}
       >
         <Image
           src={"/images/icon-archive.svg"}
@@ -43,7 +47,9 @@ const MobileNavbar = () => {
       </Link>
       <Link
         href={"/tag"}
-        className={`p-1 px-4 ${pathname == "/tag" ? "bg-blue-50" : ""}`}
+        className={`p-1 px-4 rounded-lg ${
+          pathname == "/tag" ? "bg-blue-50" : ""
+        }`}
       >
         <Image
           src={"/images/icon-tag.svg"}
@@ -54,7 +60,9 @@ const MobileNavbar = () => {
       </Link>
       <Link
         href={"/settings"}
-        className={`p-1 px-4 ${pathname == "/settings" ? "bg-blue-50" : ""}`}
+        className={`p-1 px-4 rounded-lg ${
+          pathname == "/settings" ? "bg-blue-50" : ""
+        }`}
       >
         <Image
           src={"/images/icon-settings.svg"}
