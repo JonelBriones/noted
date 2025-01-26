@@ -15,6 +15,8 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
   const [viewToggledNote, setViewToggledNote] = useState<Note | undefined>(
     undefined
   );
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [showMobileTags, setShowMobileTags] = useState(false);
 
   useEffect(() => {
     if (settings.colorTheme) {
@@ -33,6 +35,10 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
         setSettings,
         darkMode,
         setDarkMode,
+        showMobileSearch,
+        setShowMobileSearch,
+        showMobileTags,
+        setShowMobileTags,
       }}
     >
       {children}

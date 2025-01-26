@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { Note, SettingsT } from "@/app/_types/types";
 import Image from "next/image";
 import Link from "next/link";
+import SidebarRight from "./SidebarActions";
 type NoteType = {
   notesApi: Note[];
   settings?: SettingsT;
@@ -89,7 +90,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
         </div>
       </div>
       {/* MOBILE */}
-      <div className="flex flex-col justify-evenly md:hidden h-full p-4">
+      <div className="flex flex-col justify-evenly md:hidden h-full p-4 overflow-hidden">
         <div>
           {darkMode ? (
             <svg
@@ -157,9 +158,22 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
         </div>
         <div>
           {viewToggledNote ? (
-            <button onClick={() => setViewToggledNote(undefined)}>
-              Go Back
-            </button>
+            <div className="flex justify-between">
+              <button
+                onClick={() => setViewToggledNote(undefined)}
+                className="flex place-items-center justify-center"
+              >
+                <Image
+                  src={"/images/icon-arrow-left.svg"}
+                  width={18}
+                  height={18}
+                  alt="icon-arrow-left"
+                  style={{ filter: darkMode && "invert(100%)" }}
+                />
+                <span className="text-neutral-600">Go Back</span>
+              </button>
+              <SidebarRight note={viewToggledNote} />
+            </div>
           ) : (
             <h1 className="text-neutral-950 text-lg ">
               {pathname == "/" && "All Notes"}
@@ -169,7 +183,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
             </h1>
           )}
         </div>
-        <div className="flex-1 relative">
+        <div className="flex-1 relative flex w-full gap-4 overflow-hidden">
           <NoteCardSummaryContainer notes={notes} search={search} />
         </div>
       </div>

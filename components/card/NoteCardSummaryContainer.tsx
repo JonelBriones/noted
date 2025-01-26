@@ -128,9 +128,9 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
 
       {/*   MOBILE */}
 
-      <div className="md:hidden">
+      <div className="md:hidden flex w-full">
         {viewToggledNote ? (
-          <div>
+          <div className="flex w-full ">
             {toggleCreateNote ? (
               <NoteForm
                 toggleCreateNote={toggleCreateNote}
@@ -140,16 +140,13 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
               />
             ) : (
               notes?.find((note: Note) => note._id == viewToggledNote?._id) && (
-                <div className="bg-blue-500 w-full">
-                  <NoteCard note={viewToggledNote} />
-                  <SidebarRight note={viewToggledNote} notes={notes} />
-                </div>
+                <NoteCard note={viewToggledNote} />
               )
             )}
           </div>
         ) : (
           <>
-            <div className="flex flex-col mt-3 overflow-scroll">
+            <div className="flex flex-grow flex-col mt-3 overflow-y-auto">
               {renderNoteCardSummary()}
             </div>
             <button

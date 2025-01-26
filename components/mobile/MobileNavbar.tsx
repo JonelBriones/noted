@@ -7,7 +7,8 @@ import { useAppContext } from "../Providers";
 
 const MobileNavbar = () => {
   const pathname = usePathname();
-  const { showMobileSearch, setShowMobileSearch } = useAppContext();
+  const { showMobileSearch, setShowMobileSearch, setShowMobileTags } =
+    useAppContext();
   const toggleMobileSearch = () => {
     setShowMobileSearch(true);
   };
@@ -45,8 +46,8 @@ const MobileNavbar = () => {
           alt="icon-archive"
         />
       </Link>
-      <Link
-        href={"/tag"}
+      <button
+        onClick={() => setShowMobileTags(true)}
         className={`p-1 px-4 rounded-lg ${
           pathname == "/tag" ? "bg-blue-50" : ""
         }`}
@@ -57,7 +58,7 @@ const MobileNavbar = () => {
           height={24}
           alt="icon-tag"
         />
-      </Link>
+      </button>
       <Link
         href={"/settings"}
         className={`p-1 px-4 rounded-lg ${

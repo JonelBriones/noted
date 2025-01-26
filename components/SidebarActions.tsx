@@ -25,10 +25,10 @@ const SidebarRight = ({ note }: Params) => {
   const { img, backgroundColor } = params;
 
   return (
-    <div className="hidden md:flex flex-col w-[242px] flex-none gap-4 p-4">
-      <div className="flex flex-col gap-3 text-sm">
+    <div className="flex md:flex-col md:w-[242px] flex-none gap-4 p-4">
+      <div className="flex md:flex-col gap-3 text-sm">
         <button
-          className="flex gap-2 border rounded-lg p-3 dark:border-neutral-700"
+          className="flex gap-2 md:border rounded-lg p-3 dark:border-neutral-700"
           onClick={() => {
             {
               isArchived
@@ -46,10 +46,12 @@ const SidebarRight = ({ note }: Params) => {
             alt="icon-tag"
             style={{ filter: darkMode && "invert(100%)" }}
           />
-          {isArchived ? "Restore" : "Archive"} Note
+          <span className="hidden md:block">
+            {isArchived ? "Restore" : "Archive"} Note
+          </span>
         </button>
         <button
-          className="flex gap-2 border rounded-lg p-3 dark:border-neutral-700"
+          className="flex gap-2 md:border rounded-lg p-3 dark:border-neutral-700"
           onClick={() => {
             setToggleModal(true), setType("Delete");
           }}
@@ -62,7 +64,7 @@ const SidebarRight = ({ note }: Params) => {
             alt="icon-delete"
             style={{ filter: darkMode && "invert(100%)" }}
           />
-          Delete Note
+          <span className="hidden md:block">Delete Note</span>
         </button>
       </div>
       {toggleModal && (

@@ -19,7 +19,7 @@ export default async function RootLayout({
     <AuthProvider>
       <ContextWrapper>
         <html lang="en" id="dark">
-          <body className="mx-auto flex flex-col h-screen md:px-6 dark:bg-stone-900 dark:text-neutral-200 dark-transition relative ">
+          <body className="mx-auto flex flex-col h-screen md:px-6 dark:bg-stone-900 dark:text-neutral-200 dark-transition relative overflow-hidden md:overflow-auto">
             {children}
             <MobileNavbar />
           </body>
