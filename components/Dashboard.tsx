@@ -76,21 +76,32 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     }
   }, [settings?.colorTheme === "Dark Mode"]);
 
-  const { data: session, status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      redirect("/login");
-    },
-  });
+  const [removeWelcome, setRemoveWelcome] = useState(false);
 
-  if (!session || !session.user) {
-    redirect("/login");
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return <div>loading...</div>;
+  }
+  if (status === "unauthenticated") {
+    return redirect("/login");
+  }
+
+  if (!session || !session.user?.id) {
+    return redirect("/login");
+  }
+
+  if (session) {
+    <div className={`${!removeWelcome ? "hidden" : ""}`}>
+      <h1>Welcome back {session.user.name}</h1>
+      <button onClick={() => setRemoveWelcome(true)}>Begin</button>
+    </div>;
   }
 
   const routes = ["home", "tag", "archived", "settings"];
 
   return (
-    <>
+    <div className={`${removeWelcome ? "hidden" : ""}`}>
       <div
         className={twMerge(
           "hidden md:block h-screen overflow-y-hidden font",
@@ -247,7 +258,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
