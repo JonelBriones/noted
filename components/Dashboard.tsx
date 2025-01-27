@@ -51,11 +51,15 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
   }
 
   useEffect(() => {
-    setViewToggledNote(notes[0]);
+    if (notes) {
+      setViewToggledNote(notes[0]);
+    }
   }, [toggleTag, view]);
 
   useEffect(() => {
-    setViewToggledNote(notes[0]);
+    if (notes) {
+      setViewToggledNote(notes[0]);
+    }
     setSettings(settings);
     if (settings?.colorTheme) {
       setDarkMode(settings?.colorTheme == "Dark Mode" ? true : false);
@@ -71,6 +75,10 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
       localStorage.setItem("theme", "light");
     }
   }, [settings?.colorTheme === "Dark Mode"]);
+
+  useEffect(() => {
+    console.log(session);
+  }, []);
 
   const { data: session, status } = useSession({
     required: true,
@@ -89,22 +97,6 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     console.log("please login");
     return <Login />;
   }
-  useEffect(() => {
-    console.log(session);
-  }, []);
-
-  // const { data: session, status } = useSession();
-  // if (status === "loading") {
-  //   return (
-  //     <div className="h-full flex place-items-center justify-center">
-  //       <div>loading</div>
-  //     </div>
-  //   );
-  // }
-  // if (!session) {
-  //   console.log("please login");
-  //   return <Login />;
-  // }
   const routes = ["home", "tag", "archived", "settings"];
 
   return (
@@ -119,7 +111,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
       >
         <div className="flex flex-col md:flex-row h-screen">
           <Navigation
-            openedNotes={openedNotes}
+            openedNotes={openedNotes || []}
             toggleTag={toggleTag}
             setToggleTag={setToggleTag}
             setView={setView}
@@ -260,7 +252,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
               {view == "home" && "All Notes"}
               {view == "archived" && "Archived Notes"}
               {view == "settings" && "Settings"}
-              {view == "tag" && `Notes Tagged: ${tag} `}
+              {view == "tag" && `Notes Tagged: ${toggleTag} `}
             </h1>
           )}
         </div>
