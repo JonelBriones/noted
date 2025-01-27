@@ -14,10 +14,10 @@ export default async function Home() {
     console.log("not authenticated, redirecting to login.");
     redirect("/login");
   }
-  // const userApi = await User.findOne({ _id: session?.user?.id });
-  // let notesApi = JSON.parse(JSON.stringify(userApi?.notes || []));
-  // let user = JSON.parse(JSON.stringify(userApi));
-  const userApi = await User.find({}).lean();
-  return <Dashboard user={user} />;
-  // return <Dashboard notesApi={notesApi} settings={user?.settings} />;
+
+  const userApi = await User.findOne({ _id: session?.user?.id });
+  let notesApi = JSON.parse(JSON.stringify(userApi?.notes || []));
+  let user = JSON.parse(JSON.stringify(userApi));
+
+  return <Dashboard notesApi={notesApi} settings={user?.settings} />;
 }

@@ -16,11 +16,8 @@ import Login from "./forms/Login";
 type NoteType = {
   notesApi?: Note[];
   settings?: SettingsT;
-  user: any;
 };
-const Dashboard = ({ user }: NoteType) => {
-  const { notes: apiNotes, settings } = user || {};
-  let notesApi = apiNotes;
+const Dashboard = ({ notesApi, settings }: NoteType) => {
   const {
     search,
     setSearch,
@@ -31,27 +28,8 @@ const Dashboard = ({ user }: NoteType) => {
     setDarkMode,
   } = useAppContext();
 
-  const { tag } = useParams() as { tag: string };
   const [toggleTag, setToggleTag] = useState("");
   const [view, setView] = useState("home");
-
-  useEffect(() => {
-    setViewToggledNote(notes[0]);
-    setSettings(settings);
-    if (settings?.colorTheme) {
-      setDarkMode(settings?.colorTheme == "Dark Mode" ? true : false);
-    }
-  }, [notesApi, settings]);
-
-  useEffect(() => {
-    if (settings?.colorTheme == "Dark Mode") {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [settings?.colorTheme === "Dark Mode"]);
 
   const openedNotes = notesApi?.filter(
     (note: Note) => note?.isArchived == false
@@ -71,11 +49,35 @@ const Dashboard = ({ user }: NoteType) => {
     default:
       notes = openedNotes;
   }
+
   useEffect(() => {
     setViewToggledNote(notes[0]);
   }, [toggleTag, view]);
 
-  const { data: session, status } = useSession();
+  useEffect(() => {
+    setViewToggledNote(notes[0]);
+    setSettings(settings);
+    if (settings?.colorTheme) {
+      setDarkMode(settings?.colorTheme == "Dark Mode" ? true : false);
+    }
+  }, [notesApi, settings]);
+
+  useEffect(() => {
+    if (settings?.colorTheme == "Dark Mode") {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [settings?.colorTheme === "Dark Mode"]);
+
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/login");
+    },
+  });
   if (status === "loading") {
     return (
       <div className="h-full flex place-items-center justify-center">
@@ -87,6 +89,22 @@ const Dashboard = ({ user }: NoteType) => {
     console.log("please login");
     return <Login />;
   }
+  useEffect(() => {
+    console.log(session);
+  }, []);
+
+  // const { data: session, status } = useSession();
+  // if (status === "loading") {
+  //   return (
+  //     <div className="h-full flex place-items-center justify-center">
+  //       <div>loading</div>
+  //     </div>
+  //   );
+  // }
+  // if (!session) {
+  //   console.log("please login");
+  //   return <Login />;
+  // }
   const routes = ["home", "tag", "archived", "settings"];
 
   return (
