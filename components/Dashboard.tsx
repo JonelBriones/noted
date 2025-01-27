@@ -81,20 +81,17 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
       return <Login />;
     },
   });
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      setLoading(false);
-    }
-  }, [status, session]);
-
-  if (loading) {
+  if (status === "loading") {
     return (
       <div className="h-full flex place-items-center justify-center">
         <div>loading...</div>
       </div>
     );
+  }
+
+  if (!session || !session.user) {
+    return <Login />;
   }
 
   const routes = ["home", "tag", "archived", "settings"];
