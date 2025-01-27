@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Topbar from "./Topbar";
-import { redirect, useParams, usePathname } from "next/navigation";
 import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
 import Navigation from "./Navigation";
 import Settings from "./Settings";
@@ -9,7 +8,6 @@ import { useAppContext } from "./Providers";
 import { useSession } from "next-auth/react";
 import { Note, SettingsT } from "@/app/_types/types";
 import Image from "next/image";
-import Link from "next/link";
 import SidebarRight from "./SidebarActions";
 import { twMerge } from "tailwind-merge";
 import Login from "./forms/Login";
@@ -86,13 +84,13 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
       return <Login />;
     },
   });
-  if (status === "loading") {
-    return (
-      <div className="h-full flex place-items-center justify-center">
-        <div>loading</div>
-      </div>
-    );
-  }
+  // if (status === "loading") {
+  //   return (
+  //     <div className="h-full flex place-items-center justify-center">
+  //       <div>loading</div>
+  //     </div>
+  //   );
+  // }
 
   const routes = ["home", "tag", "archived", "settings"];
 
