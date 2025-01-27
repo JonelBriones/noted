@@ -4,8 +4,8 @@ import User from "@/models/User";
 export const authOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
           prompt: "consent",
@@ -34,6 +34,9 @@ export const authOptions = {
         });
       }
       return true;
+    },
+    async redirect({ baseUrl }) {
+      return baseUrl;
     },
     async session({ session }) {
       const user = await User.findOne({ email: session.user.email });
