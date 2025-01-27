@@ -22,3 +22,12 @@ body {
   /* transition: "background-color";
   transition-duration: 200ms; */
 }
+.serif {
+  font-family: serif;
+}
+.sans-serif {
+  font-family: sans-serif;
+}
+.monospace {
+  font-family: monospace;
+}

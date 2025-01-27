@@ -17,12 +17,7 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
   );
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [showMobileTags, setShowMobileTags] = useState(false);
-
-  useEffect(() => {
-    if (settings.colorTheme) {
-      setDarkMode(settings?.colorTheme == "Dark Mode" ? true : false);
-    }
-  }, [settings]);
+  const [showMobileView, setShowMobileView] = useState(true);
 
   return (
     <ThemeContext.Provider
@@ -39,6 +34,8 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
         setShowMobileSearch,
         showMobileTags,
         setShowMobileTags,
+        showMobileView,
+        setShowMobileView,
       }}
     >
       {children}

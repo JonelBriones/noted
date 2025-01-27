@@ -182,6 +182,7 @@ const NoteCard = ({ note }: Params) => {
           <button
             type="submit"
             className="bg-blue-500 text-white rounded-lg py-3 px-4 font-bold"
+            onClick={() => {}}
           >
             Save
           </button>

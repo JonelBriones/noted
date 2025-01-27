@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Searchbar from "./Searchbar";
 import Image from "next/image";
-import { useParams, usePathname } from "next/navigation";
+import { redirect, useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useAppContext } from "./Providers";
@@ -10,8 +10,17 @@ import { useAppContext } from "./Providers";
 interface Params {
   text?: string;
   tag?: string;
+  toggleTag?: string;
+  setToggleTag: () => void;
+  setView: () => void;
 }
-const Topbar = ({ search, setSearch }: any) => {
+const Topbar = ({
+  search,
+  setSearch,
+  toggleTag,
+  setToggleTag,
+  setView,
+}: any) => {
   const pathname = usePathname();
   const tag = useParams().tag as string;
 
@@ -34,7 +43,11 @@ const Topbar = ({ search, setSearch }: any) => {
       <div className="hidden md:flex gap-4 place-items-center">
         <Searchbar search={search} setSearch={setSearch} />
 
-        <Link href={"/settings"}>
+        <button
+          onClick={() => {
+            setToggleTag(""), setView("settings");
+          }}
+        >
           <Image
             src={"/images/icon-settings.svg"}
             height={0}
@@ -44,7 +57,7 @@ const Topbar = ({ search, setSearch }: any) => {
             alt="icon-tag"
             style={{ filter: darkMode && "invert(100%)" }}
           />
-        </Link>
+        </button>
         {session?.user && (
           <div>
             <Image

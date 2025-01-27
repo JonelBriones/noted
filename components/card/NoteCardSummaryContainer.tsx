@@ -12,10 +12,12 @@ import Image from "next/image";
 interface Params {
   notes: any;
   search: string;
+  setView: (view: string) => void;
+  setToggleTag: (tag: string) => void;
 }
 
-const NoteCardSummaryContainer = ({ notes, search }: Params) => {
-  const { viewToggledNote, setViewToggledNote } = useAppContext();
+const NoteCardSummaryContainer = ({ notes, search, setView }: Params) => {
+  const { viewToggledNote, setViewToggledNote, setToggleTag } = useAppContext();
   let oldestToLatestUpdated = notes.sort(
     (a: any, b: any) => b.lastEdited - a.lastEdited
   );
@@ -119,7 +121,12 @@ const NoteCardSummaryContainer = ({ notes, search }: Params) => {
             notes?.find((note: Note) => note._id == viewToggledNote?._id) && (
               <>
                 <NoteCard note={viewToggledNote} />
-                <SidebarRight note={viewToggledNote} notes={notes} />
+                <SidebarRight
+                  note={viewToggledNote}
+                  notes={notes}
+                  setView={setView}
+                  setToggleTag={setToggleTag}
+                />
               </>
             )
           )}

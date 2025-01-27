@@ -2,13 +2,23 @@
 import { Note } from "@/app/_types/types";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import React from "react";
 import { useAppContext } from "./Providers";
 interface OpenedNotes {
   openedNotes: Note[];
+  toggleTag: string;
+  setToggleTag: (tag: string) => void;
+  view: string;
+  setView: (tag: string) => void;
 }
-const Navigation = ({ openedNotes }: OpenedNotes) => {
+const Navigation = ({
+  openedNotes,
+  toggleTag,
+  setToggleTag,
+  setView,
+  view,
+}: OpenedNotes) => {
   const { darkMode } = useAppContext();
   const tags = [
     ...new Set(
@@ -29,16 +39,20 @@ const Navigation = ({ openedNotes }: OpenedNotes) => {
       style={{ filter: darkMode && "invert(100%)" }}
     />
   );
+
   const renderLinks = (
     <div className="flex flex-col">
       {tags.map(
         (tag: string) =>
           tag.length >= 1 && (
-            <Link
-              href={`/tag/${tag.toLowerCase()}`}
+            <button
+              onClick={() => {
+                setToggleTag(tag);
+                setView("tag");
+              }}
               key={tag}
               className={` text-neutral-700 text-sm flex justify-between cursor-pointer p-2 rounded-lg transition-colors duration-200 ${
-                pathname == `/tag/${tag.toLowerCase()}`
+                tag == toggleTag
                   ? "dark:text-white bg-neutral-100 dark:bg-neutral-800"
                   : "dark:text-white dark:hover:bg-neutral-800 dark:hover:text-white hover:bg-neutral-100"
               }`}
@@ -54,8 +68,8 @@ const Navigation = ({ openedNotes }: OpenedNotes) => {
                 />
                 <span>{tag}</span>
               </div>
-              {pathname == `/tag/${tag.toLowerCase()}` && toggleChevron}
-            </Link>
+              {tag == toggleTag && toggleChevron}
+            </button>
           )
       )}
     </div>
@@ -128,16 +142,16 @@ const Navigation = ({ openedNotes }: OpenedNotes) => {
       )}
       <div className="flex flex-col gap-4 overflow-auto">
         <div className="flex flex-col">
-          <Link
-            href={"/"}
+          <button
+            onClick={() => setView("home")}
             className={`flex justify-between p-2 rounded-lg  ${
-              pathname == `/`
+              view == "home"
                 ? "bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-100"
                 : ""
             }`}
           >
-            <div className="flex gap-2 cursor-pointer border-blue-500">
-              {pathname == "/" ? (
+            <div className="flex place-items-center gap-2 cursor-pointer border-blue-500">
+              {view == "home" ? (
                 <>
                   {
                     <svg
@@ -180,18 +194,18 @@ const Navigation = ({ openedNotes }: OpenedNotes) => {
               )}
               All Notes
             </div>
-            {pathname == "/" && toggleChevron}
-          </Link>
-          <Link
-            href={"/archived"}
+            {view == "home" && toggleChevron}
+          </button>
+          <button
+            onClick={() => setView("archived")}
             className={`flex justify-between p-2 rounded-lg ${
-              pathname == `/archived`
+              view == "archived"
                 ? "bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-100"
                 : ""
             }`}
           >
             <div className="flex gap-2 cursor-pointer">
-              {pathname == "/archived" ? (
+              {view == "archived" ? (
                 <>
                   {
                     <svg
@@ -230,8 +244,8 @@ const Navigation = ({ openedNotes }: OpenedNotes) => {
               )}
               Archived Notes
             </div>
-            {pathname == "/archived" && toggleChevron}
-          </Link>
+            {view == "archived" && toggleChevron}
+          </button>
         </div>
         <div className="w-full h-[1px] bg-neutral-200 dark:bg-neutral-700" />
         <div className="flex flex-col gap-2">

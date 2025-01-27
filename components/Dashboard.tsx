@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Topbar from "./Topbar";
 import { redirect, useParams, usePathname } from "next/navigation";
 import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
@@ -11,6 +11,7 @@ import { Note, SettingsT } from "@/app/_types/types";
 import Image from "next/image";
 import Link from "next/link";
 import SidebarRight from "./SidebarActions";
+import { twMerge } from "tailwind-merge";
 type NoteType = {
   notesApi: Note[];
   settings?: SettingsT;
@@ -19,18 +20,25 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
   const {
     search,
     setSearch,
-    setViewToggledNote,
     setSettings,
     darkMode,
+    setViewToggledNote,
     viewToggledNote,
+    setDarkMode,
   } = useAppContext();
 
   const { tag } = useParams() as { tag: string };
   const pathname = usePathname();
+  const [toggleTag, setToggleTag] = useState("");
+  const [view, setView] = useState("home");
 
   useEffect(() => {
     setViewToggledNote(notes[0]);
     setSettings(settings);
+    console.log("changing settings");
+    if (settings?.colorTheme) {
+      setDarkMode(settings?.colorTheme == "Dark Mode" ? true : false);
+    }
   }, [notesApi, settings]);
 
   useEffect(() => {
@@ -57,10 +65,26 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     note.tags.includes(tag)
   );
 
-  const notes =
-    (pathname.includes("/tag") && viewByTag) ||
-    (pathname == "/archived" && archivedNotes) ||
-    openedNotes;
+  let notes = openedNotes;
+
+  switch (view) {
+    case "tag":
+      notes = openedNotes?.filter((note: Note) =>
+        note.tags.includes(toggleTag)
+      );
+      console.log("tags:", notes);
+      break;
+    case "archived":
+      notes = notesApi?.filter((note: Note) => note?.isArchived == true);
+      console.log("archive:", notes);
+
+      break;
+    default:
+      notes = openedNotes;
+  }
+  useEffect(() => {
+    setViewToggledNote(notes[0]);
+  }, [toggleTag, view]);
 
   const { data: session, status } = useSession();
   if (status === "loading") {
@@ -76,20 +100,68 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
 
   return (
     <>
-      <div className="hidden md:block h-screen overflow-y-hidden">
+      <div
+        className={twMerge(
+          "hidden md:block h-screen overflow-y-hidden font",
+          settings?.fontTheme == "serif" && "serif",
+          settings?.fontTheme == "sans-serif" && "sans-serif",
+          settings?.fontTheme == "monospace" && "monospace"
+        )}
+      >
         <div className="flex flex-col md:flex-row h-screen">
-          <Navigation openedNotes={openedNotes} />
+          <Navigation
+            openedNotes={openedNotes}
+            toggleTag={toggleTag}
+            setToggleTag={setToggleTag}
+            setView={setView}
+            view={view}
+          />
           <div className="flex flex-col h-screen flex-grow">
-            <Topbar search={search} setSearch={setSearch} />
-            {pathname == "/settings" ? (
-              <Settings search={search} setSearch={setSearch} />
-            ) : (
-              <NoteCardSummaryContainer notes={notes} search={search} />
+            <Topbar
+              search={search}
+              setSearch={setSearch}
+              toggleTag={toggleTag}
+              setToggleTag={setToggleTag}
+              setView={setView}
+            />
+            {view == "settings" && (
+              <Settings
+                search={search}
+                setSearch={setSearch}
+                setView={setView}
+              />
+            )}
+            {view == "archived" && (
+              <NoteCardSummaryContainer
+                notes={notes}
+                search={search}
+                setView={setView}
+                setToggleTag={setToggleTag}
+              />
+            )}
+            {view == "home" && (
+              <NoteCardSummaryContainer
+                notes={notes}
+                search={search}
+                setView={setView}
+                setToggleTag={setToggleTag}
+              />
+            )}
+            {view == "tag" && (
+              <NoteCardSummaryContainer
+                notes={notes}
+                search={search}
+                setView={setView}
+                setToggleTag={setToggleTag}
+              />
             )}
           </div>
         </div>
       </div>
       {/* MOBILE */}
+
+      {/* ON MOBILE NAV ON CLICK SET TOGGLE AND MANUALLY SET NOTES TO CORRESPOND TO VIEW */}
+
       <div className="flex flex-col justify-evenly md:hidden h-full p-4 overflow-hidden">
         <div>
           {darkMode ? (
@@ -172,7 +244,11 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
                 />
                 <span className="text-neutral-600">Go Back</span>
               </button>
-              <SidebarRight note={viewToggledNote} />
+              <SidebarRight
+                note={viewToggledNote}
+                setView={setView}
+                setToggleTag={setToggleTag}
+              />
             </div>
           ) : (
             <h1 className="text-neutral-950 text-lg ">
@@ -184,7 +260,12 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
           )}
         </div>
         <div className="flex-1 relative flex w-full gap-4 overflow-hidden">
-          <NoteCardSummaryContainer notes={notes} search={search} />
+          <NoteCardSummaryContainer
+            notes={notes}
+            search={search}
+            setView={setView}
+            setToggleTag={setToggleTag}
+          />
         </div>
       </div>
     </>

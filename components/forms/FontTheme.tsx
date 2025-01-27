@@ -19,7 +19,10 @@ const FontTheme = () => {
             key={font}
             className={twMerge(
               "flex gap-4 border border-neutral-200 p-4 rounded-xl place-items-center dark:border-none transition duration-200",
-              toggleFontTheme == font && "dark:bg-neutral-800"
+              toggleFontTheme == font && "dark:bg-neutral-800",
+              font == "serif" && "serif",
+              font == "sans-serif" && "sans-serif",
+              font == "monospace" && "monospace"
             )}
             onClick={() => {
               setToggleFontTheme(font), updateSettings({ fontTheme: font });

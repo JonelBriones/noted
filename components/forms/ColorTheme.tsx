@@ -8,7 +8,7 @@ import { useAppContext } from "../Providers";
 const ColorTheme = () => {
   const { settings, darkMode } = useAppContext();
   const { colorTheme } = settings || {};
-  const colorThemeOptions = ["Light Mode", "Dark Mode", "System"];
+  const colorThemeOptions = ["Light Mode", "Dark Mode"];
   const colorThemeImage = {
     "Light Mode": "sun",
     "Dark Mode": "moon",

@@ -11,11 +11,13 @@ import { archiveNote } from "@/app/_actions/archiveNote";
 interface Params {
   note?: Note;
   notes?: Note[];
+  setView: (view: string) => void;
+  setToggleTag: (view: string) => void;
 }
-const SidebarRight = ({ note }: Params) => {
+const SidebarRight = ({ note, setView, setToggleTag }: Params) => {
   if (!note) return;
   const { isArchived } = note;
-  const { darkMode } = useAppContext();
+  const { darkMode, setViewToggledNote } = useAppContext();
   const [type, setType] = useState("");
   const [toggleModal, setToggleModal] = useState(false);
   let params = {
@@ -46,9 +48,19 @@ const SidebarRight = ({ note }: Params) => {
             alt="icon-tag"
             style={{ filter: darkMode && "invert(100%)" }}
           />
-          <span className="hidden md:block">
-            {isArchived ? "Restore" : "Archive"} Note
-          </span>
+
+          {isArchived ? (
+            <span
+              className="hidden md:block"
+              onClick={() => {
+                setView("home");
+              }}
+            >
+              Restore
+            </span>
+          ) : (
+            <span className="hidden md:block">Archive</span>
+          )}
         </button>
         <button
           className="flex gap-2 md:border rounded-lg p-3 dark:border-neutral-700"
@@ -64,7 +76,7 @@ const SidebarRight = ({ note }: Params) => {
             alt="icon-delete"
             style={{ filter: darkMode && "invert(100%)" }}
           />
-          <span className="hidden md:block">Delete Note</span>
+          <span className="hidden md:block">Delete</span>
         </button>
       </div>
       {toggleModal && (
@@ -78,6 +90,7 @@ const SidebarRight = ({ note }: Params) => {
           setToggleModal={setToggleModal}
           deleteNote={deleteNote}
           archiveNote={archiveNote}
+          setView={setView}
         />
       )}
     </div>

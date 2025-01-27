@@ -26,11 +26,6 @@ export const archiveNote = async (note_id: string, isArchived: boolean) => {
     }
   );
 
-  if (isArchived) {
-    revalidatePath("/", "layout");
-    redirect("/");
-  } else {
-    revalidatePath("/archived", "layout");
-    redirect("/archived");
-  }
+  revalidatePath("/", "layout");
+  redirect("/");
 };

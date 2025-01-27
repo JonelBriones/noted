@@ -14,6 +14,7 @@ const Modal = ({
   setToggleModal,
   deleteNote,
   archiveNote,
+  setView,
 }: any) => {
   const { darkMode } = useAppContext();
   return (
@@ -55,7 +56,8 @@ const Modal = ({
             <button
               onClick={() => {
                 setToggleModal(false);
-                type == "Delete" ? deleteNote(id) : archiveNote(id, isArchived);
+                type == "Delete" ? deleteNote(id) : archiveNote(id, isArchived),
+                  setView("archived");
               }}
               className={`block text-center p-2 ${textColor} ${backgroundColor} rounded-lg text-sm cursor-pointer py-2 px-4`}
             >
