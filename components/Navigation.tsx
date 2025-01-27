@@ -28,8 +28,6 @@ const Navigation = ({
     ),
   ];
 
-  const pathname = usePathname();
-
   const toggleChevron = (
     <Image
       src={"/images/icon-chevron-right.svg"}

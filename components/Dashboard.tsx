@@ -28,27 +28,22 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
   } = useAppContext();
 
   const { tag } = useParams() as { tag: string };
-  const pathname = usePathname();
   const [toggleTag, setToggleTag] = useState("");
   const [view, setView] = useState("home");
 
   useEffect(() => {
     setViewToggledNote(notes[0]);
     setSettings(settings);
-    console.log("changing settings");
     if (settings?.colorTheme) {
       setDarkMode(settings?.colorTheme == "Dark Mode" ? true : false);
     }
   }, [notesApi, settings]);
 
   useEffect(() => {
-    console.log("choose mode:");
     if (settings?.colorTheme == "Dark Mode") {
-      console.log("adding dark mode");
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
     } else {
-      console.log("removing dark mode");
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
     }
@@ -58,13 +53,6 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     (note: Note) => note?.isArchived == false
   );
 
-  const archivedNotes = notesApi?.filter(
-    (note: Note) => note?.isArchived == true
-  );
-  const viewByTag = openedNotes?.filter((note: Note) =>
-    note.tags.includes(tag)
-  );
-
   let notes = openedNotes;
 
   switch (view) {
@@ -72,12 +60,9 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
       notes = openedNotes?.filter((note: Note) =>
         note.tags.includes(toggleTag)
       );
-      console.log("tags:", notes);
       break;
     case "archived":
       notes = notesApi?.filter((note: Note) => note?.isArchived == true);
-      console.log("archive:", notes);
-
       break;
     default:
       notes = openedNotes;

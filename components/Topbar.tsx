@@ -23,9 +23,6 @@ const Topbar = ({
   setView,
   view,
 }: any) => {
-  const pathname = usePathname();
-  const tag = useParams().tag as string;
-
   const { data: session } = useSession();
   const { darkMode } = useAppContext();
 
