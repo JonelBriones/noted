@@ -14,9 +14,17 @@ interface Params {
   search: string;
   setView: (view: string) => void;
   setToggleTag: (tag: string) => void;
+  view: string;
+  toggleTag?: string;
 }
 
-const NoteCardSummaryContainer = ({ notes, search, setView }: Params) => {
+const NoteCardSummaryContainer = ({
+  notes,
+  search,
+  setView,
+  view,
+  toggleTag,
+}: Params) => {
   const { viewToggledNote, setViewToggledNote, setToggleTag } = useAppContext();
   let oldestToLatestUpdated = notes.sort(
     (a: any, b: any) => b.lastEdited - a.lastEdited
@@ -75,7 +83,7 @@ const NoteCardSummaryContainer = ({ notes, search, setView }: Params) => {
             + Create new note
           </button>
 
-          {pathname == "/archived" && (
+          {view == "archived" && (
             <>
               <p className="text-sm  text-neutral-700 dark:text-white">
                 All your archived notes are stored here. You can restore or
@@ -90,7 +98,7 @@ const NoteCardSummaryContainer = ({ notes, search, setView }: Params) => {
               )}
             </>
           )}
-          {pathname == "/" && notes?.length == 0 && (
+          {view == "home" && notes?.length == 0 && (
             <>
               <p className="text-sm  text-neutral-700 mt-3 dark:text-white">
                 You don’t have any notes yet. Start a new note to capture your
@@ -98,9 +106,9 @@ const NoteCardSummaryContainer = ({ notes, search, setView }: Params) => {
               </p>
             </>
           )}
-          {pathname.includes("/tag/") && (
+          {view == "tag" && (
             <p className="text-sm  text-neutral-700 mt-3 dark:text-white">
-              All notes with the {tag} tag are shown here.
+              All notes with the {toggleTag} tag are shown here.
             </p>
           )}
 

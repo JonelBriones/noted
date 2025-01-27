@@ -97,6 +97,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
   if (!session) {
     return redirect("/login");
   }
+  const routes = ["home", "tag", "archived", "settings"];
 
   return (
     <>
@@ -123,37 +124,33 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
               toggleTag={toggleTag}
               setToggleTag={setToggleTag}
               setView={setView}
+              view={view}
             />
-            {view == "settings" && (
+            {view == "settings" ? (
               <Settings
                 search={search}
                 setSearch={setSearch}
                 setView={setView}
               />
-            )}
-            {view == "archived" && (
-              <NoteCardSummaryContainer
-                notes={notes}
-                search={search}
-                setView={setView}
-                setToggleTag={setToggleTag}
-              />
-            )}
-            {view == "home" && (
-              <NoteCardSummaryContainer
-                notes={notes}
-                search={search}
-                setView={setView}
-                setToggleTag={setToggleTag}
-              />
-            )}
-            {view == "tag" && (
-              <NoteCardSummaryContainer
-                notes={notes}
-                search={search}
-                setView={setView}
-                setToggleTag={setToggleTag}
-              />
+            ) : (
+              routes.map(
+                (route) =>
+                  view == route && (
+                    <div
+                      key={route}
+                      className="flex flex-col h-screen flex-grow"
+                    >
+                      <NoteCardSummaryContainer
+                        view={view}
+                        notes={notes}
+                        search={search}
+                        setView={setView}
+                        setToggleTag={setToggleTag}
+                        toggleTag={toggleTag}
+                      />
+                    </div>
+                  )
+              )
             )}
           </div>
         </div>
@@ -252,10 +249,10 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
             </div>
           ) : (
             <h1 className="text-neutral-950 text-lg ">
-              {pathname == "/" && "All Notes"}
-              {pathname == "/archived" && "ArchivedNotes"}
-              {pathname == "/settings" && "Settings"}
-              {pathname.includes("/tag") && `Notes Tagged: ${tag} `}
+              {view == "home" && "All Notes"}
+              {view == "archived" && "Archived Notes"}
+              {view == "settings" && "Settings"}
+              {view == "tag" && `Notes Tagged: ${tag} `}
             </h1>
           )}
         </div>
@@ -264,6 +261,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
             notes={notes}
             search={search}
             setView={setView}
+            view={view}
             setToggleTag={setToggleTag}
           />
         </div>

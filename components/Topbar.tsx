@@ -13,6 +13,7 @@ interface Params {
   toggleTag?: string;
   setToggleTag: () => void;
   setView: () => void;
+  view: string;
 }
 const Topbar = ({
   search,
@@ -20,6 +21,7 @@ const Topbar = ({
   toggleTag,
   setToggleTag,
   setView,
+  view,
 }: any) => {
   const pathname = usePathname();
   const tag = useParams().tag as string;
@@ -33,11 +35,10 @@ const Topbar = ({
         <h1 className="font-bold text-2xl">Showing results for: {search}</h1>
       ) : (
         <h1 className="font-bold text-2xl dark:text-white">
-          {pathname == "/" && "All Notes"}
-          {pathname == "/archived" && "Archived Notes"}
-          {pathname.includes("/tag/") &&
-            `Notes Tagged: ${tag.charAt(0).toUpperCase() + tag.slice(1)}`}
-          {pathname == "/settings" && "Settings"}
+          {view == "home" && "All Notes"}
+          {view == "archived" && "Archived Notes"}
+          {view == "tag" && `Notes Tagged:${toggleTag}`}
+          {view == "settings" && "Settings"}
         </h1>
       )}
       <div className="hidden md:flex gap-4 place-items-center">

@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import PrimaryBtn from "../buttons/PrimaryBtn";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 const Signup = () => {
   const [toggleHidePassword, setToggleHidePassword] = useState(true);
@@ -108,7 +109,10 @@ const Signup = () => {
           <div className="w-full h-[1px] bg-neutral-200" />
           <div className="flex flex-col gap-4">
             <p className="text-neutral-600 text-sm">Or log in with:</p>
-            <div className="flex place-items-center justify-center gap-4 p-2 border-2 rounded-lg cursor-pointer hover:bg-neutral-50">
+            <button
+              className="flex place-items-center justify-center gap-4 p-2  border-2 rounded-lg cursor-pointer hover:bg-neutral-50"
+              onClick={() => signIn("google")}
+            >
               <Image
                 src={"/images/icon-google.svg"}
                 width={0}
@@ -119,7 +123,7 @@ const Signup = () => {
               <span className="text-lg text-neutral-950 font-medium">
                 Google
               </span>
-            </div>
+            </button>
           </div>
           <span className="text-neutral-600 text-sm">
             Already have an account?{" "}
