@@ -14,10 +14,13 @@ import SidebarRight from "./SidebarActions";
 import { twMerge } from "tailwind-merge";
 import Login from "./forms/Login";
 type NoteType = {
-  notesApi: Note[];
+  notesApi?: Note[];
   settings?: SettingsT;
+  user: any;
 };
-const Dashboard = ({ notesApi, settings }: NoteType) => {
+const Dashboard = ({ user }: NoteType) => {
+  const { notes: apiNotes, settings } = user || {};
+  let notesApi = apiNotes;
   const {
     search,
     setSearch,

@@ -5,23 +5,19 @@ import connectDB from "@/config/database";
 import User from "@/models/User";
 import { auth } from "./api/auth/[...nextauth]/auth";
 import { redirect } from "next/navigation";
+
 export default async function Home() {
   await connectDB();
-  // const session = await auth();
-
-  // console.log("checking auth...");
-  // if (!session || !session?.user?.id) {
-  //   console.log("not authenticated, redirecting to login.");
-  //   redirect("/login");
-  // }
-
+  const session = await auth();
+  console.log("checking auth...");
+  if (!session || !session?.user?.id) {
+    console.log("not authenticated, redirecting to login.");
+    redirect("/login");
+  }
   // const userApi = await User.findOne({ _id: session?.user?.id });
   // let notesApi = JSON.parse(JSON.stringify(userApi?.notes || []));
   // let user = JSON.parse(JSON.stringify(userApi));
-  const settings = {
-    colorTheme: "Light Mode",
-    fontTheme: "sans-serif",
-    password: "",
-  };
-  return <Dashboard notesApi={[]} settings={settings} />;
+  const userApi = await User.find({}).lean();
+  return <Dashboard user={user} />;
+  // return <Dashboard notesApi={notesApi} settings={user?.settings} />;
 }
