@@ -138,7 +138,6 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
                         notes={notes}
                         search={search}
                         setView={setView}
-                        setToggleTag={setToggleTag}
                         toggleTag={toggleTag}
                       />
                     </Fragment>
@@ -234,11 +233,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
                 />
                 <span className="text-neutral-600">Go Back</span>
               </button>
-              <SidebarRight
-                note={viewToggledNote}
-                setView={setView}
-                setToggleTag={setToggleTag}
-              />
+              <SidebarRight note={viewToggledNote} setView={setView} />
             </div>
           ) : (
             <h1 className="text-neutral-950 text-lg ">
@@ -255,7 +250,6 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
             search={search}
             setView={setView}
             view={view}
-            setToggleTag={setToggleTag}
           />
         </div>
       </div>
