@@ -10,7 +10,8 @@ import ChangePassword from "./forms/ChangePassword";
 import { useAppContext } from "./Providers";
 const Settings = ({ search }: any) => {
   const { darkMode } = useAppContext();
-  const settings = ["Color Theme", "Font Theme", "Change Password"];
+  const settings = ["Color Theme", "Font Theme"];
+  // const settings = ["Color Theme", "Font Theme", "Change Password"];
 
   const [toggleSettingType, setToggleSettingType] = useState("Color Theme");
   const settingImg = {
@@ -71,6 +72,7 @@ const Settings = ({ search }: any) => {
               height={0}
               className="size-5"
               alt={`icon-logout`}
+              style={{ filter: darkMode && "invert(100%)" }}
             />
             Logout
           </button>
@@ -81,8 +83,8 @@ const Settings = ({ search }: any) => {
           <h1 className="font-bold">{toggleSettingType}</h1>
           {toggleSettingType == "Color Theme" && <ColorTheme />}
           {toggleSettingType == "Font Theme" && <FontTheme />}
+          {toggleSettingType == "Change Password" && <ChangePassword />}
         </div>
-        {toggleSettingType == "Change Password" && <ChangePassword />}
       </div>
     </div>
   );
