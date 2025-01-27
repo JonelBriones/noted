@@ -1,9 +1,11 @@
-import Google from "next-auth/providers/google";
+import GoogleProvider from "next-auth/providers/google";
 import connectDB from "@/config/database";
 import User from "@/models/User";
 export const authOptions = {
   providers: [
-    Google({
+    GoogleProvider({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
       authorization: {
         params: {
           prompt: "consent",
