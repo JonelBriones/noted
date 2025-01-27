@@ -32,20 +32,21 @@ const Topbar = ({
   setView,
   view,
 }: Params) => {
-  const { data: session, status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      return <Login />;
-    },
-  });
   const { darkMode } = useAppContext();
-  const [loading, setLoading] = useState(true);
+  const { data: session } = useSession();
+  // const { data: session, status } = useSession({
+  //   required: true,
+  //   onUnauthenticated() {
+  //     return <Login />;
+  //   },
+  // });
+  // const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      setLoading(false);
-    }
-  }, [status, session]);
+  // useEffect(() => {
+  //   if (status === "authenticated") {
+  //     setLoading(false);
+  //   }
+  // }, [status, session]);
 
   return (
     <div className=" hidden md:flex w-full place-items-center justify-between md:border-b p-6 dark:border-neutral-700">
@@ -77,7 +78,7 @@ const Topbar = ({
             style={{ filter: darkMode && "invert(100%)" }}
           />
         </button>
-        {session?.user?.image && !loading ? (
+        {session?.user?.image ? (
           <div>
             <Image
               src={session?.user?.image}

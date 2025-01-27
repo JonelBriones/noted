@@ -81,13 +81,21 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
       return <Login />;
     },
   });
-  // if (status === "loading") {
-  //   return (
-  //     <div className="h-full flex place-items-center justify-center">
-  //       <div>loading</div>
-  //     </div>
-  //   );
-  // }
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      setLoading(false);
+    }
+  }, [status, session]);
+
+  if (loading) {
+    return (
+      <div className="h-full flex place-items-center justify-center">
+        <div>loading...</div>
+      </div>
+    );
+  }
 
   const routes = ["home", "tag", "archived", "settings"];
 
