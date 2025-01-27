@@ -11,6 +11,7 @@ import Image from "next/image";
 import SidebarRight from "./SidebarActions";
 import { twMerge } from "tailwind-merge";
 import Login from "./forms/Login";
+import { redirect } from "next/navigation";
 type NoteType = {
   notesApi?: Note[];
   settings?: SettingsT;
@@ -78,12 +79,12 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      return <Login />;
+      redirect("/login");
     },
   });
 
   if (!session || !session.user) {
-    return <Login />;
+    redirect("/login");
   }
 
   const routes = ["home", "tag", "archived", "settings"];
