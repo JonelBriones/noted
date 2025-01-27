@@ -83,7 +83,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect("/login");
+      return <Login />;
     },
   });
   if (status === "loading") {
@@ -93,10 +93,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
       </div>
     );
   }
-  if (!session) {
-    console.log("please login");
-    return <Login />;
-  }
+
   const routes = ["home", "tag", "archived", "settings"];
 
   return (
