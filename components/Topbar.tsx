@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useAppContext } from "./Providers";
 import { FaRegUserCircle } from "react-icons/fa";
+import Login from "./forms/Login";
 
 interface Params {
   text?: string;
@@ -31,21 +32,20 @@ const Topbar = ({
   setView,
   view,
 }: Params) => {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      return <Login />;
+    },
+  });
   const { darkMode } = useAppContext();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (status === "authenticated") {
       setLoading(false);
-    } else if (status === "unauthenticated") {
-      redirect("/login");
     }
   }, [status, session]);
-
-  if (loading || status === "loading") {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className=" hidden md:flex w-full place-items-center justify-between md:border-b p-6 dark:border-neutral-700">
@@ -77,7 +77,7 @@ const Topbar = ({
             style={{ filter: darkMode && "invert(100%)" }}
           />
         </button>
-        {session?.user?.image ? (
+        {session?.user?.image && !loading ? (
           <div>
             <Image
               src={session?.user?.image}

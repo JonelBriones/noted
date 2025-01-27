@@ -75,10 +75,6 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     }
   }, [settings?.colorTheme === "Dark Mode"]);
 
-  useEffect(() => {
-    console.log(session);
-  }, []);
-
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
