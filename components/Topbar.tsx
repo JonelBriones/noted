@@ -34,19 +34,6 @@ const Topbar = ({
 }: Params) => {
   const { darkMode } = useAppContext();
   const { data: session } = useSession();
-  // const { data: session, status } = useSession({
-  //   required: true,
-  //   onUnauthenticated() {
-  //     return <Login />;
-  //   },
-  // });
-  // const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   if (status === "authenticated") {
-  //     setLoading(false);
-  //   }
-  // }, [status, session]);
 
   return (
     <div className=" hidden md:flex w-full place-items-center justify-between md:border-b p-6 dark:border-neutral-700">
@@ -55,7 +42,7 @@ const Topbar = ({
       ) : (
         <h1 className="font-bold text-2xl dark:text-white">
           {view == "home" && "All Notes"}
-          {view == "archived" && "Archived Notes"}
+          {view == "archive" && "Archived Notes"}
           {view == "tag" && `Notes Tagged:${toggleTag}`}
           {view == "settings" && "Settings"}
         </h1>

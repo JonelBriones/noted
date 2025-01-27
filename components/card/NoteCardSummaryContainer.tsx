@@ -24,16 +24,17 @@ const NoteCardSummaryContainer = ({
   view,
   toggleTag,
 }: Params) => {
-  const { viewToggledNote, setViewToggledNote } = useAppContext();
+  const {
+    viewToggledNote,
+    setViewToggledNote,
+    toggleCreateNote,
+    setToggleCreateNote,
+  } = useAppContext();
   let oldestToLatestUpdated = notes.sort(
     (a: any, b: any) => b.lastEdited - a.lastEdited
   );
 
-  const pathname = usePathname();
-  const { tag } = useParams() as { tag: string };
-
   let formattedSearch = search?.toLowerCase();
-  const [toggleCreateNote, setToggleCreateNote] = useState(false);
 
   const searchNotes = oldestToLatestUpdated?.filter(
     (notes: any) =>
@@ -82,7 +83,7 @@ const NoteCardSummaryContainer = ({
             + Create new note
           </button>
 
-          {view == "archived" && (
+          {view == "archive" && (
             <>
               <p className="text-sm  text-neutral-700 dark:text-white">
                 All your archived notes are stored here. You can restore or
@@ -143,7 +144,7 @@ const NoteCardSummaryContainer = ({
 
       <div className="md:hidden flex w-full">
         {viewToggledNote ? (
-          <div className="flex w-full ">
+          <>
             {toggleCreateNote ? (
               <NoteForm
                 toggleCreateNote={toggleCreateNote}
@@ -153,10 +154,12 @@ const NoteCardSummaryContainer = ({
               />
             ) : (
               notes?.find((note: Note) => note._id == viewToggledNote?._id) && (
-                <NoteCard note={viewToggledNote} />
+                <>
+                  <NoteCard note={viewToggledNote} />
+                </>
               )
             )}
-          </div>
+          </>
         ) : (
           <>
             <div className="flex flex-grow flex-col mt-3 overflow-y-auto">
@@ -164,7 +167,9 @@ const NoteCardSummaryContainer = ({
             </div>
             <button
               onClick={() => {
-                setToggleCreateNote(true), setViewToggledNote(undefined);
+                setToggleCreateNote(true),
+                  setViewToggledNote(undefined),
+                  setView("create");
               }}
               className="md:hidden absolute bottom-[100px] right-[20px] bg-blue-500 rounded-full size-12 flex place-items-center justify-center cursor-pointer"
             >

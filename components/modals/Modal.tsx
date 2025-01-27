@@ -19,8 +19,8 @@ const Modal = ({
   const { darkMode, setToggleTag } = useAppContext();
   return (
     <>
-      <div className="absolute top-0 bottom-0 left-0 right-0 h-screen w-screen bg-neutral-950 opacity-50 " />
-      <div className="absolute top-0 bottom-0 left-0 right-0 h-screen w-screen flex justify-center place-items-center">
+      <div className="absolute top-0 bottom-0 left-0 right-0 h-screen w-screen bg-neutral-950 opacity-50" />
+      <div className="absolute top-0 bottom-0 left-0 right-0 md:h-screen md:w-screen flex justify-center place-items-center">
         <div className="w-[440px] h-[175px] z-10 p-4 rounded-lg bg-white flex flex-col justify-between dark:bg-neutral-800">
           <div className="flex place-items-start gap-4 relative">
             <div className="rounded-lg p-2 bg-neutral-100 flex-none  dark:bg-neutral-600">
@@ -60,7 +60,7 @@ const Modal = ({
                   deleteNote(id), setView("home");
                 } else {
                   archiveNote(id, isArchived),
-                    setView("archived"),
+                    setView("archive"),
                     setToggleTag("");
                 }
               }}

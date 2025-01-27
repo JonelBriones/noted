@@ -8,7 +8,7 @@ const Searchbar = ({ search, setSearch }: any) => {
   const searchRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="w-[300px] flex gap-4 border rounded-lg p-2 text-neutral-500 text-sm dark:bg-stone-900 dark:border-neutral-700 cursor-pointer">
+    <div className="md:w-[300px] w-full h-fit flex gap-4 border rounded-lg p-2 text-neutral-500 text-sm dark:bg-stone-900 dark:border-neutral-700 cursor-pointer">
       <button onClick={() => searchRef?.current?.focus()}>
         <Image
           src={"/images/icon-search.svg"}

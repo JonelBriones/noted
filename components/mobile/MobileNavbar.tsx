@@ -4,74 +4,79 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { useAppContext } from "../Providers";
-
-const MobileNavbar = () => {
+interface Params {
+  setToggleTag: (tag: string) => void;
+  setView: (tag: string) => void;
+  view: string;
+}
+const MobileNavbar = ({ setView, setToggleTag, view }: Params) => {
   const pathname = usePathname();
-  const { showMobileSearch, setShowMobileSearch, setShowMobileTags } =
-    useAppContext();
+  const {
+    showMobileSearch,
+    setShowMobileSearch,
+    setShowMobileTags,
+    darkMode,
+    setViewToggledNote,
+  } = useAppContext();
   const toggleMobileSearch = () => {
     setShowMobileSearch(true);
   };
+
+  const routes = ["home", "tag", "archive"];
+
   return (
-    <div className="md:hidden flex flex-none justify-between p-4">
-      <Link
-        href={"/"}
-        className={`p-1 px-4 rounded-lg ${pathname == "/" ? "bg-blue-50" : ""}`}
-      >
-        <Image
-          src={"/images/icon-home.svg"}
-          width={24}
-          height={24}
-          alt="icon-home"
-        />
-      </Link>
-      <button onClick={toggleMobileSearch} className="rounded-lg">
-        <Image
-          src={"/images/icon-search.svg"}
-          width={24}
-          height={24}
-          alt="icon-search"
-        />
-      </button>
-      <Link
-        href={"/archived"}
-        className={`p-1 px-4 rounded-lg ${
-          pathname == "/archived" ? "bg-blue-50" : ""
-        }`}
-      >
-        <Image
-          src={"/images/icon-archive.svg"}
-          width={24}
-          height={24}
-          alt="icon-archive"
-        />
-      </Link>
+    <div className="md:hidden flex flex-none justify-between p-4 dark:bg-stone-900">
+      {routes.map((route) => (
+        <button
+          key={route}
+          onClick={() => {
+            setView(route), setToggleTag("");
+          }}
+          className={`p-1 px-4 rounded-lg  ${
+            route == view ? "bg-neutral-200 dark:bg-neutral-100" : ""
+          }`}
+        >
+          <Image
+            src={`/images/icon-${route}.svg`}
+            width={24}
+            height={24}
+            alt={`icon-home-${route}`}
+            style={{ filter: darkMode && route != view && "invert(100%)" }}
+          />
+        </button>
+      ))}
       <button
-        onClick={() => setShowMobileTags(true)}
+        onClick={() => {
+          setView("search"), setToggleTag("");
+        }}
         className={`p-1 px-4 rounded-lg ${
-          pathname == "/tag" ? "bg-blue-50" : ""
+          "search" == view ? "bg-neutral-200 dark:bg-neutral-100" : ""
         }`}
       >
         <Image
-          src={"/images/icon-tag.svg"}
+          src={`/images/icon-${"search"}.svg`}
           width={24}
           height={24}
-          alt="icon-tag"
+          alt={`icon-home-${"search"}`}
+          style={{ filter: darkMode && "search" != view && "invert(100%)" }}
         />
       </button>
-      <Link
-        href={"/settings"}
+      <button
+        onClick={() => {
+          setView("settings"), setToggleTag("");
+        }}
         className={`p-1 px-4 rounded-lg ${
-          pathname == "/settings" ? "bg-blue-50" : ""
+          "settings" == view ? "bg-neutral-200 dark:bg-neutral-100" : ""
         }`}
       >
         <Image
-          src={"/images/icon-settings.svg"}
+          src={`/images/icon-${"settings"}.svg`}
           width={24}
           height={24}
-          alt="icon-settings"
+          alt={`icon-home-${"settings"}`}
+          style={{ filter: darkMode && "settings" != view && "invert(100%)" }}
         />
-      </Link>
+      </button>
     </div>
   );
 };

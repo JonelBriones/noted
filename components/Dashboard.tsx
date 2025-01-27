@@ -5,13 +5,13 @@ import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
 import Navigation from "./Navigation";
 import Settings from "./Settings";
 import { useAppContext } from "./Providers";
-import { useSession } from "next-auth/react";
 import { Note, SettingsT } from "@/app/_types/types";
 import Image from "next/image";
 import SidebarRight from "./SidebarActions";
 import { twMerge } from "tailwind-merge";
-import Login from "./forms/Login";
-import { redirect } from "next/navigation";
+import MobileNavbar from "./mobile/MobileNavbar";
+import Searchbar from "./Searchbar";
+import NoteForm from "./forms/NoteForm";
 type NoteType = {
   notesApi?: Note[];
   settings?: SettingsT;
@@ -27,6 +27,8 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     setDarkMode,
     toggleTag,
     setToggleTag,
+    toggleCreateNote,
+    setToggleCreateNote,
   } = useAppContext();
 
   const [view, setView] = useState("home");
@@ -43,7 +45,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
         note.tags.includes(toggleTag)
       );
       break;
-    case "archived":
+    case "archive":
       notes = notesApi?.filter((note: Note) => note?.isArchived == true);
       break;
     default:
@@ -51,13 +53,14 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
   }
 
   useEffect(() => {
-    if (notes) {
+    if (notes && !window.matchMedia("(max-width: 767px)").matches) {
       setViewToggledNote(notes[0]);
+      setToggleCreateNote(false);
     }
   }, [toggleTag, view]);
 
   useEffect(() => {
-    if (notes) {
+    if (notes && !window.matchMedia("(max-width: 767px)").matches) {
       setViewToggledNote(notes[0]);
     }
     setSettings(settings);
@@ -76,10 +79,8 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     }
   }, [settings?.colorTheme === "Dark Mode"]);
 
-  const { data: session, status } = useSession();
-
-  const routes = ["home", "tag", "archived", "settings"];
-
+  const routes = ["home", "tag", "archive", "settings"];
+  const mobileRoutes = ["home", "tag", "archive"];
   return (
     <>
       <div
@@ -136,7 +137,14 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
 
       {/* ON MOBILE NAV ON CLICK SET TOGGLE AND MANUALLY SET NOTES TO CORRESPOND TO VIEW */}
 
-      <div className="flex flex-col justify-evenly md:hidden h-full p-4 overflow-hidden">
+      <div
+        className={twMerge(
+          "flex flex-col justify-evenly md:hidden h-full p-4 overflow-hidden relative",
+          settings?.fontTheme == "serif" && "serif",
+          settings?.fontTheme == "sans-serif" && "sans-serif",
+          settings?.fontTheme == "monospace" && "monospace"
+        )}
+      >
         <div>
           {darkMode ? (
             <svg
@@ -202,41 +210,85 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
             </svg>
           )}
         </div>
-        <div>
-          {viewToggledNote ? (
-            <div className="flex justify-between">
-              <button
-                onClick={() => setViewToggledNote(undefined)}
-                className="flex place-items-center justify-center"
-              >
-                <Image
-                  src={"/images/icon-arrow-left.svg"}
-                  width={18}
-                  height={18}
-                  alt="icon-arrow-left"
-                  style={{ filter: darkMode && "invert(100%)" }}
-                />
-                <span className="text-neutral-600">Go Back</span>
-              </button>
-              <SidebarRight note={viewToggledNote} setView={setView} />
-            </div>
-          ) : (
-            <h1 className="text-neutral-950 text-lg ">
-              {view == "home" && "All Notes"}
-              {view == "archived" && "Archived Notes"}
-              {view == "settings" && "Settings"}
-              {view == "tag" && `Notes Tagged: ${toggleTag} `}
-            </h1>
+        <div className="overflow-hidden">
+          {view == "settings" && <Settings />}
+          {view == "create" && <NoteForm />}
+          {toggleCreateNote && view == "create" && (
+            <NoteForm
+              toggleCreateNote={toggleCreateNote}
+              setToggleCreateNote={setToggleCreateNote}
+              setViewToggledNote={setViewToggledNote}
+              notes={notes}
+            />
           )}
+          {view == "search" && (
+            <div className="mt-4">
+              <Searchbar search={search} setSearch={setSearch} />
+              {search && (
+                <NoteCardSummaryContainer
+                  view={view}
+                  notes={notes}
+                  search={search}
+                  setView={setView}
+                  toggleTag={toggleTag}
+                />
+              )}
+            </div>
+          )}
+          <div className="flex flex-col h-screen flex-grow mt-4">
+            {mobileRoutes.map(
+              (route) =>
+                view == route && (
+                  <Fragment key={route}>
+                    {viewToggledNote ? (
+                      <div className="flex justify-between">
+                        <button
+                          onClick={() => setViewToggledNote(undefined)}
+                          className="flex place-items-center justify-center"
+                        >
+                          <Image
+                            src={"/images/icon-arrow-left.svg"}
+                            width={18}
+                            height={18}
+                            alt="icon-arrow-left"
+                            style={{ filter: darkMode && "invert(100%)" }}
+                          />
+                          <span className="text-neutral-600 dark:text-white">
+                            Go Back
+                          </span>
+                        </button>
+                        <SidebarRight
+                          note={viewToggledNote}
+                          setView={setView}
+                        />
+                      </div>
+                    ) : (
+                      <h1 className="text-neutral-950 dark:text-neutral-100 text-lg ">
+                        {view == "home" && "All Notes"}
+                        {view == "archive" && "Archived Notes"}
+                        {view == "settings" && "Settings"}
+                        {view == "tag" && `Notes Tagged: ${toggleTag} `}
+                      </h1>
+                    )}
+                    <div className="flex-1 overflow-y-auto">
+                      <NoteCardSummaryContainer
+                        view={view}
+                        notes={notes}
+                        search={search}
+                        setView={setView}
+                        toggleTag={toggleTag}
+                      />
+                    </div>
+                  </Fragment>
+                )
+            )}
+          </div>
         </div>
-        <div className="flex-1 relative flex w-full gap-4 overflow-hidden">
-          <NoteCardSummaryContainer
-            notes={notes}
-            search={search}
-            setView={setView}
-            view={view}
-          />
-        </div>
+        <MobileNavbar
+          setToggleTag={setToggleTag}
+          setView={setView}
+          view={view}
+        />
       </div>
     </>
   );

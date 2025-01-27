@@ -198,16 +198,16 @@ const Navigation = ({
           </button>
           <button
             onClick={() => {
-              setView("archived"), setToggleTag("");
+              setView("archive"), setToggleTag("");
             }}
             className={`flex justify-between p-2 rounded-lg ${
-              view == "archived"
+              view == "archive"
                 ? "bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-100"
                 : ""
             }`}
           >
             <div className="flex gap-2 cursor-pointer">
-              {view == "archived" ? (
+              {view == "archive" ? (
                 <>
                   {
                     <svg
@@ -246,7 +246,7 @@ const Navigation = ({
               )}
               Archived Notes
             </div>
-            {view == "archived" && toggleChevron}
+            {view == "archive" && toggleChevron}
           </button>
         </div>
         <div className="w-full h-[1px] bg-neutral-200 dark:bg-neutral-700" />

@@ -19,6 +19,7 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
   const [showMobileTags, setShowMobileTags] = useState(false);
   const [showMobileView, setShowMobileView] = useState(true);
   const [toggleTag, setToggleTag] = useState("");
+  const [toggleCreateNote, setToggleCreateNote] = useState(false);
 
   return (
     <ThemeContext.Provider
@@ -39,6 +40,8 @@ const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
         setShowMobileView,
         toggleTag,
         setToggleTag,
+        toggleCreateNote,
+        setToggleCreateNote,
       }}
     >
       {children}

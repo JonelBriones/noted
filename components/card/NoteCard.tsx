@@ -108,8 +108,8 @@ const NoteCard = ({ note }: Params) => {
           />
           {!defaultNote.title && <span>Title is required.</span>}
           <div className="flex flex-col gap-3">
-            <div className="flex place-items-center">
-              <span className="flex place-items-center gap-2 w-[150px]">
+            <div className="flex place-items-center gap-4">
+              <span className="flex place-items-center gap-4 md:w-[150px]">
                 <Image
                   src={"/images/icon-tag.svg"}
                   width={0}
@@ -137,8 +137,8 @@ const NoteCard = ({ note }: Params) => {
             </div>
 
             {isArchived && (
-              <div className="flex place-items-center">
-                <span className="flex place-items-center gap-2 w-[150px]">
+              <div className="flex place-items-center gap-4">
+                <span className="flex place-items-center gap-2 md:w-[150px]">
                   <Image
                     src={"/images/icon-status.svg"}
                     width={0}
@@ -149,11 +149,11 @@ const NoteCard = ({ note }: Params) => {
                   />
                   Status
                 </span>
-                <span>Archived</span>
+                <span className="hidden md:block">Archived</span>
               </div>
             )}
-            <div className="flex place-items-center">
-              <span className="flex place-items-center gap-2 w-[150px]">
+            <div className="flex place-items-center gap-4">
+              <span className="flex place-items-center gap-2 md:w-[150px]">
                 <Image
                   src={"/images/icon-clock.svg"}
                   width={0}
@@ -162,7 +162,7 @@ const NoteCard = ({ note }: Params) => {
                   alt="icon-clock"
                   style={{ filter: darkMode && "invert(100%)" }}
                 />
-                Last edited
+                <span className="hidden md:block">Last edited</span>
               </span>
               <div>{formattedDate}</div>
             </div>
@@ -177,8 +177,7 @@ const NoteCard = ({ note }: Params) => {
             className="outline-none h-full dark:bg-stone-900 dark:text-white"
           />
         </div>
-
-        <div className="flex gap-4 w-fit p-4">
+        <div className="flex gap-4 w-fit p-4 bg-blue absolute md:static bottom-[100px] right-[20px]">
           <button
             type="submit"
             className="bg-blue-500 text-white rounded-lg py-3 px-4 font-bold"
