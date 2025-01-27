@@ -17,6 +17,6 @@
 //   return NextResponse.next();
 // }
 
-export const config = {
-  matcher: ["/"], // Protect these routes
-};
+// export const config = {
+//   matcher: ["/"],
+// };

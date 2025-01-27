@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SidebarRight from "./SidebarActions";
 import { twMerge } from "tailwind-merge";
+import Login from "./forms/Login";
 type NoteType = {
   notesApi: Note[];
   settings?: SettingsT;
@@ -80,7 +81,8 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     );
   }
   if (!session) {
-    return redirect("/login");
+    console.log("please login");
+    return <Login />;
   }
   const routes = ["home", "tag", "archived", "settings"];
 
