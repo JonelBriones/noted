@@ -141,7 +141,9 @@ const Navigation = ({
       <div className="flex flex-col gap-4 overflow-auto">
         <div className="flex flex-col">
           <button
-            onClick={() => setView("home")}
+            onClick={() => {
+              setView("home"), setToggleTag("");
+            }}
             className={`flex justify-between p-2 rounded-lg  ${
               view == "home"
                 ? "bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-100"
@@ -195,7 +197,9 @@ const Navigation = ({
             {view == "home" && toggleChevron}
           </button>
           <button
-            onClick={() => setView("archived")}
+            onClick={() => {
+              setView("archived"), setToggleTag("");
+            }}
             className={`flex justify-between p-2 rounded-lg ${
               view == "archived"
                 ? "bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-100"

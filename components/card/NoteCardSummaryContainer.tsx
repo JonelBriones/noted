@@ -13,7 +13,6 @@ interface Params {
   notes: any;
   search: string;
   setView: (view: string) => void;
-  setToggleTag: (tag: string) => void;
   view: string;
   toggleTag?: string;
 }
@@ -25,7 +24,7 @@ const NoteCardSummaryContainer = ({
   view,
   toggleTag,
 }: Params) => {
-  const { viewToggledNote, setViewToggledNote, setToggleTag } = useAppContext();
+  const { viewToggledNote, setViewToggledNote } = useAppContext();
   let oldestToLatestUpdated = notes.sort(
     (a: any, b: any) => b.lastEdited - a.lastEdited
   );
@@ -133,7 +132,6 @@ const NoteCardSummaryContainer = ({
                   note={viewToggledNote}
                   notes={notes}
                   setView={setView}
-                  setToggleTag={setToggleTag}
                 />
               </>
             )

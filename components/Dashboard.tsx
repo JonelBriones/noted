@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Topbar from "./Topbar";
 import NoteCardSummaryContainer from "./card/NoteCardSummaryContainer";
 import Navigation from "./Navigation";
@@ -24,9 +24,10 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     setViewToggledNote,
     viewToggledNote,
     setDarkMode,
+    toggleTag,
+    setToggleTag,
   } = useAppContext();
 
-  const [toggleTag, setToggleTag] = useState("");
   const [view, setView] = useState("home");
 
   const openedNotes = notesApi?.filter(
@@ -131,10 +132,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
               routes.map(
                 (route) =>
                   view == route && (
-                    <div
-                      key={route}
-                      className="flex flex-col h-screen flex-grow"
-                    >
+                    <Fragment key={route}>
                       <NoteCardSummaryContainer
                         view={view}
                         notes={notes}
@@ -143,7 +141,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
                         setToggleTag={setToggleTag}
                         toggleTag={toggleTag}
                       />
-                    </div>
+                    </Fragment>
                   )
               )
             )}

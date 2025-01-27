@@ -12,12 +12,11 @@ interface Params {
   note?: Note;
   notes?: Note[];
   setView: (view: string) => void;
-  setToggleTag: (view: string) => void;
 }
-const SidebarRight = ({ note, setView, setToggleTag }: Params) => {
+const SidebarRight = ({ note, setView }: Params) => {
   if (!note) return;
   const { isArchived } = note;
-  const { darkMode, setViewToggledNote } = useAppContext();
+  const { darkMode, setViewToggledNote, setToggleTag } = useAppContext();
   const [type, setType] = useState("");
   const [toggleModal, setToggleModal] = useState(false);
   let params = {
@@ -54,6 +53,7 @@ const SidebarRight = ({ note, setView, setToggleTag }: Params) => {
               className="hidden md:block"
               onClick={() => {
                 setView("home");
+                setToggleTag("");
               }}
             >
               Restore
@@ -91,6 +91,7 @@ const SidebarRight = ({ note, setView, setToggleTag }: Params) => {
           deleteNote={deleteNote}
           archiveNote={archiveNote}
           setView={setView}
+          setViewToggledNote={setViewToggledNote}
         />
       )}
     </div>

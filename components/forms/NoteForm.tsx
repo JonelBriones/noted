@@ -81,7 +81,6 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
       action={formAction}
       autoComplete="off"
     >
-      {state.successMsg}
       <div className="flex flex-col gap-3">
         <input
           ref={titleRef}
