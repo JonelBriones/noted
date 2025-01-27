@@ -82,14 +82,6 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     },
   });
 
-  if (status === "loading") {
-    return (
-      <div className="h-full flex place-items-center justify-center">
-        <div>loading...</div>
-      </div>
-    );
-  }
-
   if (!session || !session.user) {
     return <Login />;
   }
