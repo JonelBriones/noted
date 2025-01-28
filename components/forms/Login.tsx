@@ -1,18 +1,58 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import PrimaryBtn from "../buttons/PrimaryBtn";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { FaCopy } from "react-icons/fa";
+import { redirect } from "next/navigation";
 
 const Login = () => {
+  const intialState = {
+    zodErrors: "",
+    mongooseErrors: "",
+    email: "",
+    password: [],
+    successMsg: "",
+  };
+  // const [state, formAction, pending] = useActionState(createNote, intialState);
+
   const [toggleHidePassword, setToggleHidePassword] = useState(true);
   const [error, setError] = useState({
     emailError: false,
   });
 
-  const onSubmitHandler = (e: any) => {
+  const useTestUser = {
+    toggleTest: true,
+    email: "testuser@gmail.com",
+    password: "password",
+  };
+
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = async (value: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setIsCopied(true);
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+    if (result?.error) {
+      console.log("Invalid email or password.");
+    } else {
+      redirect("/");
+    }
   };
 
   return (
@@ -38,6 +78,8 @@ const Login = () => {
           <label htmlFor="email">Email Address</label>
           <input
             type="email"
+            name="email"
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="email@example.com"
             className={`p-2 rounded-lg border-2 border-neutral-300 text-neutral-500 text-sm hover:bg-neutral-50 outline-none  ${
               error.emailError
@@ -45,6 +87,12 @@ const Login = () => {
                 : "outline-offset-2 focus:border-neutral-600 focus:ring-neutral-600 focus:outline-neutral-500"
             }`}
           />
+          <span
+            className="text-[12px] flex gap-2 place-items-center cursor-pointer w-fit"
+            onClick={() => handleCopy(useTestUser.email)}
+          >
+            {useTestUser.email} <FaCopy size={".75rem"} />
+          </span>
           {error.emailError && (
             <span className="text-red-500 text-[12px] flex gap-2">
               <svg
@@ -83,6 +131,8 @@ const Login = () => {
 
           <div className="w-full relative">
             <input
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
               type={toggleHidePassword ? "password" : "text"}
               className="p-2 rounded-lg border-2 border-neutral-300 focus:border-neutral-600 text-neutral-500 text-sm hover:bg-neutral-50 outline-none outline-offset-2 focus:ring-neutral-600 focus:outline-neutral-500 w-full"
             />
@@ -96,22 +146,25 @@ const Login = () => {
                 alt="icon-hide-password"
                 className="size-5 absolute right-4 top-[10px] cursor-pointer"
               />
+              <span
+                className="text-[12px] flex gap-2 place-items-center cursor-pointer w-fit"
+                onClick={() => handleCopy(useTestUser.password)}
+              >
+                {useTestUser.password} <FaCopy size={".75rem"} />
+              </span>
             </div>
           </div>
         </div>
         <div className="flex flex-col gap-6 text-center">
-          <PrimaryBtn
-            text="Login"
-            backgroundColor="bg-blue-500"
-            textColor="text-white"
-            hoverColor="hover:bg-blue-700"
-          />
+          <button className="bg-blue-500 rounded-lg py-1 text-white font-medium text-lg ">
+            Login
+          </button>
           <div className="w-full h-[1px] bg-neutral-200" />
           <div className="flex flex-col gap-4">
             <p className="text-neutral-600 text-sm">Or log in with:</p>
             <button
               className="flex place-items-center justify-center gap-4 p-2  border-2 rounded-lg cursor-pointer hover:bg-neutral-50"
-              onClick={() => signIn("google")}
+              type="submit"
             >
               <Image
                 src={"/images/icon-google.svg"}
@@ -125,12 +178,12 @@ const Login = () => {
               </span>
             </button>
           </div>
-          <span className="text-neutral-600 text-sm">
+          {/* <span className="text-neutral-600 text-sm">
             No account yet?{" "}
             <Link href={"/signup"} className="hover:text-blue-500">
               Sign Up
             </Link>
-          </span>
+          </span> */}
         </div>
       </form>
     </div>
