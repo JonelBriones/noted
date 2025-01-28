@@ -65,7 +65,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     } else {
       setNotesByTag([]);
     }
-    console.log(tag, notesByTag);
+    console.log(2);
   }, [toggleTagView]);
 
   useEffect(() => {
@@ -74,10 +74,11 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
       setToggleCreateNote(false);
     }
     setSearch("");
+    console.log(1);
   }, [toggleTag, view]);
 
   useEffect(() => {
-    if (notes && window.matchMedia("(max-width: 767px)").matches) {
+    if (notes) {
       setViewToggledNote(notes[0]);
       setToggleCreateNote(false);
     }
@@ -85,6 +86,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     if (settings?.colorTheme) {
       setDarkMode(settings?.colorTheme == "Dark Mode" ? true : false);
     }
+    setView("home");
   }, [notesApi, settings]);
 
   useEffect(() => {
@@ -268,10 +270,10 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
 
           {toggleCreateNote && view == "create" && (
             <NoteForm
-              toggleCreateNote={toggleCreateNote}
               setToggleCreateNote={setToggleCreateNote}
               setViewToggledNote={setViewToggledNote}
-              notes={notes}
+              notes={notes || []}
+              setView={setView}
             />
           )}
           {view == "search" && (

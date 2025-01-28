@@ -5,8 +5,19 @@ import { useAppContext } from "../Providers";
 import { createNote } from "@/app/_actions/createNote";
 import { redirect, useParams } from "next/navigation";
 import { Note } from "@/app/_types/types";
+interface Params {
+  setToggleCreateNote: (boolean: boolean) => void;
+  setViewToggledNote: (note: Note) => void;
+  notes: Note[];
+  setView?: (view: string) => void;
+}
 
-const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
+const NoteForm = ({
+  setToggleCreateNote,
+  setViewToggledNote,
+  notes,
+  setView,
+}: Params) => {
   const intialState = {
     zodErrors: "",
     mongooseErrors: "",
@@ -18,7 +29,6 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
   const [state, formAction, pending] = useActionState(createNote, intialState);
   const { darkMode } = useAppContext();
   const { title, tags, content } = state?.data || {};
-  const { tag: pathname } = useParams() as { tag: string };
   const [tagInput, setTagInput] = useState(true);
   const [inputTag, setTag] = useState("");
   const pattern2 = /^[a-zA-Z]+(,[a-zA-Z]+)*$/;
@@ -31,14 +41,6 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
   useEffect(() => {
     if (state.successMsg) {
       setTagInput(true);
-      setToggleCreateNote(false);
-      if (inputTag.includes(pathname)) {
-        setViewToggledNote(notes[0]);
-      } else {
-        let tags = inputTag.split(",");
-        redirect(`/tag/${tags[0]}`);
-      }
-      setTag("");
     }
   }, [state.successMsg]);
 

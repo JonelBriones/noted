@@ -125,10 +125,9 @@ const NoteCardSummaryContainer = ({
         <div className="flex w-full">
           {toggleCreateNote ? (
             <NoteForm
-              toggleCreateNote={toggleCreateNote}
               setToggleCreateNote={setToggleCreateNote}
               setViewToggledNote={setViewToggledNote}
-              notes={notes}
+              notes={notes || []}
             />
           ) : (
             notes?.find((note: Note) => note._id == viewToggledNote?._id) && (
@@ -152,10 +151,10 @@ const NoteCardSummaryContainer = ({
           <>
             {toggleCreateNote ? (
               <NoteForm
-                toggleCreateNote={toggleCreateNote}
                 setToggleCreateNote={setToggleCreateNote}
                 setViewToggledNote={setViewToggledNote}
-                notes={notes}
+                notes={notes || []}
+                setView={setView}
               />
             ) : (
               notes?.find((note: Note) => note._id == viewToggledNote?._id) && (
