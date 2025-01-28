@@ -15,6 +15,7 @@ import NoteForm from "./forms/NoteForm";
 import NoteCard from "./card/NoteCard";
 import ColorTheme from "./forms/ColorTheme";
 import FontTheme from "./forms/FontTheme";
+import { signOut } from "next-auth/react";
 type NoteType = {
   notesApi?: Note[];
   settings?: SettingsT;
@@ -247,8 +248,25 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
 
         <div className="overflow-hidden">
           {view == "settings" && (
-            <div className="flex flex-col w-screen justify-evenly h-full">
+            <div className="flex flex-col justify-evenly h-full">
               <ColorTheme /> <FontTheme />
+              <div className="border-b my-1 dark:border-neutral-700" />
+              <button
+                className="flex justify-end place-items-center p-2 rounded-lg gap-2 cursor-pointer"
+                onClick={() => {
+                  signOut();
+                }}
+              >
+                <Image
+                  src={`/images/icon-logout.svg`}
+                  width={0}
+                  height={0}
+                  className="size-5"
+                  alt={`icon-logout`}
+                  style={{ filter: darkMode && "invert(100%)" }}
+                />
+                Logout
+              </button>
             </div>
           )}
 
