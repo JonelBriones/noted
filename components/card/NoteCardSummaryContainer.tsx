@@ -159,7 +159,11 @@ const NoteCardSummaryContainer = ({
             ) : (
               notes?.find((note: Note) => note._id == viewToggledNote?._id) && (
                 <>
-                  <NoteCard note={viewToggledNote} />
+                  <NoteCard
+                    note={viewToggledNote}
+                    setToggleCreateNote={setToggleCreateNote}
+                    setView={setView}
+                  />
                 </>
               )
             )}

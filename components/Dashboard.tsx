@@ -86,7 +86,6 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
     if (settings?.colorTheme) {
       setDarkMode(settings?.colorTheme == "Dark Mode" ? true : false);
     }
-    setView("home");
   }, [notesApi, settings]);
 
   useEffect(() => {
@@ -358,7 +357,7 @@ const Dashboard = ({ notesApi, settings }: NoteType) => {
                               style={{ filter: darkMode && "invert(100%)" }}
                             />
                             <span className="text-neutral-600 dark:text-white">
-                              Go Back
+                              Go Back wg
                             </span>
                           </button>
                           <SidebarRight

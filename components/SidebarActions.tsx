@@ -16,7 +16,7 @@ interface Params {
 const SidebarRight = ({ note, setView }: Params) => {
   if (!note) return;
   const { isArchived } = note;
-  const { darkMode, setViewToggledNote, setToggleTag } = useAppContext();
+  const { darkMode, setViewToggledNote, setToggleTag, notes } = useAppContext();
   const [type, setType] = useState("");
   const [toggleModal, setToggleModal] = useState(false);
   let params = {
@@ -32,10 +32,12 @@ const SidebarRight = ({ note, setView }: Params) => {
           className="flex gap-2 md:border rounded-lg p-3 dark:border-neutral-700"
           onClick={() => {
             {
-              isArchived
-                ? archiveNote(note._id, isArchived)
-                : setToggleModal(true),
-                setType("Archive");
+              if (isArchived) {
+                archiveNote(note._id, isArchived), setToggleTag("");
+                setView("home");
+              } else {
+                setToggleModal(true), setType("Archive");
+              }
             }
           }}
         >
@@ -92,6 +94,7 @@ const SidebarRight = ({ note, setView }: Params) => {
           archiveNote={archiveNote}
           setView={setView}
           setViewToggledNote={setViewToggledNote}
+          notes={notes}
         />
       )}
     </div>

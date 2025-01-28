@@ -6,9 +6,11 @@ import { editNote } from "@/app/_actions/editNote";
 import { useAppContext } from "../Providers";
 interface Params {
   note?: Note;
+  setToggleCreateNote?: (boolean: boolean) => void;
+  setView?: (view: string) => void;
 }
 
-const NoteCard = ({ note }: Params) => {
+const NoteCard = ({ note, setToggleCreateNote, setView }: Params) => {
   if (!note) {
     return (
       <div className="hidden md:flex  flex-col flex-1 gap-4 p-4 border-l border-r text-sm"></div>
@@ -16,7 +18,7 @@ const NoteCard = ({ note }: Params) => {
   }
 
   const { _id, title, tags, content, lastEdited, isArchived } = note;
-  const { darkMode, setViewToggledNote } = useAppContext();
+  const { darkMode } = useAppContext();
   const bindedAction = editNote.bind(null, _id);
   const [inputTag, setTag] = useState(tags.join(","));
   const pattern = /^(?!.*,,).*$/;
@@ -188,12 +190,17 @@ const NoteCard = ({ note }: Params) => {
             type="reset"
             className="bg-neutral-100 text-neutral-600 rounded-lg py-3 px-4 font-bold"
             onClick={() => {
-              setDefaultNote({
-                title: title,
-                tags: tags.join(","),
-                content: content,
-                isArchived: isArchived,
-              });
+              if (window.matchMedia("(max-width: 767px)").matches) {
+                setView?.("home");
+                setToggleCreateNote?.(false);
+              } else {
+                setDefaultNote({
+                  title: title,
+                  tags: tags.join(","),
+                  content: content,
+                  isArchived: isArchived,
+                });
+              }
             }}
           >
             Cancel

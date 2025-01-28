@@ -15,6 +15,7 @@ const Modal = ({
   deleteNote,
   archiveNote,
   setView,
+  notes,
 }: any) => {
   const { darkMode, setToggleTag, setViewToggledNote } = useAppContext();
   return (
@@ -61,9 +62,9 @@ const Modal = ({
                     setView("home"),
                     setViewToggledNote(undefined);
                 } else {
-                  archiveNote(id, isArchived),
-                    setView("archive"),
-                    setToggleTag("");
+                  archiveNote(id, isArchived), setToggleTag("");
+                  setViewToggledNote(undefined);
+                  setView("archive");
                 }
               }}
               className={`block text-center p-2 ${textColor} ${backgroundColor} rounded-lg text-sm cursor-pointer py-2 px-4`}

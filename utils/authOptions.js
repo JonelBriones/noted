@@ -26,16 +26,39 @@ export const authOptions = {
       async authorize(credentials) {
         await connectDB();
 
+        //         const bcrypt = require("bcrypt");
+
+        // // Hashing
+        // const hashedPassword = await bcrypt.hash(password, 10);
+
+        // // Verifying
+        // const isMatch = await bcrypt.compare(plainPassword, hashedPassword);
+
         const { email, password } = credentials || {};
+
+        // when sign up, have a hashed password and retry password.
+
+        // on login, it should have validations.
 
         console.log("crentials", credentials.email, credentials.password);
         const userExist = await User.findOne({ email: email });
 
+        // if (!userExist) {
+        //   throw new Error("Email not used");
+        // }
+
+        if (password !== userExist.settings.password) {
+          console.log("password");
+          throw new Error("Invalid password");
+        }
+
+        // enable when ready for other users
+
         if (!userExist) {
-          // const username = profile.name.slice(0, 20);
+          const username = email.slice(0, 20);
           await User.create({
             email: email,
-            username: "TestUser",
+            username: username,
             image: "https://i.redd.it/tw7b7dsezm081.png",
             settings: {
               colorTheme: "Light Mode",

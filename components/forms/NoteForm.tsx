@@ -7,16 +7,16 @@ import { redirect, useParams } from "next/navigation";
 import { Note } from "@/app/_types/types";
 interface Params {
   setToggleCreateNote: (boolean: boolean) => void;
-  setViewToggledNote: (note: Note) => void;
   notes: Note[];
+  setViewToggledNote: (note: Note) => void;
   setView?: (view: string) => void;
 }
 
 const NoteForm = ({
   setToggleCreateNote,
   setViewToggledNote,
-  notes,
   setView,
+  notes,
 }: Params) => {
   const intialState = {
     zodErrors: "",
@@ -143,7 +143,12 @@ const NoteForm = ({
         </button>
         <button
           onClick={() => {
-            setToggleCreateNote(false);
+            if (window.matchMedia("(max-width: 767px)").matches) {
+              setView?.("home");
+              setToggleCreateNote(false);
+            } else {
+              setViewToggledNote(notes[0]);
+            }
           }}
           className="bg-neutral-100 text-neutral-600 rounded-lg py-3 px-4 font-bold"
         >

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { FaCopy } from "react-icons/fa";
 import { redirect } from "next/navigation";
-
+import { useRouter } from "next/router";
 const Login = () => {
   const intialState = {
     zodErrors: "",
@@ -18,8 +18,9 @@ const Login = () => {
   // const [state, formAction, pending] = useActionState(createNote, intialState);
 
   const [toggleHidePassword, setToggleHidePassword] = useState(true);
-  const [error, setError] = useState({
-    emailError: false,
+  const [errorMsg, setError] = useState({
+    emailError: "",
+    passwordError: "",
   });
 
   const useTestUser = {
@@ -49,7 +50,14 @@ const Login = () => {
       password,
     });
     if (result?.error) {
-      console.log("Invalid email or password.");
+      const { error } = result;
+      console.log("error:", error);
+      if (error == "Email not used.") {
+        setError({ ...errorMsg, emailError: "Email Invalid" });
+      }
+      if (error == "Invalid password") {
+        setError({ ...errorMsg, passwordError: "Invalid password" });
+      }
     } else {
       redirect("/");
     }
@@ -82,7 +90,7 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email@example.com"
             className={`p-2 rounded-lg border-2 border-neutral-300 text-neutral-500 text-sm hover:bg-neutral-50 outline-none  ${
-              error.emailError
+              errorMsg.emailError
                 ? "border-red-500"
                 : "outline-offset-2 focus:border-neutral-600 focus:ring-neutral-600 focus:outline-neutral-500"
             }`}
@@ -93,7 +101,7 @@ const Login = () => {
           >
             {useTestUser.email} <FaCopy size={".75rem"} />
           </span>
-          {error.emailError && (
+          {errorMsg.emailError && (
             <span className="text-red-500 text-[12px] flex gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
