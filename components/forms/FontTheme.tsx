@@ -12,13 +12,13 @@ const FontTheme = () => {
 
   return (
     <div>
-      <h1>Choose your font theme:</h1>
+      <h1 className="hidden md:block">Choose your font theme:</h1>
       <div className="flex flex-col gap-4 mt-6">
         {fontTheme.map((font) => (
           <button
             key={font}
             className={twMerge(
-              "flex gap-4 border border-neutral-200 p-4 rounded-xl place-items-center dark:border-none transition duration-200",
+              "flex gap-4 border border-neutral-200 p-4 rounded-xl place-items-center dark:border-none transition duration-200 text-left",
               toggleFontTheme == font && "dark:bg-neutral-800",
               font == "serif" && "serif",
               font == "sans-serif" && "sans-serif",

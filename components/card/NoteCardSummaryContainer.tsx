@@ -170,7 +170,7 @@ const NoteCardSummaryContainer = ({
             <div className="flex flex-grow flex-col mt-3 overflow-y-auto">
               {renderNoteCardSummary()}
             </div>
-            <div className="md:hidden absolute bottom-[100px]  right-[20px] flex flex-col gap-4">
+            {/* <div className="md:hidden absolute bottom-[100px]  right-[20px] flex flex-col gap-4">
               <button
                 onClick={() => {
                   // setViewToggledNote(undefined),
@@ -222,7 +222,7 @@ const NoteCardSummaryContainer = ({
                   />
                 </button>
               )}
-            </div>
+            </div> */}
           </>
         )}
       </div>

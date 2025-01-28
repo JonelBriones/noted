@@ -17,7 +17,7 @@ const ColorTheme = () => {
 
   return (
     <div>
-      <h1>Choose your color theme</h1>
+      <h1 className="hidden md:block">Choose your color theme</h1>
       <div className="flex flex-col gap-4 mt-6">
         {colorThemeOptions.map((theme) => (
           <button
