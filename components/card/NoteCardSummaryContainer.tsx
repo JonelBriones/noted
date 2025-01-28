@@ -3,18 +3,20 @@ import React, { useState } from "react";
 import SidebarRight from "../SidebarActions";
 import NoteCard from "./NoteCard";
 import NoteCardSummary from "../NoteCardSidebar";
-import { useParams, usePathname } from "next/navigation";
 import { Note } from "@/app/_types/types";
 import NoteForm from "../forms/NoteForm";
 import { useAppContext } from "../Providers";
 import Image from "next/image";
 
 interface Params {
-  notes: any;
+  notes?: Note[];
   search: string;
   setView: (view: string) => void;
-  view: string;
+  view?: string;
   toggleTag?: string;
+  toggleTagView?: boolean;
+  setTag?: (view: string) => void;
+  setToggleTagView?: (boolean: boolean) => void;
 }
 
 const NoteCardSummaryContainer = ({
@@ -23,6 +25,9 @@ const NoteCardSummaryContainer = ({
   setView,
   view,
   toggleTag,
+  toggleTagView,
+  setToggleTagView,
+  setTag,
 }: Params) => {
   const {
     viewToggledNote,
@@ -30,7 +35,7 @@ const NoteCardSummaryContainer = ({
     toggleCreateNote,
     setToggleCreateNote,
   } = useAppContext();
-  let oldestToLatestUpdated = notes.sort(
+  let oldestToLatestUpdated = notes?.sort(
     (a: any, b: any) => b.lastEdited - a.lastEdited
   );
 
@@ -165,22 +170,59 @@ const NoteCardSummaryContainer = ({
             <div className="flex flex-grow flex-col mt-3 overflow-y-auto">
               {renderNoteCardSummary()}
             </div>
-            <button
-              onClick={() => {
-                setToggleCreateNote(true),
-                  setViewToggledNote(undefined),
-                  setView("create");
-              }}
-              className="md:hidden absolute bottom-[100px] right-[20px] bg-blue-500 rounded-full size-12 flex place-items-center justify-center cursor-pointer"
-            >
-              <Image
-                src={"/images/icon-plus.svg"}
-                width={32}
-                height={32}
-                alt="icon-plus"
-                style={{ filter: "invert(100%)" }}
-              />
-            </button>
+            <div className="md:hidden absolute bottom-[100px]  right-[20px] flex flex-col gap-4">
+              <button
+                onClick={() => {
+                  // setViewToggledNote(undefined),
+                  setToggleTagView?.(!toggleTagView);
+                }}
+                className=" bg-blue-500 rounded-full size-12 flex place-items-center justify-center cursor-pointer z-10"
+              >
+                <Image
+                  src={"/images/icon-tag.svg"}
+                  width={0}
+                  height={0}
+                  className="size-5"
+                  alt="icon-tag"
+                  style={{ filter: "invert(100%)" }}
+                />
+              </button>
+              {toggleTagView && !search ? (
+                <button
+                  onClick={() => {
+                    setViewToggledNote(undefined), setToggleTagView?.(false);
+                    setView("home"), setTag?.("");
+                  }}
+                  className=" bg-red-500 rounded-full size-12 flex place-items-center justify-center cursor-pointer z-10"
+                >
+                  <Image
+                    src={"/images/icon-tag.svg"}
+                    width={0}
+                    height={0}
+                    className="size-5"
+                    alt="icon-tag"
+                    style={{ filter: "invert(100%)" }}
+                  />
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    setToggleCreateNote(true),
+                      setViewToggledNote(undefined),
+                      setView("create");
+                  }}
+                  className=" bg-blue-500 rounded-full size-12 flex place-items-center justify-center cursor-pointer"
+                >
+                  <Image
+                    src={"/images/icon-plus.svg"}
+                    width={32}
+                    height={32}
+                    alt="icon-plus"
+                    style={{ filter: "invert(100%)" }}
+                  />
+                </button>
+              )}
+            </div>
           </>
         )}
       </div>

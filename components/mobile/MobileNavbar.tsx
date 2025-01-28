@@ -10,19 +10,9 @@ interface Params {
   view: string;
 }
 const MobileNavbar = ({ setView, setToggleTag, view }: Params) => {
-  const pathname = usePathname();
-  const {
-    showMobileSearch,
-    setShowMobileSearch,
-    setShowMobileTags,
-    darkMode,
-    setViewToggledNote,
-  } = useAppContext();
-  const toggleMobileSearch = () => {
-    setShowMobileSearch(true);
-  };
+  const { setViewToggledNote, darkMode } = useAppContext();
 
-  const routes = ["home", "tag", "archive"];
+  const routes = ["home", "archive"];
 
   return (
     <div className="md:hidden flex flex-none justify-between p-4 dark:bg-stone-900">
@@ -30,7 +20,7 @@ const MobileNavbar = ({ setView, setToggleTag, view }: Params) => {
         <button
           key={route}
           onClick={() => {
-            setView(route), setToggleTag("");
+            setView(route), setToggleTag(""), setViewToggledNote(undefined);
           }}
           className={`p-1 px-4 rounded-lg  ${
             route == view ? "bg-neutral-200 dark:bg-neutral-100" : ""

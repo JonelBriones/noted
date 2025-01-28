@@ -16,7 +16,7 @@ const Modal = ({
   archiveNote,
   setView,
 }: any) => {
-  const { darkMode, setToggleTag } = useAppContext();
+  const { darkMode, setToggleTag, setViewToggledNote } = useAppContext();
   return (
     <>
       <div className="absolute top-0 bottom-0 left-0 right-0 h-screen w-screen bg-neutral-950 opacity-50" />
@@ -57,7 +57,9 @@ const Modal = ({
               onClick={() => {
                 setToggleModal(false);
                 if (type == "Delete") {
-                  deleteNote(id), setView("home");
+                  deleteNote(id),
+                    setView("home"),
+                    setViewToggledNote(undefined);
                 } else {
                   archiveNote(id, isArchived),
                     setView("archive"),

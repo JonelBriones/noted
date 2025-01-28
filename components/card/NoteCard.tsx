@@ -16,7 +16,7 @@ const NoteCard = ({ note }: Params) => {
   }
 
   const { _id, title, tags, content, lastEdited, isArchived } = note;
-  const { darkMode } = useAppContext();
+  const { darkMode, setViewToggledNote } = useAppContext();
   const bindedAction = editNote.bind(null, _id);
   const [inputTag, setTag] = useState(tags.join(","));
   const pattern = /^(?!.*,,).*$/;
@@ -181,7 +181,6 @@ const NoteCard = ({ note }: Params) => {
           <button
             type="submit"
             className="bg-blue-500 text-white rounded-lg py-3 px-4 font-bold"
-            onClick={() => {}}
           >
             Save
           </button>

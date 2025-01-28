@@ -77,7 +77,7 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
 
   return (
     <form
-      className="hidden md:flex flex-col border-l border-r text-sm overflow-auto p-4 min-w-[588px] justify-between dark:border-neutral-700"
+      className="flex flex-col border-l border-r text-sm overflow-auto p-4 min-w-[588px] justify-between dark:border-neutral-700"
       action={formAction}
       autoComplete="off"
     >
@@ -131,7 +131,7 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
           className="outline-none h-full dark:bg-stone-900 dark:text-white"
         />
       </div>
-      <div className="flex gap-4 w-fit ">
+      <div className="flex gap-4 w-fit p-4 bg-blue absolute md:static bottom-[100px] right-[20px]">
         <button
           className="bg-blue-500 text-white rounded-lg py-3 px-4 font-bold"
           type="submit"
@@ -142,7 +142,6 @@ const NoteForm = ({ setToggleCreateNote, setViewToggledNote, notes }: any) => {
         <button
           onClick={() => {
             setToggleCreateNote(false);
-            setViewToggledNote(notes[0]);
           }}
           className="bg-neutral-100 text-neutral-600 rounded-lg py-3 px-4 font-bold"
         >

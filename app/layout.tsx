@@ -3,7 +3,6 @@ import "./globals.css";
 import ContextWrapper, { useAppContext } from "@/components/Providers";
 import MobileNavbar from "@/components/mobile/MobileNavbar";
 import AuthProvider from "@/components/AuthProvider";
-import Body from "@/components/Body";
 
 export const metadata: Metadata = {
   title: "Noted",
