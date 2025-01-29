@@ -87,13 +87,13 @@ const Signup = ({ user }: any) => {
     toast.success("You successfully signed up!");
   };
 
-  useEffect(() => {
-    if (success) {
-      setTimeout(() => {
-        redirect("/login");
-      }, 3000);
-    }
-  }, [success]);
+  // useEffect(() => {
+  //   if (success) {
+  //     setTimeout(() => {
+  //       redirect("/login");
+  //     }, 3000);
+  //   }
+  // }, [success]);
 
   return (
     <div className="m-auto md:w-[540px] h-full p-8 w-full flex gap-4 flex-col justify-start">
@@ -121,8 +121,12 @@ const Signup = ({ user }: any) => {
               <ReactLoader color={"#335CFF"} loading={success} />
             </span>
           </span>
-
-          <h1>Returning to Login Page</h1>
+          <button
+            className="bg-blue-500 text-white flex place-items-center justify-center gap-4 p-2  border-2 rounded-lg cursor-pointer hover:bg-blue-700"
+            onClick={() => redirect("/login")}
+          >
+            Returning to Login Page
+          </button>
         </div>
       ) : (
         <form className="flex flex-col gap-4" onSubmit={onSubmitHandler}>
