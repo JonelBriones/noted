@@ -65,7 +65,6 @@ export const authOptions = {
             return {
               id: userExist._id.toString(),
               email: userExist.email,
-              image: "https://i.redd.it/tw7b7dsezm081.png",
             };
           }
         } else if (credentials.login == "true") {
@@ -77,7 +76,7 @@ export const authOptions = {
             return {
               id: userExist.id.toString(),
               email: userExist.email,
-              image: "https://i.redd.it/tw7b7dsezm081.png",
+              image: userExist.image,
             };
           }
         }
@@ -88,7 +87,6 @@ export const authOptions = {
         console.log("session 1");
         const user = await User.findOne({ email: session.user.email });
         session.user.id = user.id.toString();
-        session.user.image = "https://i.redd.it/tw7b7dsezm081.png";
         return session;
       },
     }),
@@ -122,6 +120,7 @@ export const authOptions = {
       console.log("session 2");
       const user = await User.findOne({ email: session.user.email });
       session.user.id = user._id.toString();
+      // session.user.image = user.image;
       return session;
     },
   },
