@@ -6,8 +6,8 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { FaCopy } from "react-icons/fa";
 import { redirect } from "next/navigation";
-import { useRouter } from "next/router";
-const Login = () => {
+
+const Login = ({ user }: any) => {
   const intialState = {
     zodErrors: "",
     mongooseErrors: "",
@@ -22,6 +22,8 @@ const Login = () => {
     emailError: "",
     passwordError: "",
   });
+
+  const [emailExist, setEmailExist] = useState(undefined);
 
   const useTestUser = {
     toggleTest: true,
@@ -43,24 +45,40 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (email == "") {
+      setError({
+        ...errorMsg,
+        emailError: "Please enter a valid email address",
+      });
+      return;
+    }
+    const foundUser = user.find((u: any) => u.email == email);
+    if (foundUser) {
+      setError({ ...errorMsg, emailError: "" });
+      console.log("email found");
+    } else {
+      setError({
+        ...errorMsg,
+        emailError: "Please enter a valid email address",
+      });
+      return;
+    }
+    if (password.length < 8 || password !== foundUser.settings.password) {
+      setError({
+        ...errorMsg,
+        passwordError: "Incorrect Password. Please try again.",
+        emailError: "",
+      });
+      return;
+    }
 
-    const result = await signIn("credentials", {
+    await signIn("credentials", {
       redirect: false,
       email,
       password,
+      login: true,
     });
-    if (result?.error) {
-      const { error } = result;
-      console.log("error:", error);
-      if (error == "Email not used.") {
-        setError({ ...errorMsg, emailError: "Email Invalid" });
-      }
-      if (error == "Invalid password") {
-        setError({ ...errorMsg, passwordError: "Invalid password" });
-      }
-    } else {
-      redirect("/");
-    }
+    redirect("/");
   };
 
   return (
@@ -79,6 +97,20 @@ const Login = () => {
       <div className="flex flex-col gap-3 text-center mb-8">
         <h1 className="font-bold text-3xl">Welcome to Note</h1>
         <p className="text-neutral-400">Please log in to continue</p>
+        <div className="flex justify-center  place-items-center flex-col">
+          <span
+            className="text-[12px] flex gap-2 place-items-center cursor-pointer w-fit"
+            onClick={() => handleCopy(useTestUser.email)}
+          >
+            {useTestUser.email} <FaCopy size={".75rem"} />
+          </span>
+          <span
+            className="text-[12px] flex gap-2 place-items-center cursor-pointer w-fit"
+            onClick={() => handleCopy(useTestUser.password)}
+          >
+            {useTestUser.password} <FaCopy size={".75rem"} />
+          </span>
+        </div>
       </div>
 
       <form className="flex flex-col gap-4" onSubmit={onSubmitHandler}>
@@ -95,32 +127,28 @@ const Login = () => {
                 : "outline-offset-2 focus:border-neutral-600 focus:ring-neutral-600 focus:outline-neutral-500"
             }`}
           />
-          <span
-            className="text-[12px] flex gap-2 place-items-center cursor-pointer w-fit"
-            onClick={() => handleCopy(useTestUser.email)}
-          >
-            {useTestUser.email} <FaCopy size={".75rem"} />
-          </span>
-          {errorMsg.emailError && (
-            <span className="text-red-500 text-[12px] flex gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="#fb3748"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0ZM12.006 15.693v-4.3M12 8.355v-.063"
-                />
-              </svg>
-              Please enter a valid email address
-            </span>
-          )}
+
+          {emailExist == false ||
+            (errorMsg.emailError && (
+              <span className="text-red-500 text-[12px] flex gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="#fb3748"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0ZM12.006 15.693v-4.3M12 8.355v-.063"
+                  />
+                </svg>
+                {errorMsg.emailError}
+              </span>
+            ))}
         </div>
         <div className="flex flex-col gap-1">
           <label
@@ -128,7 +156,6 @@ const Login = () => {
             className="flex justify-between place-items-center"
           >
             <span>Password</span>
-
             <Link
               href={"/signup"}
               className="text-neutral-600 text-sm hover:text-blue-500 hover:underline"
@@ -154,17 +181,31 @@ const Login = () => {
                 alt="icon-hide-password"
                 className="size-5 absolute right-4 top-[10px] cursor-pointer"
               />
-              <span
-                className="text-[12px] flex gap-2 place-items-center cursor-pointer w-fit"
-                onClick={() => handleCopy(useTestUser.password)}
-              >
-                {useTestUser.password} <FaCopy size={".75rem"} />
-              </span>
             </div>
+            {errorMsg.passwordError && (
+              <span className="text-red-500 text-[12px] flex gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="#fb3748"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0ZM12.006 15.693v-4.3M12 8.355v-.063"
+                  />
+                </svg>
+                {errorMsg.passwordError}
+              </span>
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-6 text-center">
-          <button className="bg-blue-500 rounded-lg py-1 text-white font-medium text-lg ">
+          <button className="bg-blue-500 blue text-white flex place-items-center justify-center gap-4 p-2  border-2 rounded-lg cursor-pointer hover:bg-blue-700">
             Login
           </button>
           <div className="w-full h-[1px] bg-neutral-200" />
@@ -186,12 +227,12 @@ const Login = () => {
               </span>
             </button>
           </div>
-          {/* <span className="text-neutral-600 text-sm">
+          <span className="text-neutral-600 text-sm">
             No account yet?{" "}
             <Link href={"/signup"} className="hover:text-blue-500">
               Sign Up
             </Link>
-          </span> */}
+          </span>
         </div>
       </form>
     </div>

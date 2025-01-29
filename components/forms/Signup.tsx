@@ -1,18 +1,89 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
-import PrimaryBtn from "../buttons/PrimaryBtn";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-
-const Signup = () => {
+import { redirect } from "next/navigation";
+const Signup = ({ user }: any) => {
   const [toggleHidePassword, setToggleHidePassword] = useState(true);
-  const [error, setError] = useState({
-    emailError: false,
+  const [toggleHideConfirmPassword, setToggleHideConfirmPassword] =
+    useState(true);
+
+  const [errorMsg, setError] = useState({
+    emailError: "",
+    passwordError: "",
+    confirmPasswordError: "",
   });
-  const onSubmitHandler = (e: any) => {
-    e.preventDefault();
+
+  const [signUpForm, setSignUpForm] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError({ emailError: "", passwordError: "", confirmPasswordError: "" });
+    setSignUpForm({
+      ...signUpForm,
+      [e.target.name]: e.target.value,
+    });
   };
+  const { email, password, confirmPassword } = signUpForm;
+
+  const onSubmitHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email == "") {
+      setError({
+        ...errorMsg,
+        emailError: "Please enter a valid email address",
+      });
+      return;
+    }
+
+    if (password == "" || password.length < 8) {
+      console.log("password under 8");
+      setError({
+        ...errorMsg,
+        passwordError: "Password must be at least 8 characters.",
+        emailError: "",
+      });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      console.log("passwords dont match");
+      setError({
+        ...errorMsg,
+        confirmPasswordError: "Confirm Password does not match.",
+        emailError: "",
+      });
+      return;
+    }
+
+    const foundUser = user.find((u: any) => u.email == email);
+    if (foundUser) {
+      setError({
+        ...errorMsg,
+        emailError: "Email already taken. Please use another email.",
+      });
+      return;
+    } else {
+      setError({
+        ...errorMsg,
+        emailError: "",
+      });
+    }
+
+    await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+      signin: true,
+    });
+    // REDIRECT TO LOGIN
+    redirect("/");
+  };
+
   return (
     <div className="m-auto md:w-[540px] h-full p-8 w-full flex gap-4 flex-col justify-start">
       <Link href={"/"} className="flex justify-center">
@@ -34,16 +105,21 @@ const Signup = () => {
       <form className="flex flex-col gap-4" onSubmit={onSubmitHandler}>
         <div className="flex flex-col gap-1">
           <label htmlFor="email">Email Address</label>
+          {signUpForm.email}
           <input
             type="email"
+            autoComplete="email"
+            onChange={(e) => onChangeHandler(e)}
+            id="email"
+            name="email"
             placeholder="email@example.com"
             className={`p-2 rounded-lg border-2 border-neutral-300 text-neutral-500 text-sm hover:bg-neutral-50 outline-none  ${
-              error.emailError
+              errorMsg.emailError
                 ? "border-red-500"
                 : "outline-offset-2 focus:border-neutral-600 focus:ring-neutral-600 focus:outline-neutral-500"
             }`}
           />
-          {error.emailError && (
+          {errorMsg.emailError && (
             <span className="text-red-500 text-[12px] flex gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -60,21 +136,25 @@ const Signup = () => {
                   d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0ZM12.006 15.693v-4.3M12 8.355v-.063"
                 />
               </svg>
-              Please enter a valid email address
+              {errorMsg.emailError}
             </span>
           )}
         </div>
         <div className="flex flex-col gap-1">
           <label
-            htmlFor="email"
+            htmlFor="password"
             className="flex justify-between place-items-center"
           >
             <span>Password</span>
           </label>
           <div className="w-full relative">
             <input
+              id="password"
+              name={"password"}
+              autoComplete="new-password"
+              onChange={(e) => onChangeHandler(e)}
               type={toggleHidePassword ? "password" : "text"}
-              className="p-2 rounded-lg border-2 border-neutral-300 focus:border-neutral-600 text-neutral-500 text-sm hover:bg-neutral-50 outline-none outline-offset-2 focus:ring-neutral-600 focus:outline-neutral-500 w-full"
+              className={`p-2 rounded-lg border-2 border-neutral-300 focus:border-neutral-600 text-neutral-500 text-sm hover:bg-neutral-50 outline-none outline-offset-2 focus:ring-neutral-600 focus:outline-neutral-500 w-full`}
             />
             <div onClick={() => setToggleHidePassword(!toggleHidePassword)}>
               <Image
@@ -88,24 +168,88 @@ const Signup = () => {
               />
             </div>
           </div>
-          <span className="text-neutral-600 text-[12px] flex gap-2">
-            <Image
-              src={"/images/icon-info.svg"}
-              width={0}
-              height={0}
-              alt="logo"
-              className="w-[18px] h-[18px]"
+          {errorMsg.passwordError && (
+            <span className="text-red-500 text-[12px] flex gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="#fb3748"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0ZM12.006 15.693v-4.3M12 8.355v-.063"
+                />
+              </svg>
+              {errorMsg.passwordError}
+            </span>
+          )}
+        </div>
+        <div className="flex flex-col gap-1">
+          <label
+            htmlFor="confirmPassword"
+            className="flex justify-between place-items-center"
+          >
+            <span>Confirm Password</span>
+          </label>
+          <div className="w-full relative">
+            <input
+              id="confirmPassword"
+              onChange={(e) => onChangeHandler(e)}
+              name={"confirmPassword"}
+              autoComplete="new-password"
+              type={toggleHideConfirmPassword ? "password" : "text"}
+              className={`p-2 rounded-lg border-2 border-neutral-300 focus:border-neutral-600 text-neutral-500 text-sm hover:bg-neutral-50 outline-none outline-offset-2 focus:ring-neutral-600 focus:outline-neutral-500 w-full  ${
+                errorMsg.confirmPasswordError
+                  ? "border-red-500"
+                  : "outline-offset-2 focus:border-neutral-600 focus:ring-neutral-600 focus:outline-neutral-500"
+              }`}
             />
-            At least 8 characters
-          </span>
+            <div
+              onClick={() =>
+                setToggleHideConfirmPassword(!toggleHideConfirmPassword)
+              }
+            >
+              <Image
+                src={`/images/icon-${
+                  toggleHideConfirmPassword ? "hide" : "show"
+                }-password.svg`}
+                width={0}
+                height={0}
+                alt="icon-hide-password"
+                className="size-5 absolute right-4 top-[10px] cursor-pointer"
+              />
+            </div>
+          </div>
+          {errorMsg.confirmPasswordError && (
+            <span className="text-red-500 text-[12px] flex gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="#fb3748"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0ZM12.006 15.693v-4.3M12 8.355v-.063"
+                />
+              </svg>
+              {errorMsg.confirmPasswordError}
+            </span>
+          )}
         </div>
         <div className="flex flex-col gap-6 text-center">
-          <PrimaryBtn
-            text="Login"
-            backgroundColor="bg-blue-500"
-            textColor="text-white"
-            hoverColor="hover:bg-blue-700"
-          />
+          <button className="bg-blue-500 text-white flex place-items-center justify-center gap-4 p-2  border-2 rounded-lg cursor-pointer hover:bg-blue-700">
+            Signup
+          </button>
           <div className="w-full h-[1px] bg-neutral-200" />
           <div className="flex flex-col gap-4">
             <p className="text-neutral-600 text-sm">Or log in with:</p>

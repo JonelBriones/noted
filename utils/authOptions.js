@@ -2,6 +2,8 @@ import GoogleProvider from "next-auth/providers/google";
 import connectDB from "@/config/database";
 import User from "@/models/User";
 import Credentials from "next-auth/providers/credentials";
+import { redirect } from "next/navigation";
+import { boolean } from "zod";
 export const authOptions = {
   providers: [
     GoogleProvider({
@@ -22,6 +24,8 @@ export const authOptions = {
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
+        signin: { label: "Signin", type: "boolean" },
+        login: { label: "Login", type: "boolean" },
       },
       async authorize(credentials) {
         await connectDB();
@@ -39,40 +43,52 @@ export const authOptions = {
         // when sign up, have a hashed password and retry password.
 
         // on login, it should have validations.
+        if (!email || !password) {
+          return null;
+        }
 
-        console.log("crentials", credentials.email, credentials.password);
         const userExist = await User.findOne({ email: email });
+        if (credentials.signin == "true") {
+          if (!userExist) {
+            // create new user
+            const username = email.slice(0, 20);
+            await User.create({
+              email: email,
+              username: username,
+              settings: {
+                colorTheme: "Light Mode",
+                fontTheme: "sans-serif",
+                password: password,
+              },
+            });
 
-        // if (!userExist) {
-        //   throw new Error("Email not used");
-        // }
+            return {
+              id: userExist._id.toString(),
+              email: userExist.email,
+              image: "https://i.redd.it/tw7b7dsezm081.png",
+            };
+          }
+        } else if (credentials.login == "true") {
+          if (!userExist) {
+            return null;
+          }
 
-        if (password !== userExist.settings.password) {
-          console.log("password");
-          throw new Error("Invalid password");
+          if (userExist) {
+            return {
+              id: userExist.id.toString(),
+              email: userExist.email,
+              image: "https://i.redd.it/tw7b7dsezm081.png",
+            };
+          }
         }
-
-        // enable when ready for other users
-
-        if (!userExist) {
-          const username = email.slice(0, 20);
-          await User.create({
-            email: email,
-            username: username,
-            image: "https://i.redd.it/tw7b7dsezm081.png",
-            settings: {
-              colorTheme: "Light Mode",
-              fontTheme: "sans-serif",
-              password: password,
-            },
-          });
-        }
-        return userExist;
+        console.log("USER EMAIL TAKEN!");
+        return null;
       },
       async session({ session }) {
+        console.log("session 1");
         const user = await User.findOne({ email: session.user.email });
-        session.user.id = user._id.toString();
-        console.log("session:", session);
+        session.user.id = user.id.toString();
+        session.user.image = "https://i.redd.it/tw7b7dsezm081.png";
         return session;
       },
     }),
@@ -103,6 +119,7 @@ export const authOptions = {
       return baseUrl;
     },
     async session({ session }) {
+      console.log("session 2");
       const user = await User.findOne({ email: session.user.email });
       session.user.id = user._id.toString();
       return session;

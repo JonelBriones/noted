@@ -33,7 +33,10 @@ const Topbar = ({
   view,
 }: Params) => {
   const { darkMode } = useAppContext();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {}, [status]);
+  console.log(session);
 
   return (
     <div className=" hidden md:flex w-full place-items-center justify-between md:border-b p-6 dark:border-neutral-700">
@@ -65,6 +68,7 @@ const Topbar = ({
             style={{ filter: darkMode && "invert(100%)" }}
           />
         </button>
+
         {session?.user?.image ? (
           <div>
             <Image
@@ -77,7 +81,9 @@ const Topbar = ({
             />
           </div>
         ) : (
-          <FaRegUserCircle size={"40px"} />
+          <div className="size-10 border border-neutral-400 rounded-full flex place-items-center justify-center dark:text-white text-xl font-semibold">
+            {session?.user?.email?.[0]}
+          </div>
         )}
       </div>
     </div>
