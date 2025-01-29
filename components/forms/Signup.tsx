@@ -118,12 +118,12 @@ const Signup = ({ user }: any) => {
         <div className="flex flex-col place-items-center gap-14 h-20 ">
           <span className="relative">
             <span className="absolute right-[24px]">
-              <ReactLoader color={"#335CFF"} loading={success} />
+              {/* <ReactLoader color={"#335CFF"} loading={success} /> */}
             </span>
           </span>
           <button
             className="bg-blue-500 text-white flex place-items-center justify-center gap-4 p-2  border-2 rounded-lg cursor-pointer hover:bg-blue-700"
-            onClick={() => redirect("/login")}
+            onClick={redirect("/login")}
           >
             Returning to Login Page
           </button>
