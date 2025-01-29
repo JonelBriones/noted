@@ -151,25 +151,17 @@ const Login = ({ user }: any) => {
             ))}
         </div>
         <div className="flex flex-col gap-1">
-          <label
-            htmlFor="email"
-            className="flex justify-between place-items-center"
-          >
-            <span>Password</span>
-            <Link
-              href={"/signup"}
-              className="text-neutral-600 text-sm hover:text-blue-500 hover:underline"
-            >
-              Forgot
-            </Link>
-          </label>
-
+          <label htmlFor="Password">Password</label>
           <div className="w-full relative">
             <input
               name="password"
               onChange={(e) => setPassword(e.target.value)}
               type={toggleHidePassword ? "password" : "text"}
-              className="p-2 rounded-lg border-2 border-neutral-300 focus:border-neutral-600 text-neutral-500 text-sm hover:bg-neutral-50 outline-none outline-offset-2 focus:ring-neutral-600 focus:outline-neutral-500 w-full"
+              className={`p-2 rounded-lg border-2 border-neutral-300 text-neutral-500 text-sm hover:bg-neutral-50 outline-none w-full  ${
+                errorMsg.passwordError
+                  ? "border-red-500"
+                  : "outline-offset-2 focus:border-neutral-600 focus:ring-neutral-600 focus:outline-neutral-500"
+              }`}
             />
             <div onClick={() => setToggleHidePassword(!toggleHidePassword)}>
               <Image
@@ -182,59 +174,66 @@ const Login = ({ user }: any) => {
                 className="size-5 absolute right-4 top-[10px] cursor-pointer"
               />
             </div>
-            {errorMsg.passwordError && (
-              <span className="text-red-500 text-[12px] flex gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="#fb3748"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0ZM12.006 15.693v-4.3M12 8.355v-.063"
-                  />
-                </svg>
-                {errorMsg.passwordError}
-              </span>
-            )}
           </div>
+          {errorMsg.passwordError && (
+            <span className="text-red-500 text-[12px] flex gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="#fb3748"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0ZM12.006 15.693v-4.3M12 8.355v-.063"
+                />
+              </svg>
+              {errorMsg.passwordError}
+            </span>
+          )}
         </div>
-        <div className="flex flex-col gap-6 text-center">
-          <button className="bg-blue-500 blue text-white flex place-items-center justify-center gap-4 p-2  border-2 rounded-lg cursor-pointer hover:bg-blue-700">
+        <div className="flex flex-col gap-3 text-center">
+          <button
+            className="bg-blue-500 blue text-white flex place-items-center justify-center gap-4 p-2  border-2 rounded-lg cursor-pointer hover:bg-blue-700"
+            type="submit"
+          >
             Login
           </button>
-          <div className="w-full h-[1px] bg-neutral-200" />
-          <div className="flex flex-col gap-4">
-            <p className="text-neutral-600 text-sm">Or log in with:</p>
-            <button
-              className="flex place-items-center justify-center gap-4 p-2  border-2 rounded-lg cursor-pointer hover:bg-neutral-50"
-              type="submit"
-            >
-              <Image
-                src={"/images/icon-google.svg"}
-                width={0}
-                height={0}
-                alt="icon-google"
-                className="size-[25px]"
-              />
-              <span className="text-lg text-neutral-950 font-medium">
-                Google
-              </span>
-            </button>
-          </div>
-          <span className="text-neutral-600 text-sm">
-            No account yet?{" "}
+          <span className=" flex justify-end gap-2 text-neutral-600 text-sm">
             <Link href={"/signup"} className="hover:text-blue-500">
-              Sign Up
+              Forgot
             </Link>
           </span>
+
+          <div className="w-full h-[1px] bg-neutral-200" />
         </div>
       </form>
+      <div className="flex flex-col gap-4">
+        <p className="text-neutral-600 text-sm">Or log in with:</p>
+        <button
+          className="flex place-items-center justify-center gap-4 p-2  border-2 rounded-lg cursor-pointer hover:bg-neutral-50"
+          onClick={() => signIn("google")}
+        >
+          <Image
+            src={"/images/icon-google.svg"}
+            width={0}
+            height={0}
+            alt="icon-google"
+            className="size-[25px]"
+          />
+          <span className="text-lg text-neutral-950 font-medium">Google</span>
+        </button>
+      </div>
+      <span className=" flex justify-center gap-2 text-neutral-600 text-sm">
+        <span>No account yet?</span>
+        <Link href={"/signup"} className="hover:text-blue-500">
+          Sign Up
+        </Link>
+      </span>
     </div>
   );
 };

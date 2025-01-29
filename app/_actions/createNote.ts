@@ -20,7 +20,7 @@ export const createNote = async (prevState: any, formData: FormData) => {
   };
 
   const validated = noteSchema.safeParse(getFormData);
-  console.log(validated);
+
   if (!validated.success) {
     return {
       ...prevState,
@@ -32,15 +32,16 @@ export const createNote = async (prevState: any, formData: FormData) => {
       ),
     };
   } else {
-    console.log("VALIDATION:", validated);
-
     const tags =
       typeof getFormData.tags === "string" &&
-      getFormData.tags?.split(",").map((tag: string) => tag.toLowerCase());
+      getFormData.tags
+        ?.split(",")
+        .filter((tag) => tag != "")
+        .map((tag: string) => tag.toLowerCase());
 
     const currentTime = new Date();
     const currentTimeInNumber = currentTime.getTime();
-
+    console.log;
     const noteObject = {
       title: validated.data.title,
       tags: tags || [],

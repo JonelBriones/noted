@@ -33,11 +33,12 @@ export const editNote = async (note_id: any, formData: FormData) => {
     isArchived: formData.get("isArchived"),
   };
 
-  console.log("form", formData);
-
   const tags =
     typeof getFormData.tags === "string" &&
-    getFormData.tags?.split(",").map((tag: string) => tag.toLowerCase());
+    getFormData.tags
+      ?.split(",")
+      .filter((tag) => tag != "")
+      .map((tag: string) => tag.toLowerCase());
 
   const currentTime = new Date();
   const currentTimeInNumber = currentTime.getTime();
@@ -50,7 +51,7 @@ export const editNote = async (note_id: any, formData: FormData) => {
     isArchived: getFormData.isArchived == "on" ? true : false,
   };
 
-  console.log("IS ARCHIVED:", getFormData.isArchived);
+  console.log("IS ARCHIVED:", getFormData.tags);
 
   await User.updateOne(
     { _id: session?.user?.id, "notes._id": note_id },

@@ -26,18 +26,20 @@ const NoteCardSummary = ({ note, viewToggledNote }: Params) => {
     >
       <div className="flex flex-col gap-3 p-2">
         <h1 className="font-bold text-black dark:text-white">{title}</h1>
-        <div className="flex gap-2 text-neutral-950 text-xs">
-          {tags?.map((tag: any) => (
-            <span
-              key={tag}
-              className={`flex place-items-center bg-neutral-200 px-2 py-1 rounded-md dark:text-white dark:bg-neutral-600 ${
-                _id == viewToggledNote?._id ? "dark:text-neutral-800" : ""
-              }`}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+        {tags && (
+          <div className="flex gap-2 text-neutral-950 text-xs">
+            {tags?.map((tag: any) => (
+              <span
+                key={tag}
+                className={`flex place-items-center bg-neutral-200 px-2 py-1 rounded-md dark:text-white dark:bg-neutral-600 ${
+                  _id == viewToggledNote?._id ? "dark:text-neutral-800" : ""
+                }`}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
         <span className="text-neutral-700 text-xs dark:text-white">
           {formatLastEdited}
         </span>
