@@ -21,12 +21,11 @@ A simple and efficient note-taking application designed to help users capture, o
 The app supports both Google authentication and traditional email/password login using NextAuth.js. User sessions are managed securely with JWT tokens.
 
 ## 📸 Screenshots
-![Screenshot 2025-01-29 at 3 57 50 PM](https://github.com/user-attachments/assets/3b9a4695-6192-475d-b27b-e5931bafb30c)
-
 ![signupnote-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/7084a39e-06a8-4e1f-9f1f-20c893cf6506)
-![settingsnote-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/cb88c3dc-f86d-40a7-a1b0-c422b26ce6a8)
 ![loginnote-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/109de294-eec9-4b5c-8bfe-4fe06e41dbdc)
+![signupnote-login page screenshot](https://github.com/user-attachments/assets/3b9a4695-6192-475d-b27b-e5931bafb30c)
 ![archivenote-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/47fa3250-9e2e-4a60-b830-55ea2becb032)
+![settingsnote-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/cb88c3dc-f86d-40a7-a1b0-c422b26ce6a8)
 
 
 
