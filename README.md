@@ -22,9 +22,11 @@ The app supports both Google authentication and traditional email/password login
 
 ## 📸 Screenshots
 ![Screenshot 2025-01-29 at 3 57 50 PM](https://github.com/user-attachments/assets/3b9a4695-6192-475d-b27b-e5931bafb30c)
-https://github.com/user-attachments/assets/33b22389-cb9c-4bab-8dc7-bce845c0f523
-https://github.com/user-attachments/assets/590da22d-f5b6-4585-a88a-2924b071e5bb
-https://github.com/user-attachments/assets/1cbc789a-9c71-4151-896a-fe0b2c4b722c
+![login](https://github.com/user-attachments/assets/33b22389-cb9c-4bab-8dc7-bce845c0f523)
+
+![archive](https://github.com/user-attachments/assets/590da22d-f5b6-4585-a88a-2924b071e5bb)
+
+![settings](https://github.com/user-attachments/assets/1cbc789a-9c71-4151-896a-fe0b2c4b722c)
 
 
 
