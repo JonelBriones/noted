@@ -5,7 +5,9 @@ import { auth } from "../api/auth/[...nextauth]/auth";
 import { redirect } from "next/navigation";
 import User from "@/models/User";
 import { ReactLoader } from "@/components/ReactLoader";
+import connectDB from "@/config/database";
 const page = async () => {
+  await connectDB();
   const session = await auth();
   if (session) {
     console.log("User is authenticated, redirecting to home page");
@@ -21,7 +23,7 @@ const page = async () => {
     console.error("Error fetching users:", error);
   }
 
-  return <Login />;
+  return <Login user={user} />;
 };
 
 export default page;

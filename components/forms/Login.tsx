@@ -8,13 +8,12 @@ import { FaCopy } from "react-icons/fa";
 import { redirect } from "next/navigation";
 import { ReactLoader } from "../ReactLoader";
 
-const Login = () => {
+const Login = ({ user }: any) => {
   const [toggleHidePassword, setToggleHidePassword] = useState(true);
   const [errorMsg, setError] = useState({
     emailError: "",
     passwordError: "",
   });
-  const [user, setUser] = useState<any>([]);
 
   const [emailExist, setEmailExist] = useState(undefined);
 
