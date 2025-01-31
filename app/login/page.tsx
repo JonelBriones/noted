@@ -21,7 +21,7 @@ const page = async () => {
     console.error("Error fetching users:", error);
   }
 
-  return <Login user={user} />;
+  return <Login />;
 };
 
 export default page;
