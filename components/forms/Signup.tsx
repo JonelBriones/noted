@@ -88,14 +88,6 @@ const Signup = ({ user }: any) => {
     redirect("/login");
   };
 
-  // useEffect(() => {
-  //   if (success) {
-  //     setTimeout(() => {
-  //       redirect("/login");
-  //     }, 3000);
-  //   }
-  // }, [success]);
-
   return (
     <div className="m-auto md:w-[540px] h-full p-8 w-full flex gap-4 flex-col justify-start">
       <Link href={"/"} className="flex justify-center">

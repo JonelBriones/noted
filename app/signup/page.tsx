@@ -12,8 +12,14 @@ const page = async () => {
     console.log("User is authenticated, redirecting to home page");
     redirect("/");
   }
-  const userApi = await User.find({}).lean();
-  let user = JSON.parse(JSON.stringify(userApi));
+  let user = null;
+
+  try {
+    const userApi = await User.find({}).lean();
+    user = JSON.parse(JSON.stringify(userApi));
+  } catch (error) {
+    console.error("Error fetching users:", error);
+  }
   return <Signup user={user} />;
 };
 

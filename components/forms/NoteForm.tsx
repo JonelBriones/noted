@@ -145,10 +145,10 @@ const NoteForm = ({
           onClick={() => {
             if (window.matchMedia("(max-width: 767px)").matches) {
               setView?.("home");
-              setToggleCreateNote(false);
             } else {
               setViewToggledNote(notes[0]);
             }
+            setToggleCreateNote(false);
           }}
           className="bg-neutral-100 text-neutral-600 rounded-lg py-3 px-4 font-bold"
         >

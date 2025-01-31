@@ -6,17 +6,9 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { FaCopy } from "react-icons/fa";
 import { redirect } from "next/navigation";
+import { ReactLoader } from "../ReactLoader";
 
 const Login = ({ user }: any) => {
-  const intialState = {
-    zodErrors: "",
-    mongooseErrors: "",
-    email: "",
-    password: [],
-    successMsg: "",
-  };
-  // const [state, formAction, pending] = useActionState(createNote, intialState);
-
   const [toggleHidePassword, setToggleHidePassword] = useState(true);
   const [errorMsg, setError] = useState({
     emailError: "",
@@ -94,6 +86,7 @@ const Login = ({ user }: any) => {
           className="w-[95px] h-[28px]"
         />
       </Link>
+
       <div className="flex flex-col gap-3 text-center mb-8">
         <h1 className="font-bold text-3xl">Welcome to Note</h1>
         <p className="text-neutral-400">Please log in to continue</p>

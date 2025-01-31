@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { MoonLoader, PropagateLoader, RotateLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 
 export const ReactLoader = ({ color, loading }: any) => {
   const override: CSSProperties = {
@@ -8,7 +8,7 @@ export const ReactLoader = ({ color, loading }: any) => {
     borderColor: "red",
   };
   return (
-    <PropagateLoader
+    <ClipLoader
       color={color}
       loading={loading}
       size={50}

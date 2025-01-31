@@ -122,7 +122,7 @@ const NoteCard = ({ note, setToggleCreateNote, setView }: Params) => {
                 />
                 Tags
               </span>
-              <div>{renderTagInput}</div>
+              {renderTagInput}
               <input
                 type="checkbox"
                 name="isArchived"
@@ -193,14 +193,13 @@ const NoteCard = ({ note, setToggleCreateNote, setView }: Params) => {
               if (window.matchMedia("(max-width: 767px)").matches) {
                 setView?.("home");
                 setToggleCreateNote?.(false);
-              } else {
-                setDefaultNote({
-                  title: title,
-                  tags: tags.join(","),
-                  content: content,
-                  isArchived: isArchived,
-                });
               }
+              setDefaultNote({
+                title: title,
+                tags: tags.join(","),
+                content: content,
+                isArchived: isArchived,
+              });
             }}
           >
             Cancel
