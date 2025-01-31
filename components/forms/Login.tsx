@@ -8,12 +8,13 @@ import { FaCopy } from "react-icons/fa";
 import { redirect } from "next/navigation";
 import { ReactLoader } from "../ReactLoader";
 
-const Login = ({ user }: any) => {
+const Login = () => {
   const [toggleHidePassword, setToggleHidePassword] = useState(true);
   const [errorMsg, setError] = useState({
     emailError: "",
     passwordError: "",
   });
+  const [user, setUser] = useState<any>([]);
 
   const [emailExist, setEmailExist] = useState(undefined);
 
@@ -55,7 +56,7 @@ const Login = ({ user }: any) => {
       });
       return;
     }
-    if (password.length < 8 || password !== foundUser.settings.password) {
+    if (password.length < 8 || password !== foundUser?.settings.password) {
       setError({
         ...errorMsg,
         passwordError: "Incorrect Password. Please try again.",
